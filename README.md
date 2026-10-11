@@ -10,6 +10,16 @@
    - 키 제한: "API 제한"으로 위 세 개만 허용하고, 할당량이나 예산 알림을 걸어 두세요. 파일(`file://`)로 여는 방식이라 HTTP 리퍼러 제한은 걸 수 없어요. 웹 서버에 올려서 쓴다면 리퍼러 제한도 거세요.
 3. 위쪽 탭에서 기본 코스를 보거나 **직접 짜기**로 들어가요.
 
+## 웹에서 열기 (GitHub Pages)
+
+`main`에 `index.html`이 바뀌어 올라가면 `.github/workflows/pages.yml`이 그 파일 하나만 GitHub Pages에 올려요(`src/`, `tools/`, 데이터 원본은 올라가지 않아요).
+
+- 주소: https://jinwoojang.github.io/travel-planner/
+- 처음 한 번은 저장소 **Settings → Pages → Build and deployment → Source**를 **GitHub Actions**로 바꿔야 해요. 그다음 **Actions → Deploy planner to GitHub Pages → Run workflow**로 한 번 돌리면 돼요.
+- 웹 주소로 열면 키 입력 창에 넣을 웹사이트 제한 주소(`https://jinwoojang.github.io/travel-planner/*`)가 나와요. 키를 이 주소로 제한하면 다른 곳에서 키를 쓸 수 없어요. 단, 그 키는 내 컴퓨터에서 파일로 연 플래너에서는 막혀요.
+- 브라우저 저장소는 주소마다 따로라서, 파일로 열어 쓰던 플랜은 플랜 파일(.json)로 내보낸 뒤 웹 주소에서 불러와야 해요.
+- Pages로 올린 페이지는 저장소가 비공개여도 주소를 아는 사람은 누구나 열 수 있어요. 키는 페이지에 들어 있지 않으니, 다른 사람은 자기 키 없이는 지도를 못 써요.
+
 ## 주요 기능
 
 - **기본 코스 5개**: 6일 차로만, 6일 비행 연계, 9일 전체, 6일 샬랄라 집중, 5일 북부. 일차별 시간표, 운영시간·금요일 경고, 구글 길찾기 링크.
@@ -43,7 +53,8 @@
 ## 개발
 
 ```
-index.html                 빌드 결과물 (직접 고치지 말고 src를 고친 뒤 빌드)
+index.html                 빌드 결과물 (직접 고치지 말고 src를 고친 뒤 빌드) · GitHub Pages로 배포돼요
+.github/workflows/pages.yml  index.html만 Pages에 올리는 워크플로
 src/template.html          화면·로직 전체 (__DATA__ 자리에 데이터가 들어가요)
 src/data/gdata.json        지점, 일차, 코스, 지명, 내장 도로망 (tools/build*.mjs로 생성)
 src/data/pois.json         관광지 93곳 (tools/build_pois.py로 생성)

@@ -8,3 +8,4 @@
 - 저장소 키: `omanGmaps.v1`(플랜 `plans`/`planId`, 화면 설정 `ui`, 코스 설정), `omanGmaps.routes`(구글 경로 캐시), `omanGmaps.places`(장소 이름 캐시), `omanGmaps.sheetW`(패널 폭). 형식을 바꾸면 예전 데이터를 옮기는 코드도 넣어 주세요.
 - 플랜 파일 형식: `{ format: "oman-roadtrip-plan", version: 1, plans: [...], routes: {...} }`. 불러올 때는 모든 값을 검사해서 다시 만들어요(`cleanPt`).
 - 테스트: `npm test`. 실제 구글 대신 `tests/gmock.js`를 끼워서 돌아요. UI를 바꾸면 테스트도 같이 고쳐 주세요.
+- 배포: `main`에 `index.html`이 바뀌면 `.github/workflows/pages.yml`이 그 파일 하나만 GitHub Pages(https://jinwoojang.github.io/travel-planner/)에 올려요. 그래서 `npm run build` 결과를 꼭 같이 커밋해요.

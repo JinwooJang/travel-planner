@@ -203,6 +203,7 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
 .keycard { background: var(--panel); color: var(--ink); border-radius: 14px; max-width: 560px; width: 100%; padding: 22px 22px 18px; box-shadow: 0 10px 40px rgba(0,0,0,.35); max-height: calc(100vh - 32px); overflow-y: auto; }
 .keycard h2 { font-family: var(--f-display); font-weight: 400; font-size: 24px; margin: 0 0 8px; }
 .keycard ol { padding-left: 20px; margin: 8px 0 14px; display: grid; gap: 6px; }
+.keycard code { font: 600 12.5px var(--f-mono); background: var(--hover); padding: 1px 5px; border-radius: 5px; word-break: break-all; user-select: all; }
 .keycard .err { background: var(--bad-bg); color: var(--bad); border-radius: 10px; padding: 8px 12px; margin: 0 0 12px; font-size: 13px; }
 .keyrow { display: flex; gap: 8px; flex-wrap: wrap; }
 .keyrow input { flex: 1 1 260px; min-width: 0; border: 1px solid var(--rule); border-radius: 8px; padding: 8px 10px; font: 500 13px var(--f-mono); background: var(--paper); }
@@ -412,6 +413,7 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
       <li><a href="https://console.cloud.google.com/projectcreate" target="_blank" rel="noopener">구글 클라우드 콘솔</a>에서 프로젝트를 만들고 결제 계정을 연결해요.</li>
       <li><a href="https://console.cloud.google.com/apis/library/maps-backend.googleapis.com" target="_blank" rel="noopener">Maps JavaScript API</a>와 <a href="https://console.cloud.google.com/apis/library/routes.googleapis.com" target="_blank" rel="noopener">Routes API</a>를 사용 설정해요. 지도에서 리조트·식당 같은 장소를 눌러 이름을 받아 오려면 <a href="https://console.cloud.google.com/apis/library/places.googleapis.com" target="_blank" rel="noopener">Places API (New)</a>도 켜요.</li>
       <li><a href="https://console.cloud.google.com/apis/credentials" target="_blank" rel="noopener">사용자 인증 정보</a>에서 API 키를 만들고, <b>API 제한</b>을 위 API들로 걸어요. 할당량(하루 사용량) 상한과 예산 알림도 걸어 두세요.</li>
+      <li id="keyRefLi" hidden>웹에 올린 이 페이지에서만 키가 쓰이도록 <b>애플리케이션 제한 → 웹사이트</b>에 이 주소를 넣으세요: <code id="keyRef"></code></li>
       <li>만든 키를 아래에 붙여 넣어요.</li>
     </ol>
     <div class="keyrow">
@@ -1877,6 +1879,10 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
   }
 
   // ---------- Google Maps loading ----------
+  // opened from a web address (e.g. GitHub Pages) rather than a file on disk: the key can be locked to this address
+  const HOSTED = /^https?:$/.test(location.protocol);
+  const refPattern = () => location.origin + location.pathname.replace(/[^/]*$/, "") + "*";
+  if (HOSTED) { $("keyRef").textContent = refPattern(); $("keyRefLi").hidden = false; }
   function showKeyPanel(err) {
     $("keyErr").hidden = !err; $("keyErr").textContent = err || "";
     $("keyInput").value = ls.get(KEY_STORE) || "";
@@ -1895,7 +1901,8 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
   });
   $("keyInput").addEventListener("keydown", e => { if (e.key === "Enter") $("keySave").click(); });
   function loadGoogle(key) {
-    window.gm_authFailure = () => showKeyPanel("구글이 이 키를 거부했어요. 키가 맞는지, Maps JavaScript API가 켜져 있는지, 결제 계정이 연결돼 있는지 확인하세요. 키에 웹사이트(리퍼러) 제한을 걸었다면 이 파일처럼 내 컴퓨터에서 연 페이지는 막혀요.");
+    window.gm_authFailure = () => showKeyPanel("구글이 이 키를 거부했어요. 키가 맞는지, Maps JavaScript API가 켜져 있는지, 결제 계정이 연결돼 있는지 확인하세요. "
+      + (HOSTED ? `키에 웹사이트 제한을 걸었다면 ${refPattern()} 가 허용 목록에 있는지 확인하세요.` : "키에 웹사이트(리퍼러) 제한을 걸었다면 이 파일처럼 내 컴퓨터에서 연 페이지는 막혀요."));
     window.__omanMapsReady = () => { initMap().catch(err => showKeyPanel("지도를 여는 중 문제가 생겼어요: " + (err && err.message || err))); };
     const s = document.createElement("script");
     s.src = "https://maps.googleapis.com/maps/api/js?" + new URLSearchParams({ key, v: "weekly", loading: "async", callback: "__omanMapsReady", language: "ko", region: "OM" });
