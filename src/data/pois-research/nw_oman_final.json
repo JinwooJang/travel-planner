@@ -1,0 +1,414 @@
+[
+ {
+  "id": "nakhal-fort",
+  "ko": "나클 요새",
+  "en": "Nakhal (Nakhl) Fort",
+  "cat": "fort",
+  "region": "바티나",
+  "lat": 23.39474,
+  "lng": 57.82867,
+  "coordNote": "요새 본체(구글 지도 핀). 오만 관광청 페이지의 구글 지도 링크(23.3947375, 57.8286719)와 mapstr(Apple 지도) 좌표가 일치하고, 위키피디아(23.395, 57.829)와도 맞아요.",
+  "desc": "알하자르 산맥 자락의 바위 언덕 위에 세운 요새로, 이슬람 이전에 기원을 두고 17세기에 재건됐으며 1834년에 성문과 탑이 더해졌어요. 내부는 박물관으로 운영되고, 탑 위에서 대추야자 농장과 산세가 한눈에 보여요.",
+  "tips": "오만 관광청 공식 사이트는 매일 08:00–22:00 운영으로 안내하지만 방문 전 다시 확인하세요. 입장권은 현장 매표소에서 사요. 탑 계단이 가팔라서 아이 손을 잡아 주시고, 차로 몇 분 거리인 아인 알 사와라 온천과 묶어서 오전에 둘러보면 좋아요.",
+  "visitMin": 75,
+  "family": "탑과 성벽을 오르내리는 재미가 있어 아이들이 좋아해요",
+  "q": "Nakhal Fort",
+  "sources": [
+   "https://experienceoman.om/destinations/al-batinah-south/nakhl-fort",
+   "https://en.wikipedia.org/wiki/Nakhal_Fort",
+   "https://www.omanobserver.om/article/1166378/features/culture/the-transformation-of-nakhal-fort-as-a-world-class-attraction",
+   "https://www.omanobserver.om/article/1184092/oman/heritage-restoration-projects-in-al-batinah-south-boost-tourism-appeal",
+   "https://mapstr.com/place/YT3F7LfzRvg"
+  ]
+ },
+ {
+  "id": "ain-al-thowarah",
+  "ko": "아인 알 사와라 온천",
+  "en": "Ain Al Thowarah Hot Spring",
+  "cat": "nature",
+  "region": "바티나",
+  "lat": 23.37528,
+  "lng": 57.82833,
+  "coordNote": "샘과 수로가 있는 녹지 구역. 위키피디아(23°22′31″N 57°49′42″E)와 GeoNames의 '‘Ayn ath Thawwārah'(23.37556, 57.82889)가 약 60m 안에서 일치해요. 주차장 위치는 따로 확인하지 못했어요.",
+  "desc": "나클 요새에서 몇 km 떨어진 와디에서 따뜻한 샘물이 솟아 개울로 흘러가는 녹지예요. 대추야자 숲 사이 물가에서 쉬어 가기 좋은 곳이에요.",
+  "tips": "물에 발을 담그면 작은 물고기가 발 각질을 쪼아 먹는 체험을 무료로 할 수 있다고 소개돼요(2025년 기사). 나클 요새 관람 뒤 들러 쉬어 가는 코스로 좋아요.",
+  "visitMin": 45,
+  "family": "얕은 물가에서 발 담그고 물고기 구경하기 좋아요",
+  "q": "Ain Al Thowarah Hot Spring Nakhal",
+  "sources": [
+   "https://en.wikipedia.org/wiki/Al_Thowarah_hot_spring",
+   "https://www.geonames.org/search.html?q=thawwarah&country=OM",
+   "https://en.wikipedia.org/wiki/Nakhal_Fort",
+   "https://www.omanobserver.om/article/1166378/features/culture/the-transformation-of-nakhal-fort-as-a-world-class-attraction"
+  ]
+ },
+ {
+  "id": "rustaq-fort",
+  "ko": "루스타크 요새",
+  "en": "Rustaq Fort",
+  "cat": "fort",
+  "region": "바티나",
+  "lat": 23.39202,
+  "lng": 57.42683,
+  "coordNote": "요새 본체(구글 지도 핀, Wanderlog 장소 페이지의 구글 지도 링크 23.392019, 57.426832). 위키미디어 공용(23.39165, 57.42618)과 약 75m 차이예요.",
+  "desc": "알하자르 산기슭 루스타크 오아시스에 있는 대형 요새로, 이슬람 이전 시기에 기원을 두고 여러 왕조를 거치며 확장됐어요. 이슬람 유산 목록에 오른 오만의 대표 요새 중 하나예요.",
+  "tips": "유산관광부의 대규모 복원 공사가 2027년 11월~연말까지 예정돼 있고(2025년 8월 기사), 구글 지도에도 '임시 휴업'으로 나와요. 외관 사진 위주로 계획하세요. 서쪽 약 1.5km에 유황 온천 아인 알 카스파(수온 최대 약 45°C)가 있어요.",
+  "visitMin": 20,
+  "family": "공사 중이라 외관만 잠깐 보는 정도예요",
+  "q": "Rustaq Fort",
+  "sources": [
+   "https://wanderlog.com/place/details/34787",
+   "https://commons.wikimedia.org/wiki/Category:Rustaq_Fort",
+   "https://www.muscatdaily.com/2025/08/31/rustaq-fort-an-icon-of-omani-history-returns-to-life/",
+   "https://www.omanobserver.om/article/1184092/oman/heritage-restoration-projects-in-al-batinah-south-boost-tourism-appeal",
+   "https://experienceoman.om/destinations/al-batinah-south/ain-al-kasfa"
+  ]
+ },
+ {
+  "id": "al-hazm-castle",
+  "ko": "알 하즘 성",
+  "en": "Al Hazm Castle",
+  "cat": "fort",
+  "region": "바티나",
+  "lat": 23.55072,
+  "lng": 57.47283,
+  "coordNote": "성 본체(구글 지도 핀). 오만 관광청 페이지에 연결된 구글 지도 링크 좌표(23.5507201, 57.4728298)예요.",
+  "desc": "1708년 이맘 술탄 빈 사이프 2세가 와디 루스타크 옆 평지에 지은 성으로, 나무 대들보 없이 돌 아치로 천장을 받친 구조가 독특해요. 비밀 통로와 포르투갈·스페인제 옛 대포가 남아 있어요.",
+  "tips": "오만 관광청 사이트 기준 토~목 07:30–18:00, 금 09:00–18:00 운영이에요. 입장권은 현장 매표소에서 사요. 10월에도 한낮은 더우니 오전에 루스타크와 묶어 둘러보세요.",
+  "visitMin": 60,
+  "family": "비밀 통로와 대포가 있어 아이들이 흥미로워해요",
+  "q": "Al Hazm Castle Rustaq",
+  "sources": [
+   "https://experienceoman.om/destinations/al-batinah-south/al-hazm-castle",
+   "https://www.omanobserver.om/article/1189020/oman/community/when-is-the-best-time-to-explore-omans-forts-castles"
+  ]
+ },
+ {
+  "id": "snake-canyon",
+  "ko": "스네이크 캐니언(와디 바니 아우프)",
+  "en": "Snake Canyon (Snake Gorge), Wadi Bani Awf",
+  "cat": "mountain",
+  "region": "바티나",
+  "lat": 23.21000,
+  "lng": 57.38650,
+  "coordNote": "협곡 구간 중심. 위키피디아(23°12′36″N 57°23′11.4″E)와 Atlas Obscura(23.210563, 57.385615)가 약 100m 안에서 일치해요. 주차·출구(알 자마 마을) 지점은 아니에요.",
+  "desc": "와디 바니 아우프 깊은 곳에 있는 좁고 구불구불한 협곡으로, 물웅덩이를 헤엄치고 바위에서 뛰어내리는 캐니어링 명소예요. 협곡으로 가는 와디 바니 아우프 산길도 경치가 뛰어난 오프로드 코스예요.",
+  "tips": "가파른 비포장 산길이라 4x4가 꼭 필요해요. 협곡 통과는 수영·점프·로프 하강이 필요해 전문 가이드 동행이 권장되고, 비 예보가 있으면 돌발 홍수 위험 때문에 절대 들어가지 마세요.",
+  "visitMin": 120,
+  "family": "협곡 트레킹은 어린아이에게 무리라 가족은 4x4 드라이브와 경치 감상 위주로 추천해요",
+  "q": "Snake Canyon Wadi Bani Awf",
+  "sources": [
+   "https://en.wikipedia.org/wiki/Snake_Gorge",
+   "https://atlasobscura.com/places/snake-canyon",
+   "https://omantripper.com/?p=2190"
+  ]
+ },
+ {
+  "id": "bilad-sayt",
+  "ko": "빌라드 사이트 마을",
+  "en": "Bilad Sayt (Balad Sayt) Village",
+  "cat": "village",
+  "region": "바티나",
+  "lat": 23.19025,
+  "lng": 57.38792,
+  "coordNote": "마을 중심(위키피디아 23°11′24.9″N 57°23′16.5″E). 마을 전경을 보는 길가 전망 지점과 주차 위치는 따로 확인하지 못했어요. 행정구역상 다킬리야(알 함라) 쪽이지만 와디 바니 아우프 루트로 묶어 '바티나'에 넣었어요.",
+  "desc": "알하자르 산맥 깊은 곳, 제벨 샴스 근처 산비탈에 흙·돌집과 계단식 밭이 모여 있는 산골 마을이에요. 마을 전체가 계단식 밭과 어우러진 풍경으로 유명해요.",
+  "tips": "오만 관광청은 4x4 차량과 산악 운전 경험이 필요하다고 안내해요. 와디 바니 아우프(루스타크 쪽) 또는 알 함라 쪽 비포장 고갯길로 들어가요. 주민이 사는 마을이니 조용히 둘러보세요.",
+  "visitMin": 60,
+  "family": "가는 길 자체가 모험이고, 마을에선 조용히 걷기만 하면 돼요",
+  "q": "Bilad Sayt village",
+  "sources": [
+   "https://en.wikipedia.org/wiki/Bilad_Sayt",
+   "https://experienceoman.om/destinations/al-batinah-south/balad-sayt-village"
+  ]
+ },
+ {
+  "id": "wakan-village",
+  "ko": "와칸 마을",
+  "en": "Wakan (Wekan) Village",
+  "cat": "village",
+  "region": "바티나",
+  "lat": 23.14361,
+  "lng": 57.73472,
+  "coordNote": "마을(위키피디아 23°8′37″N 57°44′5″E). GeoNames 'Wakan'(23.14306, 57.73472)과 약 60m 차이예요. 주차는 마을 입구 계단 시작점 근처예요.",
+  "desc": "와디 미스탈 끝, 해발 약 1,500m 산비탈에 자리한 마을로 계단식 과수원과 수로(팔라즈) 사이로 산책로가 이어져요. 위쪽 복원된 망루 전망대에서 제벨 아크다르 산군과 분지가 내려다보여요.",
+  "tips": "마지막 오르막은 아주 가파른 길이라 4x4가 필요해요(2024년 기사 기준). 마을 입구에서 약 700개 계단 산책로를 따라 전망대까지 올라가며, 마을 꼭대기까지는 20분쯤 걸려요. 마을에 카페가 있어요(2025년 기사).",
+  "visitMin": 120,
+  "family": "계단 산책이라 잘 걷는 아이에게 좋고 해안보다 선선해요",
+  "q": "Wakan Village",
+  "sources": [
+   "https://en.wikipedia.org/wiki/Wakan,_Oman",
+   "https://www.geonames.org/search.html?q=wakan&country=OM",
+   "https://www.muscatdaily.com/2024/04/02/wakan-village-to-get-cable-car-new-road/",
+   "https://www.omanobserver.om/article/1175037/oman/wakan-village-attracts-over-27000-visitors",
+   "https://www.roughguides.com/destinations/middle-east/oman/al-batinah-al-dhahirah/inland-barka-rustaq-loop/wadi-mistal-wekan"
+  ]
+ },
+ {
+  "id": "sohar-fort",
+  "ko": "소하르 요새",
+  "en": "Sohar Fort",
+  "cat": "fort",
+  "region": "바티나",
+  "lat": 24.36225,
+  "lng": 56.74957,
+  "coordNote": "요새 본체(구글 지도 핀, Wanderlog 장소 페이지의 구글 지도 링크 24.362251, 56.749566). 다른 출처로 교차 확인은 못 했어요.",
+  "desc": "13세기 말~14세기 초에 지어진 해안 요새로, 1985~1993년 복원 후 박물관으로 공개됐어요. 소하르의 구리 교역과 중국과의 해상 교류 역사를 보여주는 발굴 유물이 전시돼 있어요.",
+  "tips": "운영시간과 휴관일은 2024년 이후 공식 자료를 찾지 못해 현장 확인이 필요해요. 실내 전시 위주라 한낮 더위를 피해 들르기 괜찮아요.",
+  "visitMin": 60,
+  "family": "전시실 위주라 짧고 가볍게 보기 좋아요",
+  "q": "Sohar Fort",
+  "sources": [
+   "https://wanderlog.com/place/details/341966/sohar-fort",
+   "https://timesofoman.com/article/156588-sohar-fort-attracts-more-than-1000-visitors-during-eid-al-fitr-holiday",
+   "https://next.archnet.org/sites/22171",
+   "https://www.omanobserver.om/article/1189020/oman/community/when-is-the-best-time-to-explore-omans-forts-castles"
+  ]
+ },
+ {
+  "id": "al-sawadi-beach",
+  "ko": "알 사와디 해변",
+  "en": "Al Sawadi Beach & Islands",
+  "cat": "sea",
+  "region": "바티나",
+  "lat": 23.78222,
+  "lng": 57.79111,
+  "coordNote": "섬들 맞은편 곶 'Ra’s Suwādī'(GeoNames, 23°46′56″N 57°47′28″E). 공용 해변 주차장 위치는 확인하지 못했어요. 수백 m 오차가 있을 수 있어요.",
+  "desc": "바르카 북쪽의 모래 해변으로, 앞바다에 망루가 늘어선 바위섬들이 떠 있어요. 50m가 넘는 높이의 전망 탑에 오르면 해변과 작은 섬들이 내려다보여요.",
+  "tips": "썰물 때는 모래톱을 걸어 본섬까지 갈 수 있지만 물이 빨리 차오르니 물때를 꼭 확인하세요. 섬까지는 허가받은 보트를 이용하세요. 그늘이 거의 없으니 아침이나 늦은 오후가 좋아요.",
+  "visitMin": 120,
+  "family": "조개 줍기와 물놀이를 하기 좋지만 물때를 꼭 확인해야 해요",
+  "q": "Al Sawadi Beach",
+  "sources": [
+   "https://experienceoman.om/destinations/al-batinah-south/al-sawadi-beach",
+   "https://www.geonames.org/search.html?q=suwadi&country=OM",
+   "https://roughguides.com/oman/al-batinah-al-dhahirah/north-barka-sohar"
+  ]
+ },
+ {
+  "id": "daymaniyat-islands",
+  "ko": "다이마니야트 제도",
+  "en": "Daymaniyat (Ad Dimaniyat) Islands Nature Reserve",
+  "cat": "sea",
+  "region": "바티나",
+  "lat": 23.85611,
+  "lng": 58.07500,
+  "coordNote": "군도 대표 좌표(위키피디아 23°51′22″N 58°04′30″E). 9개 섬이 넓게 흩어져 있어 특정 섬이나 출발 항구를 가리키지는 않아요. 행정구역상 무스카트(시브) 소속이라는 자료도 있어요.",
+  "desc": "바르카·시브 앞바다 약 18km에 있는 9개 섬의 자연보호구역으로, 산호초와 바다거북·바닷새 번식지로 알려져 있어요. 보트를 타고 나가 스노클링이나 다이빙을 해요.",
+  "tips": "5~10월에는 모든 섬 해변에 상륙할 수 없어서 10월에는 보트 위 스노클링만 할 수 있어요(환경청, 2024년 기사). 환경청 전자 허가가 필요하니 허가가 포함된 투어를 예약하세요. 무스카트 알 무즈 마리나 등에서 출발해요.",
+  "visitMin": 300,
+  "family": "수영할 줄 아는 아이라면 구명조끼를 입고 스노클링하기 좋아요",
+  "q": "Daymaniyat Islands Nature Reserve",
+  "sources": [
+   "https://en.wikipedia.org/wiki/Ad_Dimaniyat_Islands",
+   "https://timesofoman.com/article/149743-over-55000-people-visit-picturesque-daymaniyat-islands-nature-reserve",
+   "https://experienceoman.om/destinations/al-batinah-south/daymaniyat-islands-nature-reserve",
+   "https://theabroadguide.com/daymaniyat-islands-visiting-and-snorkeling-in-daymaniyat/"
+  ]
+ },
+ {
+  "id": "al-khandaq-fort",
+  "ko": "알 칸다크 요새",
+  "en": "Al Khandaq Fort",
+  "cat": "fort",
+  "region": "다히라·부라이미",
+  "lat": 24.24259,
+  "lng": 55.77063,
+  "coordNote": "요새 본체(구글 지도 핀, Wanderlog 장소 페이지 24.24259, 55.770625). GeoNames 'Qaşr al Khandaq'(24.24278, 55.77056)와 약 25m 안에서 일치해요.",
+  "desc": "부라이미 오아시스에 있는 19세기 전반의 정사각형 요새로, 주위를 둘러싼 방어용 도랑(칸다크)에서 이름이 왔어요. 네 모서리에 탑이 있고, UAE 알아인과 맞닿은 도시라 두바이에서 가까운 편이에요.",
+  "tips": "UAE에서 가려면 국경 검문소를 통과해야 하니 여권과 비자 서류를 챙기세요. 부라이미 옛 시장과 가까워 함께 둘러보기 좋아요. 운영시간은 현장 확인이 필요해요.",
+  "visitMin": 45,
+  "family": "규모가 아담해서 짧게 둘러보기 좋아요",
+  "q": "Al Khandaq Fort Buraimi",
+  "sources": [
+   "https://wanderlog.com/place/details/1121821/al-khandaq-fort",
+   "https://www.geonames.org/search.html?q=khandaq&country=OM",
+   "https://en.wikipedia.org/wiki/Al-Buraimi",
+   "https://kupi.com/en-ae/explore/oman-sultanate-of/al-buraimi"
+  ]
+ },
+ {
+  "id": "bat-tombs",
+  "ko": "바트 고분군",
+  "en": "Bat Necropolis (Bat, Al-Khutm and Al-Ayn UNESCO site)",
+  "cat": "fort",
+  "region": "다히라·부라이미",
+  "lat": 23.27460,
+  "lng": 56.74773,
+  "coordNote": "벌집무덤 구역(Atlas Obscura 23.274601, 56.747725). 위키피디아 유적 대표 좌표(23.26986, 56.745)와는 약 600m 차이가 나요. 유적이 넓게 흩어져 있고 공식 주차장은 없어요.",
+  "desc": "기원전 3천년기의 벌집 모양 돌무덤 약 100기와 원형 석조 구조물이 남은 유적으로, 1988년 유네스코 세계유산에 등재됐어요. 메마른 언덕 위로 돌무덤이 줄지어 선 풍경이 인상적이에요.",
+  "tips": "공식 입구 없이 울타리 틈으로 들어가는 형태라는 후기가 있고 안내판도 적어요(2023년 업데이트 기준). 그늘이 전혀 없으니 이른 아침이나 늦은 오후에 물을 챙겨 가세요. 이브리에서 차로 약 30분이에요.",
+  "visitMin": 60,
+  "family": "그늘이 없어서 아이와는 짧게 보는 걸 추천해요",
+  "q": "Bat Tombs Oman",
+  "sources": [
+   "https://www.atlasobscura.com/places/beehive-tombs-of-bat",
+   "https://en.wikipedia.org/wiki/Archaeological_Sites_of_Bat,_Al-Khutm_and_Al-Ayn",
+   "https://www.zigzagonearth.com/al-ayn-bat-necropolis-unesco-oman/",
+   "https://www.omanobserver.om/article/1147354/business/tourism/tenders-floated-for-reception-centres-at-key-heritage-sites"
+  ]
+ },
+ {
+  "id": "al-ayn-tombs",
+  "ko": "알 아인 벌집무덤(오만)",
+  "en": "Al-Ayn Beehive Tombs",
+  "cat": "fort",
+  "region": "다히라·부라이미",
+  "lat": 23.21458,
+  "lng": 56.96215,
+  "coordNote": "능선 위 무덤군(Atlas Obscura 23.214576, 56.96215, 2024년 등록). 바트에서 남동쪽 약 23km로 위키피디아 설명(약 22km)과 맞아요. 차는 도로변에 세워요.",
+  "desc": "바트·알쿠틈과 함께 유네스코 세계유산을 이루는 고분군으로, 셋 중 보존 상태가 가장 좋아요. 능선 위에 일렬로 늘어선 벌집 모양 돌무덤 뒤로 거대한 바위산(제벨 미슈트)이 펼쳐져요.",
+  "tips": "도로변에 차를 세우고 마른 와디와 농장 사이 길을 약 10분 걸어 올라가요. 편의시설이 없으니 물과 모자를 챙기세요. 이브리에서 차로 약 50분이에요.",
+  "visitMin": 45,
+  "family": "짧은 오르막 산책이라 아이와도 갈 만해요",
+  "q": "Al Ayn Beehive Tombs Oman",
+  "sources": [
+   "https://www.atlasobscura.com/places/beehive-tombs-of-al-ayn-oman",
+   "https://en.wikipedia.org/wiki/Archaeological_Sites_of_Bat,_Al-Khutm_and_Al-Ayn",
+   "https://www.zigzagonearth.com/al-ayn-bat-necropolis-unesco-oman/"
+  ]
+ },
+ {
+  "id": "ibri-fort",
+  "ko": "이브리 요새·옛 시장",
+  "en": "Ibri Fort (Ibri Castle) & Old Souq",
+  "cat": "fort",
+  "region": "다히라·부라이미",
+  "lat": 23.22556,
+  "lng": 56.51556,
+  "coordNote": "요새 좌표는 검증하지 못했어요. GeoNames의 이브리 시가지 대표점(23°13′32″N 56°30′56″E)이라 수백 m 오차가 있을 수 있으니 지도 앱에서 q로 검색해 위치를 다시 확인하세요.",
+  "desc": "약 500년 전 나반 부족이 짓기 시작한 것으로 전해지는 요새로, 1990년대에 복원돼 1995년부터 공개되고 있어요. 안에 지금도 쓰이는 오래된 모스크와 우물, 마구간이 있고 성벽에서 이브리 구시가가 내려다보여요.",
+  "tips": "운영시간이 일정하지 않다는 정보가 있어 현장 확인이 필요해요. 갈색 안내판을 따라 구시가로 들어가면 요새와 옛 시장을 함께 볼 수 있어요.",
+  "visitMin": 60,
+  "family": "요새와 시장을 짧게 묶어 보기 좋아요",
+  "q": "Ibri Castle",
+  "sources": [
+   "https://omantripper.com/ibri-castle/",
+   "https://www.lonelyplanet.com/points-of-interest/ibri-castle/1352015",
+   "https://castles.nl/ibri-castle",
+   "https://www.geonames.org/search.html?q=ibri&country=OM"
+  ]
+ },
+ {
+  "id": "as-sulaif",
+  "ko": "술라이프 옛 마을",
+  "en": "Harat As Sulaif (As Sulayf) Old Village",
+  "cat": "village",
+  "region": "다히라·부라이미",
+  "lat": 23.20456,
+  "lng": 56.52606,
+  "coordNote": "성곽 마을 중심(문화부 의뢰 기록 사업을 맡은 ArCHIAM 자료 23°12'16.41\"N 56°31'33.83\"E). GeoNames의 'As Sulayf' 마을 점과는 약 900m 차이가 나요.",
+  "desc": "이브리 오아시스 동쪽 끝 바위 절벽 위에 세운 성곽 마을로, 탑과 성벽, 물 분배 수로가 남아 있어요. 버려진 흙집 골목을 걸으며 옛 오아시스 마을 구조를 볼 수 있어요.",
+  "tips": "인적이 드문 곳이라 일행과 함께 가세요. 무너진 벽과 돌길이 많아 운동화가 필요해요. 이브리 요새와 차로 가까워 함께 묶기 좋아요.",
+  "visitMin": 45,
+  "family": "폐허 탐험은 재미있지만 무너진 벽 근처는 주의해야 해요",
+  "q": "Harat As Sulaif Ibri",
+  "sources": [
+   "https://www.archiam.co.uk/documentation-and-heritage-management-plan-harat-as-sulayf-ibri-oasis/",
+   "https://www-lonelyplanet-com-57e2.imagizer.com/oman/ibri/attractions/sulaif-castle/a/poi-sig/1612820/1331785",
+   "https://www.geonames.org/search.html?q=sulayf&country=OM"
+  ]
+ },
+ {
+  "id": "khasab-castle",
+  "ko": "카사브 성",
+  "en": "Khasab Castle (Khasab Fort)",
+  "cat": "fort",
+  "region": "무산담",
+  "lat": 26.19849,
+  "lng": 56.24923,
+  "coordNote": "성 본체. 구글 플러스 코드 '56XX+9MX, Khasab'(Wanderlog·kupi 표기)를 해독한 좌표예요. 위키피디아의 카사브 항 좌표에서 남쪽으로 약 500m라 '항구 근처'라는 설명과 맞아요.",
+  "desc": "17세기 초에 지어지고 포르투갈 점령기에 보강된 해안 요새로, 네 모서리 탑과 가장 오래된 가운데 원형 탑이 특징이에요. 옛 대포와 전통 배가 전시돼 있었어요.",
+  "tips": "2026년 8월 기사 기준 복원·정비 공사로 임시 휴관 중이고, 재개관은 2027년 상반기 예정이에요. 카사브 항 바로 근처라 크루즈 앞뒤로 외관만 잠깐 보세요.",
+  "visitMin": 15,
+  "family": "휴관 중이라 외관 사진만 찍을 수 있어요",
+  "q": "Khasab Castle",
+  "sources": [
+   "https://www.omanobserver.om/article/1194773/oman/khasab-fort-to-reopen-in-the-first-half-of-2027",
+   "https://experienceoman.om/destinations/musandam/khasab-fort",
+   "https://wanderlog.com/explore/85981/khasab",
+   "https://kupi.com/en-ae/explore/oman-sultanate-of/khasab/khasab-castle"
+  ]
+ },
+ {
+  "id": "khasab-dhow-cruise",
+  "ko": "카사브 다우 크루즈(카사브 항)",
+  "en": "Khasab Dhow Cruise (Khasab Port departure)",
+  "cat": "sea",
+  "region": "무산담",
+  "lat": 26.20333,
+  "lng": 56.24944,
+  "coordNote": "카사브 항(위키피디아 'Port of Khasab' 26°12′12″N 56°14′58″E). 업체마다 탑승 부두가 다를 수 있으니 예약 확인서의 집결 장소를 따르세요.",
+  "desc": "카사브 항에서 전통 목선 다우를 타고 피오르드 같은 지형으로 유명한 무산담 협만을 도는 투어예요. 깎아지른 절벽 사이를 지나며 돌고래를 보고, 중간에 수영과 스노클링을 즐겨요.",
+  "tips": "반나절 단체 투어가 가장 흔하고 종일·전세·1박 상품도 있으니 주말엔 미리 예약하세요. 두바이에서는 RAK 쪽 알 다라(UAE)–티바트(오만) 해안 국경으로 들어가며, 주말·연휴엔 붐비니 일찍 출발하세요. 돌고래는 9~4월이 성수기예요(2024년 기사).",
+  "visitMin": 240,
+  "family": "돌고래 구경과 배 위 물놀이로 아이들 만족도가 높아요",
+  "q": "Khasab Port",
+  "sources": [
+   "https://en.wikipedia.org/wiki/Port_of_Khasab",
+   "https://en.wikipedia.org/wiki/Khasab",
+   "https://againstthecompass.com/en/musandam-trip-oman/",
+   "https://www.farawayworlds.com/stories/things-to-know-before-visiting-musandam-oman"
+  ]
+ },
+ {
+  "id": "telegraph-island",
+  "ko": "텔레그래프 섬",
+  "en": "Telegraph Island (Jazirat al Maqlab)",
+  "cat": "sea",
+  "region": "무산담",
+  "lat": 26.19528,
+  "lng": 56.34278,
+  "coordNote": "섬 자체(위키피디아 26°11′43″N 56°20′34″E). 차로 갈 수 없고 카사브 항에서 다우 크루즈로만 가요.",
+  "desc": "코르 아쉬 샴 협만 안의 작은 섬으로, 1864년 영국이 런던–카라치 전신선의 중계소를 세웠던 곳이에요. 혹독한 더위로 몇 년 만에 버려졌고 지금은 건물 터만 남아 있어요.",
+  "tips": "다우 크루즈의 대표 정박지라 따로 예약할 필요는 없어요. 2024년 6월부터 접안 시설과 산책로 등 관광시설 공사가 시작돼, 섬 상륙 여부는 투어 상품별로 확인하세요. 물때에 따라 상륙이 어려울 수 있어요.",
+  "visitMin": 30,
+  "family": "크루즈 중 섬 근처 바다에서 수영하는 시간이 즐거워요",
+  "q": "Telegraph Island Musandam",
+  "sources": [
+   "https://en.wikipedia.org/wiki/Telegraph_Island",
+   "https://gulfconstructiononline.com/ArticleTA/422908/Oman-breaks-ground-on-historical-Telegraph-Island-project"
+  ]
+ },
+ {
+  "id": "jebel-harim",
+  "ko": "제벨 하림",
+  "en": "Jebel Harim (Jabal Al Harim)",
+  "cat": "mountain",
+  "region": "무산담",
+  "lat": 25.97639,
+  "lng": 56.23222,
+  "coordNote": "정상 좌표(위키피디아 25°58′35″N 56°13′56″E, GeoNames 'Shaam Peak'와 일치). 정상은 군사시설이라 일반인은 약 400m 앞에서 멈춰요. 실제 전망 정차 지점은 핀과 수백 m 떨어질 수 있어요.",
+  "desc": "해발 2,087m로 무산담 반도에서 가장 높은 산이에요. 정상 부근까지 구불구불한 산길이 이어지며, 협곡 속 외딴 농가와 계단식 밭이 내려다보여요.",
+  "tips": "구불구불한 비포장 산길이라 카사브에서 출발하는 4x4 산악 사파리 투어로 많이 가요. 정상 약 400m 앞에서 일반인 통행이 막혀요. 멀미가 잦은 아이는 멀미약을 챙기세요.",
+  "visitMin": 180,
+  "family": "차 안에 있는 시간이 길어 멀미에 주의해야 해요",
+  "q": "Jebel Harim Musandam",
+  "sources": [
+   "https://en.wikipedia.org/wiki/Jabal_Al_Harim",
+   "https://www.geonames.org/search.html?q=harim&country=OM",
+   "https://www-lonelyplanet-com-6c06.imagizer.com/points-of-interest/jebel-harim-pass/1613054"
+  ]
+ },
+ {
+  "id": "khor-najd",
+  "ko": "코르 나즈드 전망대",
+  "en": "Khor Najd Viewpoint & Beach",
+  "cat": "sea",
+  "region": "무산담",
+  "lat": 26.10694,
+  "lng": 56.34194,
+  "coordNote": "GeoNames의 만(Khawr an Najd) 대표 좌표예요. 전망대(‘I Love Oman’ 표지판)나 해변 주차 지점이 아니라서 최대 1km 정도 오차가 있을 수 있어요.",
+  "desc": "카사브에서 약 30km 떨어진 협만으로, 산 위 전망대에서 바다로 깊이 파고든 만과 작은 해변이 한눈에 보여요. 전망대에서 비포장길로 해변까지 내려가 쉬거나 캠핑할 수 있어요.",
+  "tips": "마지막 약 6km는 급경사와 헤어핀 커브가 있는 비포장이라 4x4를 권해요. 오후 4시가 지나면 산그늘이 지니 사진은 그 전에 찍으세요. 물이 깊고 바위가 많아 수영할 땐 조심하세요.",
+  "visitMin": 90,
+  "family": "전망은 훌륭하지만 물이 깊어 아이 물놀이는 주의해야 해요",
+  "q": "Khor Najd viewpoint",
+  "sources": [
+   "https://www.geonames.org/search.html?q=najd&country=OM",
+   "https://www.loc.wiki/car-trails/oman-khasab-to-khor-najd-musandam-offroading-102632720",
+   "https://www.loc.wiki/hiking-trails/oman-khor-al-najd-khasab-musandam-102632681",
+   "https://againstthecompass.com/en/musandam-trip-oman/"
+  ]
+ }
+]

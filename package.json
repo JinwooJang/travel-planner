@@ -1,0 +1,21 @@
+{
+  "name": "oman-roadtrip-planner-tools",
+  "private": true,
+  "type": "module",
+  "description": "Data build and browser tests for the Oman road-trip planner",
+  "scripts": {
+    "data": "node tools/build.mjs && node tools/build_g.mjs",
+    "pois": "python3 tools/build_pois.py",
+    "build": "python3 tools/assemble.py",
+    "test": "node tests/test_plan.mjs && node tests/test_share.mjs && node tests/test_pad.mjs"
+  },
+  "dependencies": {
+    "d3-geo": "^3.1.1",
+    "topojson-client": "^3.1.0",
+    "topojson-simplify": "^3.0.3",
+    "world-atlas": "^2.0.2"
+  },
+  "devDependencies": {
+    "playwright": "^1.47.2"
+  }
+}

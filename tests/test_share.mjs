@@ -1,0 +1,28 @@
+// Export (AI text, plan file) and import (file input, drag & drop, bad file).
+import fs from "node:fs";
+import { start, check, nodes, openPlan } from "./_setup.mjs";
+const { page: p, finish } = await start();
+await openPlan(p, "차로만");
+const n0 = (await nodes(p)).length;
+check(n0 > 20, "seeded built-in course is available as a plan");
+await p.click("#shareBox summary");
+const [d1] = await Promise.all([p.waitForEvent("download"), p.click("[data-exptxt]")]);
+const txt = fs.readFileSync(await d1.path(), "utf8");
+check(txt.startsWith("# 오만 로드트립 일정") && txt.includes("## 날짜별 요약") && txt.includes("좌표:"), "AI text export has summary and details");
+const [d2] = await Promise.all([p.waitForEvent("download"), p.click("[data-expjson]")]);
+const file = await d2.path(), J = JSON.parse(fs.readFileSync(file, "utf8"));
+check(J.format === "oman-roadtrip-plan" && J.plans.length === 1 && J.plans[0].pts.length === n0, "plan file holds the plan");
+check(Object.keys(J.routes).length > 0, "plan file carries computed routes");
+check(!JSON.stringify(J).includes("AIza"), "plan file has no API key");
+await p.evaluate(() => { localStorage.clear(); localStorage.setItem("omanGmaps.key", "AIzaSyTESTKEY000000000000000000000000"); });
+await p.reload(); await p.waitForTimeout(1200);
+await p.click("#shareBox summary");
+await p.setInputFiles("#importFile", file); await p.waitForTimeout(600);
+check((await nodes(p)).length === n0 && (await p.$$(".pill.est")).length === 0, "import restores the plan with its routes");
+const opts0 = (await p.$$("#planSel option")).length;
+await p.evaluate(async t => { const dt = new DataTransfer(); dt.items.add(new File([t], "plan.json", { type: "application/json" })); window.dispatchEvent(new DragEvent("drop", { dataTransfer: dt, bubbles: true, cancelable: true })); }, fs.readFileSync(file, "utf8"));
+await p.waitForTimeout(600);
+check((await p.$$("#planSel option")).length === opts0 + 1, "drag & drop import adds one more plan");
+await p.setInputFiles("#importFile", { name: "x.json", mimeType: "application/json", buffer: Buffer.from('{"a":1}') }); await p.waitForTimeout(300);
+check((await p.textContent(".sh-msg")).includes("아니에요"), "foreign file is rejected");
+await finish();

@@ -1,0 +1,1958 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>오만 로드트립 플래너</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap">
+<style>
+/* Layout: Google satellite map fills the screen, course/day rail on top, schedule sheet beside it (below on phones). */
+:root {
+  --halo: #fbf9f4; --ink: #1d2830; --muted: #5b676e;
+  --paper: #f6f5f1; --panel: #ffffff; --rule: #e2ded5; --hover: #f2f0ea;
+  --north: #1b5c97; --desert: #ad540d; --dhofar: #1d7748; --on-pin: #ffffff; --accent: #1b5c97;
+  --warn: #9a5b00; --warn-bg: #fdf1dc; --bad: #b42318; --bad-bg: #fde7e4;
+  --m-north: #4fa8ff; --m-desert: #ff9a3c; --m-dhofar: #3fe08a; --m-plan: #ffd400;
+  --f-display: "Black Han Sans", "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --f-body: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --halo: #121a1f; --ink: #e7e5e0; --muted: #9ca5aa;
+    --paper: #101518; --panel: #151c21; --rule: #273038; --hover: #1c252b;
+    --north: #7ab2ec; --desert: #e8a660; --dhofar: #6fcc9a; --on-pin: #0f1418; --accent: #7ab2ec;
+    --warn: #f0b45c; --warn-bg: #33270f; --bad: #ff9c8f; --bad-bg: #3a1a17;
+    color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body { background: var(--paper); color: var(--ink); font-family: var(--f-body); font-size: 14px; line-height: 1.55; display: flex; flex-direction: column; }
+button, input, select { font: inherit; color: inherit; }
+.g-north { --c: var(--north); --m: var(--m-north); } .g-desert { --c: var(--desert); --m: var(--m-desert); }
+.g-dhofar { --c: var(--dhofar); --m: var(--m-dhofar); } .g-plan { --c: var(--ink); --m: var(--m-plan); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.top { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; padding: 10px 16px 6px; }
+.title { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 14px; min-width: 0; flex: 1 1 320px; }
+.top h1 { font-family: var(--f-display); font-weight: 400; font-size: 24px; line-height: 1.15; margin: 0; }
+.top .sub { margin: 0; color: var(--muted); font-size: 13px; }
+.when { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.when label { font-size: 12px; font-weight: 600; color: var(--muted); }
+.when input { border: 1px solid var(--rule); background: var(--panel); border-radius: 8px; padding: 5px 8px; font-size: 13px; }
+.wlab { font-size: 12px; font-weight: 600; color: var(--muted); }
+.whenui { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.dsel, .t24 { display: inline-flex; align-items: center; gap: 2px; border: 1px solid var(--rule); background: var(--panel); border-radius: 8px; padding: 2px 4px; }
+.dsel select, .t24 select { border: 0; background: transparent; font-size: 13px; padding: 2px 1px; color: var(--ink); cursor: pointer; }
+.t24 select { font-family: var(--f-mono); font-weight: 600; }
+.dsel .wd { font-size: 12.5px; color: var(--muted); padding: 0 4px 0 2px; }
+.t24 .colon { font-family: var(--f-mono); font-weight: 600; }
+.stay .t24, .startctl .t24 { padding: 0 3px; }
+.stay .t24 select { font-size: 12.5px; }
+.keybtn { border: 1px solid var(--rule); background: var(--panel); border-radius: 8px; padding: 5px 10px; font-size: 12.5px; font-weight: 600; cursor: pointer; }
+.days { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding: 4px 16px 10px; border-bottom: 1px solid var(--rule); }
+.days::-webkit-scrollbar { display: none; }
+.chip { flex: none; display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--rule); background: var(--panel); color: var(--ink); border-radius: 999px; padding: 5px 12px; font: 600 13px/1.3 var(--f-body); cursor: pointer; }
+.chip .sw { width: 8px; height: 8px; border-radius: 50%; background: var(--c); }
+.chip:hover { background: var(--hover); }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.chip.view.cur { border-color: var(--ink); }
+.chip.plan { border-style: dashed; border-color: var(--ink); }
+.chip.plan svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.sep { flex: none; width: 1px; align-self: stretch; margin: 3px 0; background: var(--rule); }
+
+main.app { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) 8px var(--sheet-w, 430px); }
+.split { cursor: col-resize; background: var(--rule); position: relative; touch-action: none; }
+.split::after { content: ""; position: absolute; left: 2px; right: 2px; top: 50%; height: 44px; margin-top: -22px; border-radius: 3px;
+  background: repeating-linear-gradient(to bottom, var(--muted) 0 2px, transparent 2px 6px); opacity: .55; }
+.split:hover, .split.drag, .split:focus-visible { background: var(--accent); }
+.split.drag::after, .split:hover::after { opacity: .9; }
+body.resizing, body.resizing * { cursor: col-resize !important; user-select: none !important; }
+body.resizing #map { pointer-events: none; }
+.mapbox { position: relative; min-height: 0; background: #20303a; }
+#map { position: absolute; inset: 0; }
+.sheet { min-width: 0; overflow-y: auto; background: var(--panel); padding: 18px 20px 28px; }
+
+/* markers on the satellite map (DOM content of Advanced Markers) */
+.gm { position: relative; width: 0; height: 0; cursor: pointer; font-family: var(--f-body); }
+.gm .dot { position: absolute; left: -12px; top: -12px; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--m); color: #10181d; font: 600 11.5px var(--f-mono); border: 2px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,.5); }
+.gm.k-via .dot { left: -7px; top: -7px; width: 14px; height: 14px; background: #fff; border: 3px solid var(--m); }
+.gm.k-border .dot { left: -8px; top: -8px; width: 16px; height: 16px; border-radius: 3px; transform: rotate(45deg); background: #10181d; }
+.gm.k-air .dot { background: #10181d; color: #fff; font-size: 13px; }
+.gm.opt .dot { background: rgba(255,255,255,.85); color: #10181d; border-style: dashed; }
+/* labels sit on a dark pill so they stay readable on any satellite background */
+.gm .lab { position: absolute; left: 16px; top: -12px; white-space: nowrap; display: none; color: #fff; font-weight: 600; font-size: 13px; line-height: 1.35;
+  background: rgba(10, 16, 20, var(--lab-a, .86)); padding: 2px 7px 3px; border-radius: 7px; box-shadow: 0 1px 4px rgba(0, 0, 0, calc(.55 * var(--lab-a, .86)));
+  text-shadow: 0 0 3px rgba(0,0,0,.95), 0 1px 2px rgba(0,0,0,.85); pointer-events: none; }
+.gm .lab .tm { font-family: var(--f-mono); color: #ffd84d; margin-left: 6px; }
+.gm .lab .tm.warn { color: #ffb84d; } .gm .lab .tm.bad { color: #ff8a80; }
+.gm.named .lab, #map.zin .gm:not(.dim) .lab, .gm:hover .lab { display: block; }
+.gm.dim { opacity: .35; }
+.gm.off { display: none; }
+.gm.chip .dot { left: -6px; top: -6px; width: 12px; height: 12px; background: #fff; border: 3px solid #10181d; }
+.gm.chip .lab { display: block; left: 12px; top: -10px; }
+.gm.pp .dot { background: var(--m-plan); color: #10181d; }
+.gm.pp.first .dot { background: #fff; }
+.gm.pp .lab { display: block; }
+#map.planning .gm:not(.pp):not(.chip):not(.legchip):not(.tick):not(.poi) { opacity: .7; }
+.gm.poi { opacity: var(--poi-a, 1); transition: opacity .15s; }
+.gm.poi:hover { opacity: 1; }
+.gm.legchip { z-index: 1; }
+.planbar { display: grid; gap: 6px; margin: 4px 0 12px; padding: 10px; border: 1px solid var(--rule); border-radius: 12px; background: var(--paper); }
+.planbar .pl-lab { font-size: 12px; color: var(--muted); }
+.planbar select { width: 100%; font: inherit; font-size: 14px; padding: 7px 8px; border-radius: 8px; border: 1px solid var(--rule); background: var(--panel); color: var(--ink); }
+.planbar .pl-btns { display: flex; flex-wrap: wrap; gap: 6px; }
+.planbar .mini.danger { background: var(--bad); color: #fff; border-color: var(--bad); }
+.pl-name { display: grid; gap: 4px; margin-top: 2px; }
+.pl-name label { font-size: 12px; color: var(--muted); }
+.pl-name div { display: flex; gap: 6px; }
+.pl-name input { flex: 1; min-width: 0; font: inherit; font-size: 14px; padding: 6px 8px; border-radius: 8px; border: 1px solid var(--accent); background: var(--panel); color: var(--ink); }
+.mapctl { position: absolute; left: 10px; top: 60px; z-index: 3; display: flex; gap: 6px; align-items: flex-start; font-size: 13px; }
+.vis, .poictl { position: relative; }
+.poi-btns { display: flex; }
+.poi-btns .poi-on { border-radius: 8px 0 0 8px; }
+.poi-btns .poi-more { border-radius: 0 8px 8px 0; border-left: 0; padding: 6px 8px; }
+.vis-btn.poi-on[aria-pressed="true"] { background: #0f766e; color: #fff; border-color: #0f766e; }
+#poiCount { font: 600 11px var(--f-mono); opacity: .8; margin-left: 2px; }
+.mapctl .vis-pop { position: absolute; left: 0; top: 100%; }
+.poi-pop { width: 250px; }
+.poi-pop .pc { display: flex; align-items: center; gap: 8px; font-weight: 600; cursor: pointer; }
+.poi-pop .pc input { margin: 0; accent-color: #0f766e; }
+.poi-pop .pc .ic { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; background: #fff; box-shadow: inset 0 0 0 2px var(--pc); font-size: 12px; }
+.poi-pop .pc small { margin-left: auto; color: var(--muted); font: 600 11px var(--f-mono); }
+.poi-pop .row2 { display: flex; gap: 6px; }
+.poi-pop .note { font-size: 11.5px; color: var(--muted); margin: 0; line-height: 1.45; }
+/* attraction pins */
+.gm.poi .pdot { position: absolute; left: -12px; top: -12px; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; font-size: 13px; line-height: 1;
+  background: #fff; box-shadow: inset 0 0 0 2.5px var(--pc), 0 1px 4px rgba(0,0,0,.55); }
+.gm.poi:hover .pdot { transform: scale(1.15); }
+.gm.poi.inplan .pdot { box-shadow: inset 0 0 0 2.5px var(--pc), 0 0 0 3px #ffd84d, 0 1px 4px rgba(0,0,0,.55); }
+.gm.poi .lab { left: 15px; font-size: 12.5px; }
+#map:not(.zin2) .gm.poi:not(:hover) .lab { display: none; }
+/* right-click menu on the map */
+.ctxmenu { position: absolute; z-index: 20; min-width: 240px; max-width: 320px; display: grid; gap: 2px; padding: 6px; background: var(--panel); color: var(--ink);
+  border: 1px solid var(--rule); border-radius: 12px; box-shadow: 0 6px 24px rgba(0,0,0,.35); font-size: 13px; }
+.ctxmenu .cx-h { padding: 4px 8px 6px; font-weight: 700; border-bottom: 1px solid var(--rule); margin-bottom: 2px; }
+.ctxmenu .cx-h small { display: block; font: 500 11px var(--f-mono); color: var(--muted); }
+.ctxmenu .cx-i { display: block; width: 100%; text-align: left; background: none; border: 0; border-radius: 8px; padding: 7px 9px; font: inherit; font-weight: 600; color: var(--ink); cursor: pointer; text-decoration: none; line-height: 1.35; }
+.ctxmenu .cx-i small { display: block; font-weight: 500; font-size: 11.5px; color: var(--muted); }
+.ctxmenu .cx-i:hover, .ctxmenu .cx-i:focus-visible { background: var(--hover); outline: none; }
+.ctxmenu .cx-i.primary { background: #0f766e; color: #fff; }
+.ctxmenu .cx-i.primary small { color: rgba(255,255,255,.85); }
+.ctxmenu .cx-i.primary:hover { background: #0d635c; }
+.ctxmenu .cx-i.danger { color: var(--bad); }
+.ctxmenu .cx-i.cx-cancel, .ctxmenu a.cx-i { font-weight: 500; color: var(--muted); }
+.ctxmenu .cx-sep { height: 1px; background: var(--rule); margin: 3px 4px; }
+.maphint { position: absolute; z-index: 19; pointer-events: none; transform: translate(12px, -50%); white-space: nowrap; background: rgba(10,16,20,.9); color: #fff;
+  font-size: 12.5px; font-weight: 600; padding: 5px 9px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,.4); transition: opacity .3s; }
+/* attraction card */
+.iw.poi-iw { max-width: 300px; }
+.poi-iw .pchip { display: inline-flex; align-items: center; gap: 5px; font: 600 11.5px var(--f-body); color: #1d2830; background: #f2f0ea; border-radius: 999px; padding: 3px 9px 3px 4px; margin-bottom: 6px; }
+.poi-iw .pchip i { font-style: normal; width: 18px; height: 18px; border-radius: 50%; display: grid; place-items: center; background: #fff; box-shadow: inset 0 0 0 2px var(--pc); font-size: 10px; }
+.poi-iw .tip { background: #f7f5ef; border-radius: 8px; padding: 6px 8px; font-size: 12.5px; }
+.poi-iw .meta { font-size: 12px; color: #4a565d; margin: 0 0 8px; }
+.poi-iw .approx { font-size: 12px; color: #9a5b00; }
+.poi-iw .planbox { border-top: 1px solid #e2ded5; padding-top: 8px; margin-top: 4px; display: grid; gap: 6px; }
+.poi-iw .planbox b.pn { font-size: 12px; color: #4a565d; font-weight: 600; }
+.poi-iw .planbox button { text-align: left; padding: 6px 9px; line-height: 1.35; }
+.poi-iw .planbox button.primary { background: #0f766e; border-color: #0f766e; color: #fff; }
+.poi-iw .planbox button small { display: block; font-weight: 500; opacity: .85; font-size: 11.5px; }
+.poi-iw .srcs { font-size: 11px; color: #6b767c; margin-top: 6px; }
+.poi-iw .srcs a { font-size: 11px; font-weight: 500; }
+/* export / import */
+.share { border: 1px solid var(--rule); border-radius: 12px; margin: -4px 0 14px; background: var(--panel); }
+.share > summary { cursor: pointer; padding: 9px 12px; font-weight: 600; font-size: 13.5px; list-style: none; display: flex; align-items: center; gap: 6px; }
+.share > summary::-webkit-details-marker { display: none; }
+.share > summary::before { content: "▸"; font-size: 11px; color: var(--muted); }
+.share[open] > summary::before { content: "▾"; }
+.share .sh-body { padding: 0 12px 12px; display: grid; gap: 10px; }
+.share .sh-group { display: grid; gap: 6px; }
+.share .sh-group > b { font-size: 12px; color: var(--muted); font-weight: 600; }
+.share .sh-group > div { display: flex; flex-wrap: wrap; gap: 6px; }
+.share .sh-msg { font-size: 12.5px; margin: 0; color: var(--ink); background: var(--hover); border-radius: 8px; padding: 6px 8px; }
+.share .sh-msg.err { color: var(--bad); background: var(--bad-bg); }
+body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"; position: fixed; inset: 12px; border: 3px dashed #0f766e; border-radius: 16px; background: rgba(15,118,110,.12);
+  display: grid; place-items: center; font: 600 20px var(--f-body); color: #0f766e; z-index: 50; pointer-events: none; }
+.vis-btn { background: var(--panel); color: var(--ink); border: 1px solid var(--rule); border-radius: 8px; padding: 6px 10px; font: inherit; font-weight: 600; cursor: pointer; box-shadow: 0 1px 4px rgba(0,0,0,.3); }
+.vis-btn[aria-expanded="true"] { background: var(--ink); color: var(--paper); }
+.vis-pop { margin-top: 6px; width: 230px; display: grid; gap: 10px; padding: 12px; background: var(--panel); color: var(--ink); border: 1px solid var(--rule); border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,.3); }
+.vis-pop[hidden] { display: none; }
+.vis-pop label { display: grid; grid-template-columns: 1fr auto; gap: 4px 8px; align-items: center; font-weight: 600; }
+.vis-pop output { font: 600 12px var(--f-mono); color: var(--muted); }
+.vis-pop input[type="range"] { grid-column: 1 / -1; width: 100%; margin: 0; accent-color: var(--accent); }
+.vis-pop .mini { justify-self: start; }
+.poitoggle { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); margin: 10px 0 2px; cursor: pointer; }
+.gm.legchip span { position: absolute; transform: translate(-50%, -50%); white-space: nowrap; background: var(--lc); color: #0b1114; font: 700 11px/1 var(--f-mono);
+  padding: 3px 6px 2px; border-radius: 9px; border: 2px solid #0b1114; box-shadow: 0 1px 3px rgba(0,0,0,.5); }
+.gm.legchip.dim { opacity: .3; }
+
+.pbar { position: absolute; left: 12px; bottom: 28px; right: 64px; max-width: 480px; background: var(--panel); border: 1px solid var(--rule); border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,.25);
+  padding: 8px 10px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font-size: 13px; z-index: 2; }
+.pbar b { font-variant-numeric: tabular-nums; }
+.pbar .hint { color: var(--muted); flex: 1 1 200px; min-width: 0; }
+.pbar button, .mini { border: 1px solid var(--rule); background: var(--panel); border-radius: 8px; padding: 4px 10px; font-weight: 600; font-size: 12.5px; cursor: pointer; color: var(--ink); }
+.pbar button:hover, .mini:hover { background: var(--hover); }
+
+/* key panel */
+.keypanel { position: fixed; inset: 0; background: rgba(10,15,18,.55); display: grid; place-items: center; z-index: 50; padding: 16px; }
+.keycard { background: var(--panel); color: var(--ink); border-radius: 14px; max-width: 560px; width: 100%; padding: 22px 22px 18px; box-shadow: 0 10px 40px rgba(0,0,0,.35); max-height: calc(100vh - 32px); overflow-y: auto; }
+.keycard h2 { font-family: var(--f-display); font-weight: 400; font-size: 24px; margin: 0 0 8px; }
+.keycard ol { padding-left: 20px; margin: 8px 0 14px; display: grid; gap: 6px; }
+.keycard .err { background: var(--bad-bg); color: var(--bad); border-radius: 10px; padding: 8px 12px; margin: 0 0 12px; font-size: 13px; }
+.keyrow { display: flex; gap: 8px; flex-wrap: wrap; }
+.keyrow input { flex: 1 1 260px; min-width: 0; border: 1px solid var(--rule); border-radius: 8px; padding: 8px 10px; font: 500 13px var(--f-mono); background: var(--paper); }
+.keyrow button { border: 0; background: var(--ink); color: var(--paper); border-radius: 8px; padding: 8px 16px; font-weight: 600; cursor: pointer; }
+.keycard .fine { color: var(--muted); font-size: 12.5px; margin: 10px 0 0; }
+.keycard a, .lnk { color: var(--accent); font-weight: 600; text-decoration: none; }
+.keycard a:hover, .lnk:hover { text-decoration: underline; }
+.lnk { font-size: 12.5px; }
+
+/* info window */
+.iw { font-family: var(--f-body); color: #1d2830; max-width: 260px; font-size: 13px; line-height: 1.5; }
+.iw h3 { margin: 0 0 2px; font-size: 15px; }
+.iw .en { color: #5b676e; font-size: 12px; margin-bottom: 6px; }
+.iw p { margin: 0 0 8px; }
+.iw .tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
+.iw .tag { font: 600 11px/1 var(--f-body); padding: 4px 7px; border-radius: 999px; background: #f2f0ea; border: 1px solid #e2ded5; cursor: pointer; color: #1d2830; }
+.iw .acts { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.iw button { border: 1px solid #e2ded5; background: #fff; border-radius: 8px; padding: 4px 10px; font-weight: 600; font-size: 12.5px; cursor: pointer; color: #1d2830; }
+.iw a { color: #1b5c97; font-weight: 600; font-size: 12.5px; text-decoration: none; }
+
+/* sheet */
+.eyebrow { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-size: 12px; font-weight: 600; color: var(--muted); margin: 0; }
+.dnum { font-family: var(--f-display); font-weight: 400; font-size: 16px; color: var(--c); }
+.sheet h2 { font-family: var(--f-display); font-weight: 400; font-size: 26px; line-height: 1.2; margin: 4px 0 10px; text-wrap: balance; }
+.facts { display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 0 0 12px; }
+.facts dt { font-size: 12px; color: var(--muted); }
+.facts dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
+.tip { margin: 0 0 12px; padding: 10px 12px; background: var(--hover); border-radius: 10px; font-size: 13.5px; }
+.alt { margin: -4px 0 14px; font-size: 13px; color: var(--muted); }
+.src { margin: 0 0 12px; font-size: 12.5px; color: var(--muted); }
+.src.err { color: var(--bad); }
+.startctl { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 0 0 12px; font-size: 13px; }
+.startctl label { font-weight: 600; }
+.startctl input { border: 1px solid var(--rule); background: var(--panel); border-radius: 8px; padding: 5px 8px; font: 600 14px var(--f-mono); }
+.startctl .out { color: var(--muted); font-variant-numeric: tabular-nums; }
+.padctl { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin: -4px 0 14px; padding: 8px 10px; border: 1px solid var(--rule); border-radius: 10px; font-size: 13px; }
+.padctl label { font-weight: 600; }
+.padctl select { font: 600 13px var(--f-mono); border: 1px solid var(--rule); border-radius: 8px; padding: 4px 6px; background: var(--panel); color: var(--ink); }
+.padctl .out { color: var(--muted); font-size: 12px; }
+.padctl .mini { padding: 3px 8px; }
+.padsel { font: 600 11.5px var(--f-mono); border: 1px solid var(--rule); border-radius: 6px; padding: 1px 2px; background: var(--panel); color: var(--muted); vertical-align: 1px; }
+.padsel.own { color: #0f766e; border-color: #0f766e; background: color-mix(in srgb, #0f766e 8%, var(--panel)); }
+.padnote { color: var(--muted); font-size: 11.5px; }
+.alert { margin: 0 0 12px; padding: 8px 12px; border-radius: 10px; font-size: 13px; background: var(--warn-bg); color: var(--warn); }
+.navs { display: grid; gap: 8px; margin-bottom: 18px; }
+.navbtn { display: flex; align-items: center; justify-content: space-between; gap: 10px; background: var(--accent); color: var(--on-pin); text-decoration: none; padding: 10px 14px; border-radius: 10px; font-weight: 600; font-size: 14px; }
+.navbtn small { display: block; font-weight: 400; font-size: 12px; opacity: .85; }
+.navbtn svg { flex: none; width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.flyrow { display: flex; align-items: center; gap: 10px; padding: 2px 4px; color: var(--muted); font-size: 13px; }
+.sec { font-size: 12px; font-weight: 600; color: var(--muted); margin: 0 0 6px; }
+.tl { list-style: none; margin: 0 0 18px; padding: 0; display: grid; }
+.tl > li { display: grid; grid-template-columns: 62px 26px minmax(0, 1fr); gap: 0 10px; align-items: start; }
+.tl .t { text-align: right; font: 600 14px/1.3 var(--f-mono); font-variant-numeric: tabular-nums; padding-top: 9px; }
+.tl .t small { display: block; font-size: 11.5px; font-weight: 500; color: var(--muted); }
+.tl .rail { position: relative; align-self: stretch; display: flex; justify-content: center; }
+.tl .rail::before { content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; margin-left: -1px; background: var(--rule); }
+.tl > li:first-child .rail::before { top: 14px; }
+.tl > li:last-child .rail::before { bottom: calc(100% - 14px); }
+.tl .rail .badge { position: relative; margin-top: 7px; }
+.tl .body { padding: 7px 6px 9px; border-radius: 10px; min-width: 0; }
+.tl .stop .body { cursor: pointer; }
+.tl .stop .body:hover { background: var(--hover); }
+.tl b { font-weight: 600; }
+.tl .en { color: var(--muted); font-size: 12px; }
+.tl p { margin: 2px 0 4px; font-size: 13px; }
+.tl .leg .t { padding-top: 0; }
+.tl .leg .body { padding: 2px 6px; color: var(--muted); font-size: 12.5px; font-variant-numeric: tabular-nums; }
+.tl .leg[data-leg] .rail::before { width: 6px; margin-left: -3px; background: var(--lc); border-radius: 3px; box-shadow: 0 0 0 1px rgba(0,0,0,.25); }
+.tl .leg.fly .rail::before { width: 0; margin-left: -1px; background: none; border-left: 2px dashed var(--muted); }
+.tl .leg[data-leg] { cursor: default; }
+.tl .leg.hl .body, .dayrow.hl { background: var(--hover); }
+.tl .leg.hl .rail::before { width: 10px; margin-left: -5px; }
+.tl .leg.flash .body { animation: legflash 1.2s ease-out; }
+@keyframes legflash { 0% { background: color-mix(in srgb, var(--lc) 45%, transparent); } 100% { background: transparent; } }
+.tl .leg .lt { color: var(--ink); font-weight: 600; font-family: var(--f-mono); font-size: 12px; }
+.lchip { display: inline-block; background: var(--lc); color: #0b1114; font: 700 11px/1 var(--f-mono); padding: 3px 6px 2px; border-radius: 9px; margin-right: 6px; vertical-align: 1px; box-shadow: 0 0 0 1px rgba(0,0,0,.2); }
+.pill { display: inline-block; margin: 2px 6px 2px 0; padding: 1px 8px; border-radius: 999px; font-size: 12px; font-weight: 600; }
+.pill.warn { background: var(--warn-bg); color: var(--warn); }
+.pill.bad { background: var(--bad-bg); color: var(--bad); }
+.pill.est { background: var(--hover); color: var(--muted); }
+.badge { width: 24px; height: 24px; display: grid; place-items: center; flex: none; border-radius: 50%; background: var(--c); color: var(--on-pin); font: 600 11.5px var(--f-mono); }
+.badge.via { background: var(--panel); border: 3px solid var(--c); width: 16px; height: 16px; }
+.badge.opt { background: var(--panel); color: var(--c); border: 2px dashed var(--c); font-size: 14px; }
+.badge.border { background: var(--ink); border-radius: 3px; transform: rotate(45deg) scale(.72); }
+.badge.city, .badge.start { background: var(--panel); border: 2px solid var(--ink); border-radius: 5px; width: 18px; height: 18px; }
+.badge.air { background: var(--ink); color: var(--paper); }
+.badge.plan { background: var(--ink); color: var(--paper); }
+.badge.plan.first { background: var(--accent); color: var(--on-pin); }
+.daylist { list-style: none; margin: 0 0 16px; padding: 0; display: grid; gap: 2px; }
+.dayrow { width: 100%; display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 10px; align-items: start; text-align: left; padding: 9px 8px; border: 0; border-radius: 10px; background: none; color: var(--ink); cursor: pointer; }
+.dayrow:hover { background: var(--hover); }
+.dayrow .badge { border-radius: 8px; font-family: var(--f-display); font-weight: 400; font-size: 14px; width: 26px; height: 26px; }
+.dayrow b { display: block; font-weight: 600; }
+.dayrow small { display: block; color: var(--muted); font-size: 12.5px; font-variant-numeric: tabular-nums; }
+.dayrow .when2 { color: var(--ink); font-weight: 500; }
+.note { border-top: 1px solid var(--rule); padding-top: 12px; color: var(--muted); font-size: 12.5px; display: grid; gap: 6px; }
+.note p { margin: 0; }
+.pager { display: flex; justify-content: space-between; gap: 8px; border-top: 1px solid var(--rule); padding-top: 12px; }
+.pager button { border: 1px solid var(--rule); background: var(--panel); color: var(--ink); border-radius: 10px; padding: 8px 12px; font: 600 13px var(--f-body); cursor: pointer; }
+.pager button[hidden] { display: none; }
+.pctl { display: flex; flex-wrap: wrap; gap: 8px 10px; align-items: center; margin: 4px 0 2px; font-size: 12.5px; color: var(--muted); }
+.pctl select, .pctl input[type="time"] { border: 1px solid var(--rule); background: var(--panel); border-radius: 7px; padding: 2px 6px; font-size: 12.5px; color: var(--ink); }
+.pctl label { display: inline-flex; align-items: center; gap: 4px; cursor: pointer; }
+.pctl .ic { border: 1px solid var(--rule); background: var(--panel); border-radius: 7px; width: 26px; height: 24px; padding: 0; cursor: pointer; color: var(--ink); line-height: 1; }
+.pctl .ic:disabled { opacity: .35; cursor: default; }
+.btnrow { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 14px; }
+.empty { border: 1px dashed var(--rule); border-radius: 12px; padding: 14px; color: var(--muted); font-size: 13.5px; margin-bottom: 14px; }
+.empty b { color: var(--ink); }
+.nightrow .body { background: var(--hover); border-radius: 8px; color: var(--ink); font-weight: 600; font-size: 12.5px; }
+[hidden] { display: none !important; }
+.gm.tick .dot { left: -6px; top: -6px; width: 12px; height: 12px; background: #fff; border: 3px solid var(--lc, #10181d); box-shadow: 0 0 0 1px #10181d; }
+.gm.tick .lab { display: block; left: 10px; top: -11px; font-size: 12.5px; padding: 1px 7px 2px 6px; border-left: 3px solid var(--lc, #fff); color: #d5dde2; }
+.gm.tick .lab .tm { margin-left: 0; margin-right: 6px; }
+.gm.tick .lab .km { font-family: var(--f-mono); color: #fff; }
+.gm.tick.s-l .lab { left: auto; right: 10px; border-left: 0; border-right: 3px solid var(--lc, #fff); padding: 1px 6px 2px 7px; }
+.gm.tick.s-up .lab { left: 0; top: -31px; transform: translateX(-50%); }
+.gm.tick.s-dn .lab { left: 0; top: 9px; transform: translateX(-50%); }
+.gm.legchip.s-r span { transform: translate(5px, -50%); }
+.gm.legchip.s-l span { transform: translate(calc(-100% - 5px), -50%); }
+.gm.legchip.s-up span { transform: translate(-50%, calc(-100% - 5px)); }
+.gm.legchip.s-dn span { transform: translate(-50%, 5px); }
+.gm.tick .hrs { display: none; }
+.gm.tick:hover .hrs { display: inline; }
+.gm.tick:hover .dot { background: var(--m-plan); }
+#map:not(.zin) .gm.tick .lab { font-size: 12px; }
+.stay, .presets { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; }
+.stay select, .stay input { border: 1px solid var(--rule); background: var(--panel); border-radius: 7px; padding: 2px 6px; font-size: 12.5px; color: var(--ink); }
+.stay input[type="time"] { font-family: var(--f-mono); }
+.stay .num { width: 56px; font-family: var(--f-mono); }
+.pre { border: 1px dashed var(--rule); background: none; border-radius: 999px; padding: 1px 8px; font-size: 12px; cursor: pointer; color: var(--muted); }
+.pre:hover { background: var(--hover); color: var(--ink); }
+.ins { margin-left: 6px; border: 1px dashed var(--accent); background: none; color: var(--accent); border-radius: 999px; padding: 0 8px; font-size: 12px; font-weight: 600; cursor: pointer; }
+.ins:hover { background: var(--hover); }
+.dayhead .body { background: var(--hover); border-radius: 8px; color: var(--ink); font-size: 12.5px; padding: 5px 8px; margin: 4px 0; }
+.tl .stop.active .body { box-shadow: inset 0 0 0 2px var(--accent); }
+.psearch { display: flex; gap: 6px; margin: 0 0 8px; }
+.psearch input { flex: 1; min-width: 0; border: 1px solid var(--rule); background: var(--paper); border-radius: 8px; padding: 7px 10px; font-size: 13px; }
+.psearch button { border: 0; background: var(--ink); color: var(--paper); border-radius: 8px; padding: 7px 14px; font-weight: 600; font-size: 13px; cursor: pointer; }
+.presults { list-style: none; margin: 0 0 12px; padding: 0; display: grid; gap: 4px; }
+.presults li { display: flex; gap: 8px; align-items: center; border: 1px solid var(--rule); border-radius: 10px; padding: 6px 8px; }
+.pr-go { flex: 1; min-width: 0; text-align: left; border: 0; background: none; cursor: pointer; padding: 0; color: var(--ink); }
+.pr-go b { display: block; font-weight: 600; font-size: 13px; }
+.pr-go small { display: block; color: var(--muted); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.days-t { width: 100%; border-collapse: collapse; margin: 0 0 12px; font-size: 12.5px; font-variant-numeric: tabular-nums; }
+.days-t th { text-align: left; font-weight: 600; color: var(--muted); border-bottom: 1px solid var(--rule); padding: 4px 6px 4px 0; }
+.days-t td { border-bottom: 1px solid var(--rule); padding: 5px 6px 5px 0; vertical-align: top; }
+.days-t td small { display: block; color: var(--muted); font-size: 11.5px; }
+.days-t td.warn { color: var(--warn); font-weight: 600; }
+.days-t td.bad { color: var(--bad); font-weight: 600; }
+
+@media (max-width: 860px) {
+  html, body { height: auto; }
+  body { display: block; }
+  main.app { display: block; }
+  .mapbox { height: 62vh; min-height: 380px; }
+  .sheet { border-top: 1px solid var(--rule); padding: 18px 16px 28px; }
+  .split { display: none; }
+  .top h1 { font-size: 21px; }
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="title">
+    <h1>오만 로드트립 플래너</h1>
+    <p class="sub" id="sub">두바이 출발 · 구글 위성지도</p>
+  </div>
+  <div class="when" role="group" aria-label="출발 날짜와 시간">
+    <span class="wlab">출발</span>
+    <input type="hidden" id="dDate"><input type="hidden" id="dTime" value="07:00">
+    <span id="whenUI" class="whenui"></span>
+    <button class="keybtn" id="keyBtn" type="button">API 키</button>
+  </div>
+</header>
+<nav class="days" id="days" aria-label="일정 선택"></nav>
+<main class="app">
+  <section class="mapbox" aria-label="지도">
+    <div id="map"></div>
+    <div class="pbar" id="pbar" hidden></div>
+    <div class="mapctl">
+    <div class="poictl" id="poictl">
+      <div class="poi-btns"><button type="button" class="vis-btn poi-on" id="poiBtn" aria-pressed="false" title="오만 주요 관광지를 지도에 켜고 꺼요">관광지 <span id="poiCount"></span></button><button type="button" class="vis-btn poi-more" id="poiMore" aria-expanded="false" aria-controls="poiPop" aria-label="관광지 종류 고르기">▾</button></div>
+      <div class="vis-pop poi-pop" id="poiPop" hidden></div>
+    </div>
+    <div class="vis" id="vis">
+      <button type="button" class="vis-btn" id="visBtn" aria-expanded="false" aria-controls="visPop"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" style="vertical-align:-2px;margin-right:5px"><circle cx="8" cy="8" r="6.3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 1.7a6.3 6.3 0 0 1 0 12.6z" fill="currentColor"/></svg>투명도</button>
+      <div class="vis-pop" id="visPop" hidden>
+        <label>글자 배경 투명도 <output id="labTo"></output><input type="range" id="labT" min="0" max="100" step="5" aria-label="글자 배경 투명도"></label>
+        <label>경로 선 투명도 <output id="lineTo"></output><input type="range" id="lineT" min="0" max="80" step="5" aria-label="경로 선 투명도"></label>
+        <label>관광지 핀 투명도 <output id="poiTo"></output><input type="range" id="poiT" min="0" max="85" step="5" aria-label="관광지 핀 투명도"></label>
+        <button type="button" class="mini" id="visReset">기본값으로</button>
+      </div>
+    </div>
+    </div>
+  </section>
+  <div class="split" id="split" role="separator" aria-orientation="vertical" aria-label="지도와 일정 칸 너비 조절" tabindex="0" title="끌어서 너비 조절 · 두 번 누르면 원래대로"></div>
+  <aside class="sheet" id="sheet" aria-live="polite"></aside>
+  <input type="file" id="importFile" accept=".json,application/json" hidden>
+</main>
+
+<div class="keypanel" id="keypanel" hidden>
+  <div class="keycard" role="dialog" aria-modal="true" aria-labelledby="keyTitle">
+    <h2 id="keyTitle">구글 지도 API 키 넣기</h2>
+    <div class="err" id="keyErr" hidden></div>
+    <p>이 파일은 내 구글 키로 위성지도를 띄우고 실제 도로 경로를 계산해요. 한 번만 넣으면 이 브라우저에 저장돼요.</p>
+    <ol>
+      <li><a href="https://console.cloud.google.com/projectcreate" target="_blank" rel="noopener">구글 클라우드 콘솔</a>에서 프로젝트를 만들고 결제 계정을 연결해요.</li>
+      <li><a href="https://console.cloud.google.com/apis/library/maps-backend.googleapis.com" target="_blank" rel="noopener">Maps JavaScript API</a>와 <a href="https://console.cloud.google.com/apis/library/routes.googleapis.com" target="_blank" rel="noopener">Routes API</a>를 사용 설정해요. 지도에서 리조트·식당 같은 장소를 눌러 이름을 받아 오려면 <a href="https://console.cloud.google.com/apis/library/places.googleapis.com" target="_blank" rel="noopener">Places API (New)</a>도 켜요.</li>
+      <li><a href="https://console.cloud.google.com/apis/credentials" target="_blank" rel="noopener">사용자 인증 정보</a>에서 API 키를 만들고, <b>API 제한</b>을 위 API들로 걸어요. 할당량(하루 사용량) 상한과 예산 알림도 걸어 두세요.</li>
+      <li>만든 키를 아래에 붙여 넣어요.</li>
+    </ol>
+    <div class="keyrow">
+      <input id="keyInput" type="password" autocomplete="off" spellcheck="false" placeholder="AIza…" aria-label="구글 API 키">
+      <button id="keySave" type="button">지도 열기</button>
+    </div>
+    <p class="fine">키는 이 컴퓨터의 이 브라우저에만 저장되고 다른 곳으로 보내지 않아요. 이 파일을 다른 사람에게 보내도 키는 같이 가지 않아요. <button class="mini" id="keyClear" type="button">저장된 키 지우기</button></p>
+  </div>
+</div>
+
+<script type="application/json" id="data">__DATA__</script>
+<script>
+(function () {
+  "use strict";
+  const DATA = JSON.parse(document.getElementById("data").textContent);
+  const { stops: S, days: DAYS, courses: COURSES, labels: LABELS, net: NET } = DATA;
+  // reference attractions (independent of any itinerary); each: { id, ko, en, cat, region, ll, desc, tips, visitMin, family, q, approx?, src[] }
+  const POIS = DATA.pois || [];
+  const poiById = Object.fromEntries(POIS.map(p => [p.id, p]));
+  const PCAT = {
+    culture: { ko: "문화·도시", ic: "🕌", c: "#f59e0b" }, fort: { ko: "요새·유적", ic: "🏰", c: "#e0703f" },
+    nature: { ko: "와디·자연", ic: "💧", c: "#10b981" }, mountain: { ko: "산·전망", ic: "⛰️", c: "#7c8ea8" },
+    desert: { ko: "사막", ic: "🐪", c: "#d4a24c" }, sea: { ko: "바다·해변", ic: "🌊", c: "#0ea5e9" }, village: { ko: "옛 마을", ic: "🏘️", c: "#a855f7" },
+  };
+  const FLIGHT_MIN = DATA.flightMin;
+  const GRP = { north: "북부 해안·산악", desert: "사막도로 Route 31", dhofar: "도파르 · 샬랄라" };
+  const MCOL = { north: "#4fa8ff", desert: "#ff9a3c", dhofar: "#3fe08a", plan: "#ffd400" };
+  // one colour per leg; neighbours alternate warm / cool so consecutive legs never look alike
+  const LEG_COLS = ["#ff4d5e", "#22d3ee", "#ffd43b", "#c084fc", "#4ade80", "#ff9f43", "#60a5fa", "#f472b6", "#a3e635", "#2dd4bf"];
+  const legColor = j => LEG_COLS[((j % LEG_COLS.length) + LEG_COLS.length) % LEG_COLS.length];
+  const byId = Object.fromEntries(DAYS.map(d => [d.id, d]));
+  const courseById = Object.fromEntries(COURSES.map(c => [c.id, c]));
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const fmtN = n => n.toLocaleString("ko-KR");
+  const SUNSET = 17 * 60 + 50, SUNRISE = 6 * 60 + 5;
+  const $ = id => document.getElementById(id);
+
+  // ---------- time helpers ----------
+  const parseHM = s => { const m = /^(\d{1,2}):(\d{2})/.exec(s || ""); return m ? +m[1] * 60 + +m[2] : null; };
+  const clock = m => { const r = ((Math.round(m) % 1440) + 1440) % 1440; return String(Math.floor(r / 60)).padStart(2, "0") + ":" + String(r % 60).padStart(2, "0"); };
+  const dur = m => { m = Math.round(m); const h = Math.floor(m / 60), r = m % 60; return [h && `${h}시간`, r && `${r}분`].filter(Boolean).join(" ") || "0분"; };
+  const r5 = m => Math.max(5, Math.round(m / 5) * 5);
+  const WD = ["일", "월", "화", "수", "목", "금", "토"];
+  const isoToday = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; };
+  function dayDate(i) { const v = $("dDate").value || isoToday(); const d = new Date(v + "T12:00:00"); d.setDate(d.getDate() + i); return d; }
+  const md = d => `${d.getMonth() + 1}/${d.getDate()}(${WD[d.getDay()]})`;
+  const dt = m => `${md(dayDate(Math.floor(m / 1440)))} ${clock(m)}`;              // 10/16(금) 08:00
+  const dtMap = m => (Math.floor(m / 1440) > 0 ? md(dayDate(Math.floor(m / 1440))) + " " : "") + clock(m);
+  const cclock = (i, m) => m >= 1440 ? `${md(dayDate(i + Math.floor(m / 1440)))} ${clock(m)}` : clock(m);   // course day i, minutes from that day's 00:00
+  const dateLabel = d => d ? `${d.getMonth() + 1}월 ${d.getDate()}일 (${WD[d.getDay()]})` : "";
+  function nightMin(t0, t1) { let n = 0; for (let t = t0; t < t1; t += 5) { const r = ((t % 1440) + 1440) % 1440; if (r >= SUNSET || r < SUNRISE) n += Math.min(5, t1 - t); } return n; }
+  const relClock = m => dtMap(m);
+  // 24-hour time picker (hour + 5-minute selects) and Korean date picker
+  function t24(key, value) {
+    const v = parseHM(value) ?? 0, h = Math.floor(v / 60) % 24, mm = v % 60;
+    const mins = [...new Set([...Array(12)].map((_, i) => i * 5).concat([mm]))].sort((a, b) => a - b);
+    return `<span class="t24"><select data-t24h="${key}" aria-label="시">${[...Array(24)].map((_, i) => `<option value="${i}"${i === h ? " selected" : ""}>${String(i).padStart(2, "0")}</option>`).join("")}</select><span class="colon">:</span><select data-t24m="${key}" aria-label="분">${mins.map(x => `<option value="${x}"${x === mm ? " selected" : ""}>${String(x).padStart(2, "0")}</option>`).join("")}</select></span>`;
+  }
+  const readT24 = (root, key) => `${String(root.querySelector(`[data-t24h="${key}"]`).value).padStart(2, "0")}:${String(root.querySelector(`[data-t24m="${key}"]`).value).padStart(2, "0")}`;
+  function onT24(root, key, fn) { root.querySelectorAll(`[data-t24h="${key}"],[data-t24m="${key}"]`).forEach(el => el.addEventListener("change", () => fn(readT24(root, key)))); }
+  function renderWhen() {
+    const v = $("dDate").value || isoToday(), [Y, M, D] = v.split("-").map(Number);
+    const days = new Date(Y, M, 0).getDate(), y0 = new Date().getFullYear();
+    const d = new Date(Y, M - 1, D, 12);
+    $("whenUI").innerHTML = `<span class="dsel"><select id="wY" aria-label="연도">${[y0, y0 + 1].concat(Y < y0 || Y > y0 + 1 ? [Y] : []).map(y => `<option value="${y}"${y === Y ? " selected" : ""}>${y}년</option>`).join("")}</select><select id="wM" aria-label="월">${[...Array(12)].map((_, i) => `<option value="${i + 1}"${i + 1 === M ? " selected" : ""}>${i + 1}월</option>`).join("")}</select><select id="wD" aria-label="일">${[...Array(days)].map((_, i) => `<option value="${i + 1}"${i + 1 === D ? " selected" : ""}>${i + 1}일</option>`).join("")}</select><span class="wd">(${WD[d.getDay()]})</span></span>${t24("head", $("dTime").value || "07:00")}`;
+    const setDate = () => { const y = +$("wY").value, m = +$("wM").value, dd = Math.min(+$("wD").value, new Date(y, m, 0).getDate());
+      $("dDate").value = `${y}-${String(m).padStart(2, "0")}-${String(dd).padStart(2, "0")}`; renderWhen(); onTimeChange(); };
+    ["wY", "wM", "wD"].forEach(id => $(id).addEventListener("change", setDate));
+    onT24($("whenUI"), "head", v2 => { $("dTime").value = v2; onTimeChange(); });
+  }
+
+  // ---------- storage ----------
+  const STORE = "omanGmaps.v1", KEY_STORE = "omanGmaps.key", ROUTE_STORE = "omanGmaps.routes";
+  const ls = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }, del(k) { try { localStorage.removeItem(k); } catch (e) {} } };
+  let saved = {}; try { saved = JSON.parse(ls.get(STORE) || "{}") || {}; } catch (e) { saved = {}; }
+  saved.dayStart = saved.dayStart || {};
+  const save = () => ls.set(STORE, JSON.stringify(saved));
+  $("dDate").value = saved.date || isoToday();
+  let routeCache = {}; try { routeCache = JSON.parse(ls.get(ROUTE_STORE) || "{}") || {}; } catch (e) { routeCache = {}; }
+  let cacheTimer = null;
+  const persistRoutes = () => { clearTimeout(cacheTimer); cacheTimer = setTimeout(() => ls.set(ROUTE_STORE, JSON.stringify(routeCache)), 400); };
+
+  // ---------- built-in road network (fallback when a Google route call fails) ----------
+  const NN = NET.ll.length / 2;
+  const nodeLL = i => [NET.ll[2 * i], NET.ll[2 * i + 1]];
+  const ADJ = Array.from({ length: NN }, () => []);
+  for (let e = 0; e < NET.edges.length; e += 5) { const a = NET.edges[e], b = NET.edges[e + 1]; ADJ[a].push([b, NET.edges[e + 2], NET.edges[e + 3]]); ADJ[b].push([a, NET.edges[e + 2], NET.edges[e + 3]]); }
+  const stopNodeSet = new Set(Object.values(NET.stopNode));
+  const rad = Math.PI / 180;
+  const hav = (a, b) => { const dLat = (b[1] - a[1]) * rad, dLng = (b[0] - a[0]) * rad; const h = Math.sin(dLat / 2) ** 2 + Math.cos(a[1] * rad) * Math.cos(b[1] * rad) * Math.sin(dLng / 2) ** 2; return 2 * 6371 * Math.asin(Math.sqrt(h)); };
+  function nearestRoadNode(ll) { let best = -1, bd = Infinity; for (let i = 0; i < NN; i++) { if (stopNodeSet.has(i) || NET.main[i] !== "1") continue; const d = hav(ll, nodeLL(i)); if (d < bd) { bd = d; best = i; } } return [best, bd]; }
+  function dijkstra(s, t) {
+    const dist = new Float64Array(NN).fill(Infinity), km = new Float64Array(NN), prev = new Int32Array(NN).fill(-1), hv = [], hn = [];
+    const push = (v, n) => { hv.push(v); hn.push(n); let i = hv.length - 1; while (i > 0) { const p = (i - 1) >> 1; if (hv[p] <= hv[i]) break; [hv[p], hv[i]] = [hv[i], hv[p]]; [hn[p], hn[i]] = [hn[i], hn[p]]; i = p; } };
+    const pop = () => { const v = hv[0], n = hn[0], lv = hv.pop(), ln = hn.pop(); if (hv.length) { hv[0] = lv; hn[0] = ln; let i = 0; for (;;) { const l = 2 * i + 1, r = l + 1; let m = i; if (l < hv.length && hv[l] < hv[m]) m = l; if (r < hv.length && hv[r] < hv[m]) m = r; if (m === i) break; [hv[m], hv[i]] = [hv[i], hv[m]]; [hn[m], hn[i]] = [hn[i], hn[m]]; i = m; } } return [v, n]; };
+    dist[s] = 0; push(0, s);
+    while (hv.length) { const [du, u] = pop(); if (du > dist[u]) continue; if (u === t) break; for (const [v, ek, em] of ADJ[u]) if (du + em < dist[v]) { dist[v] = du + em; km[v] = km[u] + ek; prev[v] = u; push(dist[v], v); } }
+    if (!isFinite(dist[t])) return null;
+    const path = []; for (let u = t; u !== -1; u = prev[u]) path.push(u);
+    return { path: path.reverse(), km: km[t], min: dist[t] };
+  }
+  function builtinLeg(a, b) {   // a, b: {k?, ll}
+    const end = p => { if (p.k && NET.stopNode[p.k] != null) return { node: NET.stopNode[p.k], conn: null }; const [n, d] = nearestRoadNode(p.ll); return { node: n, conn: { km: d * 1.3, min: d * 1.3 / 40 * 60 } }; };
+    const A = end(a), B = end(b), r = dijkstra(A.node, B.node);
+    if (!r) { const km = hav(a.ll, b.ll) * 1.3; return { km, min: km / 40 * 60, path: [a.ll, b.ll], est: true }; }
+    let km = r.km, min = r.min; const path = r.path.map(nodeLL);
+    if (A.conn) { km += A.conn.km; min += A.conn.min; path.unshift(a.ll); }
+    if (B.conn) { km += B.conn.km; min += B.conn.min; path.push(b.ll); }
+    return { km, min, path, est: true };
+  }
+
+  // ---------- Google routing (Routes API through the Maps JavaScript API) ----------
+  let RouteCls = null, routeError = null;
+  const legKey = (a, b) => `${a[1].toFixed(4)},${a[0].toFixed(4)}>${b[1].toFixed(4)},${b[0].toFixed(4)}`;
+  const coord = (p, n) => { const v = typeof p[n] === "function" ? p[n]() : p[n]; return Math.round(v * 1e5) / 1e5; };
+  function simplify(pts, tol) {   // Douglas–Peucker on lon/lat
+    if (pts.length < 3) return pts;
+    const keep = new Uint8Array(pts.length); keep[0] = keep[pts.length - 1] = 1;
+    const stack = [[0, pts.length - 1]];
+    while (stack.length) {
+      const [s, e] = stack.pop(); let md = 0, mi = -1;
+      const [x1, y1] = pts[s], [x2, y2] = pts[e], dx = x2 - x1, dy = y2 - y1, L = dx * dx + dy * dy || 1e-12;
+      for (let i = s + 1; i < e; i++) { const [x, y] = pts[i]; const t = Math.max(0, Math.min(1, ((x - x1) * dx + (y - y1) * dy) / L)); const d = Math.hypot(x - x1 - t * dx, y - y1 - t * dy); if (d > md) { md = d; mi = i; } }
+      if (md > tol) { keep[mi] = 1; stack.push([s, mi], [mi, e]); }
+    }
+    return pts.filter((_, i) => keep[i]);
+  }
+  const inflight = new Map(); let active = 0; const queue = [];
+  const runQ = () => { while (active < 3 && queue.length) { const job = queue.shift(); active++; job().finally(() => { active--; runQ(); }); } };
+  function googleLeg(aLL, bLL) {
+    const k = legKey(aLL, bLL);
+    if (routeCache[k]) return Promise.resolve(routeCache[k]);
+    if (inflight.has(k)) return inflight.get(k);
+    const p = new Promise((resolve, reject) => {
+      queue.push(async () => {
+        try {
+          if (!RouteCls) throw new Error("routes 라이브러리를 불러오지 못했어요");
+          const { routes } = await RouteCls.computeRoutes({
+            origin: { lat: aLL[1], lng: aLL[0] }, destination: { lat: bLL[1], lng: bLL[0] },
+            travelMode: "DRIVING", fields: ["path", "distanceMeters", "durationMillis"],
+          });
+          const r = routes && routes[0];
+          if (!r || !r.path || !r.path.length) throw new Error("경로를 찾지 못했어요");
+          const path = simplify(r.path.map(q => [coord(q, "lng"), coord(q, "lat")]), 0.0004);
+          const res = { km: (r.distanceMeters || 0) / 1000, min: (r.durationMillis || 0) / 60000, path };
+          routeCache[k] = res; persistRoutes(); resolve(res);
+        } catch (err) { reject(err); } finally { inflight.delete(k); }
+      });
+      runQ();
+    });
+    inflight.set(k, p);
+    return p;
+  }
+  // a leg with a synchronous best-available answer, refreshed when Google answers
+  const legState = new Map();
+  function legFor(a, b) {   // a,b: {k?, ll}
+    const k = legKey(a.ll, b.ll);
+    if (routeCache[k]) return { ...routeCache[k], src: "google" };
+    let st = legState.get(k);
+    if (!st) {
+      st = { est: builtinLeg(a, b), pending: !routeError };
+      legState.set(k, st);
+      if (!routeError && RouteCls) googleLeg(a.ll, b.ll).then(() => { st.pending = false; scheduleRepaint(); })
+        .catch(err => { st.pending = false; st.err = String(err && err.message || err); noteRouteError(err); scheduleRepaint(); });
+      else st.pending = false;
+    }
+    return { ...st.est, src: st.pending ? "pending" : "est", err: st.err };
+  }
+  function noteRouteError(err) {
+    const msg = String(err && err.message || err);
+    if (!routeError && /PERMISSION|API_KEY|not enabled|disabled|REQUEST_DENIED|403|billing|Routes API/i.test(msg)) routeError = msg;
+  }
+  let repaintTimer = null;
+  function scheduleRepaint() { clearTimeout(repaintTimer); repaintTimer = setTimeout(() => { paint(); renderSheet(true); }, 150); }
+
+  // ---------- place names for Google POIs (Places API (New), one lookup per place, cached) ----------
+  const PLACE_STORE = "omanGmaps.places";
+  let PlaceCls = null, RankPref = null, placesError = null;
+  let placeNames = {}; try { placeNames = JSON.parse(ls.get(PLACE_STORE) || "{}") || {}; } catch (e) { placeNames = {}; }
+  async function fetchPlaceName(placeId) {
+    if (placeNames[placeId]) return placeNames[placeId];
+    if (!PlaceCls) throw new Error("places 라이브러리를 불러오지 못했어요");
+    const place = new PlaceCls({ id: placeId });
+    await place.fetchFields({ fields: ["displayName"] });
+    const name = place.displayName || "";
+    if (!name) throw new Error("이름이 없는 장소예요");
+    placeNames[placeId] = name; ls.set(PLACE_STORE, JSON.stringify(placeNames));
+    return name;
+  }
+  const llOfPlace = loc => [Math.round((typeof loc.lng === "function" ? loc.lng() : loc.lng) * 1e5) / 1e5, Math.round((typeof loc.lat === "function" ? loc.lat() : loc.lat) * 1e5) / 1e5];
+  // the nearest Google place around a clicked point (used when the base-map icon itself didn't report a place)
+  async function nearbyPlace(ll, zoom) {
+    if (!PlaceCls || !PlaceCls.searchNearby) throw new Error("places 라이브러리를 불러오지 못했어요");
+    const radius = zoom >= 17 ? 40 : zoom >= 16 ? 70 : zoom >= 15 ? 120 : zoom >= 14 ? 200 : 300;
+    const { places } = await PlaceCls.searchNearby({
+      fields: ["id", "displayName", "location"], locationRestriction: { center: { lat: ll[1], lng: ll[0] }, radius },
+      maxResultCount: 1, rankPreference: RankPref && RankPref.DISTANCE ? RankPref.DISTANCE : "DISTANCE",
+    });
+    const pl = places && places[0];
+    if (!pl || !pl.displayName || !pl.location) return null;
+    placeNames[pl.id] = pl.displayName; ls.set(PLACE_STORE, JSON.stringify(placeNames));
+    return { id: pl.id, name: pl.displayName, ll: llOfPlace(pl.location) };
+  }
+  async function textSearch(q) {
+    if (!PlaceCls || !PlaceCls.searchByText) throw new Error("places 라이브러리를 불러오지 못했어요");
+    const { places } = await PlaceCls.searchByText({
+      textQuery: q, fields: ["id", "displayName", "location", "formattedAddress"],
+      locationRestriction: { north: 26.6, south: 16.0, east: 60.6, west: 51.0 }, maxResultCount: 6,
+    });
+    return (places || []).filter(x => x.location).map(x => {
+      if (x.displayName) { placeNames[x.id] = x.displayName; }
+      return { id: x.id, name: x.displayName || "이름 없는 장소", addr: x.formattedAddress || "", ll: llOfPlace(x.location) };
+    });
+  }
+  let flashMsg = null, flashTimer = null;
+  function notePlacesError(err) {
+    placesError = String(err && err.message || err);
+    flashMsg = "장소 이름을 구글에서 못 받아 왔어요. 구글 콘솔에서 Places API (New)를 켜고 키 제한에도 추가하세요.";
+    clearTimeout(flashTimer); flashTimer = setTimeout(() => { flashMsg = null; if (map) paintPlan(); }, 9000);
+  }
+
+  // ---------- state ----------
+  let map = null, AME = null, IW = null;
+  let mode = "course";
+  let course = COURSES.find(c => c.def) || COURSES[0];
+  let dayIdx = null;
+  // saved plans: { id: { name, pts, start, date, updated } }; one of them is open as `plan`
+  const fixPts = pts => pts.forEach(p => { if (!p.stay) { p.stay = p.night ? { mode: "at", min: 30, nights: 1, at: p.next || "08:00" } : { mode: p.dw ? "dur" : "pass", min: p.dw || 30, nights: 1, at: "08:00" }; delete p.night; delete p.next; delete p.dw; } });
+  const newPlanId = () => "p" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  if (!saved.plans || typeof saved.plans !== "object") saved.plans = {};
+  Object.entries(saved.plans).forEach(([id, pl]) => { if (!pl || !Array.isArray(pl.pts)) delete saved.plans[id]; });
+  if (saved.plan && Array.isArray(saved.plan.pts) && saved.plan.pts.length && !Object.keys(saved.plans).length) {
+    const id = newPlanId(); saved.plans[id] = { name: "내 플랜", pts: saved.plan.pts, start: saved.plan.start, updated: Date.now() }; saved.planId = id;
+  }
+  delete saved.plan;
+  if (!Object.keys(saved.plans).length) { const id = newPlanId(); saved.plans[id] = { name: "내 플랜", pts: [], updated: Date.now() }; saved.planId = id; }
+  const recentPlanId = () => Object.entries(saved.plans).sort((a, b) => (b[1].updated || 0) - (a[1].updated || 0))[0][0];
+  if (!saved.plans[saved.planId]) saved.planId = recentPlanId();
+  let plan = saved.plans[saved.planId];
+  Object.values(saved.plans).forEach(pl => fixPts(pl.pts));
+  let pid = Math.max(0, ...Object.values(saved.plans).flatMap(pl => pl.pts.map(p => p.id || 0)));
+  let stopDays = {}, num = {};
+  function computeCourse() {
+    stopDays = {}; num = {}; let seq = 0;
+    course.days.forEach((id, i) => byId[id].stops.forEach(k => {
+      const list = stopDays[k] || (stopDays[k] = []); if (!list.includes(i)) list.push(i);
+      if (S[k].kind === "visit" && !S[k].opt && !(k in num)) num[k] = ++seq;
+    }));
+  }
+  const courseTime = () => saved.time || "07:00";
+  const planTime = () => plan.start || courseTime();
+  const startOf = i => i === 0 ? (parseHM(courseTime()) ?? 420) : (parseHM(saved.dayStart[course.id + ":" + i]) ?? parseHM(byId[course.days[i]].start));
+  function hoursFor(k, date) { const s = S[k]; if (!s.hrs) return null; const h = (date && s.dow && s.dow[date.getDay()]) || s.hrs; return { open: parseHM(h[0]), close: parseHM(h[1]), fs: !!(date && s.dow && s.dow[date.getDay()]) }; }
+  function checkHours(k, arr, date) {
+    const h = hoursFor(k, date); if (!h) return null; const r = ((arr % 1440) + 1440) % 1440;
+    if (h.open != null && r < h.open - 20) return { lvl: "warn", msg: `${clock(h.open)} 개장${h.fs ? " (금·토)" : ""} · 일찍 도착` };
+    if (h.close != null && r > h.close) return { lvl: "bad", msg: S[k].late || `${clock(h.close)} 마감${h.fs ? " (금·토)" : ""} · 늦게 도착` };
+    return null;
+  }
+  // course day legs, Google when available
+  function dayLegs(d) {
+    let from = d.startKey;
+    return d.legs.map(leg => {
+      const a = from; from = leg.to;
+      if (leg.fly) return { to: leg.to, from: a, fly: true, min: leg.min, km: 0, src: "fixed" };
+      const L = legFor({ k: a, ll: S[a].ll }, { k: leg.to, ll: S[leg.to].ll });
+      return { to: leg.to, from: a, min: r5(L.min * (1 + coursePad() / 100)), base: L.min, pad: coursePad(), km: L.km, path: L.path, src: L.src };
+    });
+  }
+  function schedule(i) {
+    const d = byId[course.days[i]], date = dayDate(i), start = startOf(i);
+    const real = d.stops.filter(k => !S[k].opt), legs = dayLegs(d);
+    const rows = []; let t = start, night = 0, km = 0, drive = 0, est = 0;
+    const dwellOf = (k, last) => { if (last) return [0, null]; const o = d.dw[k]; return o ? [o[0], o[1] || null] : [S[k].dw || 0, null]; };
+    if (real[0] !== d.startKey) rows.push({ type: "start", k: d.startKey, t });
+    else { const [dw, note] = dwellOf(d.startKey, !legs.length); rows.push({ type: "stop", k: d.startKey, arr: t, dep: t + dw, dw, note, first: true, warn: checkHours(d.startKey, t, date) }); t += dw; }
+    legs.forEach((leg, j) => {
+      leg.dep = t;
+      if (leg.fly) rows.push({ type: "fly", min: leg.min, dep: t, j });
+      else { rows.push({ type: "drive", min: leg.min, base: leg.base, pad: leg.pad, km: leg.km, src: leg.src, dep: t, j }); night += nightMin(t, t + leg.min); km += leg.km; drive += leg.min; if (leg.src !== "google") est++; }
+      t += leg.min;
+      const last = j === legs.length - 1;
+      if (real.includes(leg.to)) { const [dw, note] = dwellOf(leg.to, last); rows.push({ type: "stop", k: leg.to, arr: t, dep: t + dw, dw, note, warn: checkHours(leg.to, t, date) }); t += dw; }
+      else rows.push({ type: "end", k: leg.to, t });
+    });
+    return { rows, start, end: t, night, date, km, drive, est, legs };
+  }
+  const allSchedules = () => course.days.map((_, i) => schedule(i));
+  const fmtDist = s => `약 ${fmtN(Math.round(s.km / 10) * 10)}km · 운전 ${dur(s.drive)}`;
+
+  // ---------- markers & lines ----------
+  const markers = {};        // stop key -> {m, el, lab}
+  const dayLines = {};       // day id -> [Polyline...]
+  let chipMarkers = [], planMarkers = [];
+  const LL = ll => ({ lat: ll[1], lng: ll[0] });
+  let lastMarkerClick = 0;
+  function makeMarker(ll, el, title, z) {
+    const m = new AME({ map, position: LL(ll), content: el, title: title || "", zIndex: z || 1, gmpClickable: true });
+    return m;
+  }
+  function setLab(lab, name, time, lvl) { lab.innerHTML = esc(name) + (time ? `<span class="tm${lvl ? " " + lvl : ""}">${esc(time)}</span>` : ""); }
+  function buildStopMarkers() {
+    const keys = [...new Set(DAYS.flatMap(d => d.stops))].filter(k => S[k].kind !== "city");
+    keys.forEach(k => {
+      const s = S[k];
+      const el = document.createElement("div");
+      el.className = `gm k-${s.kind}${s.opt ? " opt" : ""}`;
+      el.innerHTML = `<span class="dot">${s.kind === "air" ? "✈" : ""}</span><span class="lab"></span>`;
+      const m = makeMarker(s.ll, el, s.ko, 5);
+      const onClick = ev => {
+        if (ev && ev.stopPropagation) ev.stopPropagation();
+        if (Date.now() - lastMarkerClick < 300) return; lastMarkerClick = Date.now();
+        showInfo(k);
+      };
+      el.addEventListener("click", onClick);
+      try { m.addListener("gmp-click", onClick); } catch (e) { /* older API: DOM click above is enough */ }
+      el.addEventListener("contextmenu", ev => { ev.preventDefault(); ev.stopPropagation(); openCtx(evPt(ev), s.ll, { title: s.ko, nodeOpts: { k } }); });
+      markers[k] = { m, el, lab: el.querySelector(".lab"), dot: el.querySelector(".dot") };
+    });
+  }
+  const line = (path, color, weight, z, extra) => new google.maps.Polyline({ map, path: path.map(LL), strokeColor: color, strokeOpacity: 1, strokeWeight: weight, zIndex: z, clickable: false, ...(extra || {}) });
+  const flightIcons = [{ icon: { path: "M 0,-1 0,1", strokeOpacity: 1, strokeColor: "#ffffff", scale: 3 }, offset: "0", repeat: "14px" }];
+  let SymPath = null;
+  const arrowIcons = col => [{ icon: { path: SymPath ? SymPath.FORWARD_CLOSED_ARROW : "M 0,-2 1.6,1.4 0,0.5 -1.6,1.4 z", scale: SymPath ? 2.4 : 2.2, strokeColor: "#0b1114", strokeWeight: 1.3, strokeOpacity: 1, fillColor: col, fillOpacity: 1 }, offset: "48px", repeat: "150px" }];
+  function clearDayLines() { Object.values(dayLines).forEach(a => a.forEach(p => p.setMap(null))); Object.keys(dayLines).forEach(k => delete dayLines[k]); }
+
+  // ---------- coloured legs; where two legs share a road they split into lanes ----------
+  // Each leg is pushed a few pixels to the right of its own direction of travel, only where it shares
+  // the road with another leg. A there-and-back pair therefore shows as two parallel lines (like two
+  // lanes), and a third leg in the same direction gets the next lane out. Offsets are in screen pixels,
+  // so they are recomputed when the zoom changes.
+  const legSets = { course: [], plan: [] };
+  const mpp = (lat, z) => 156543.03392 * Math.cos(lat * rad) / Math.pow(2, z);
+  function densify(path, stepKm) {
+    const out = [path[0]];
+    for (let i = 1; i < path.length; i++) {
+      const a = path[i - 1], b = path[i], n = Math.min(600, Math.floor(hav(a, b) / stepKm));
+      for (let q = 1; q <= n; q++) { const f = q / (n + 1); out.push([a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f]); }
+      out.push(b);
+    }
+    return out;
+  }
+  function headings(P, cum, D) {     // unit heading at each point, measured over a window of ±D km along the path
+    let lo = 0, hi = 0;
+    return P.map((p, i) => {
+      while (lo < i && cum[i] - cum[lo] > D) lo++;
+      if (hi < i) hi = i; while (hi < P.length - 1 && cum[hi] - cum[i] < D) hi++;
+      const a = P[lo], b = P[hi], c = Math.cos(p[1] * rad), dx = (b[0] - a[0]) * c, dy = b[1] - a[1], L = Math.hypot(dx, dy) || 1; return [dx / L, dy / L];
+    });
+  }
+  function runFilter(flags, minRun) {  // clear runs of set flags shorter than minRun points
+    for (let i = 0; i < flags.length;) {
+      if (!flags[i]) { i++; continue; }
+      let e = i; while (e < flags.length && flags[e]) e++;
+      if (e - i < minRun) flags.fill(0, i, e);
+      i = e;
+    }
+  }
+  function ramp(vals, R) {             // spread each value to its neighbours, fading out over R points
+    const out = new Float32Array(vals.length);
+    for (let i = 0; i < vals.length; i++) { const v = vals[i]; if (!v) continue;
+      for (let k = Math.max(0, i - R); k <= Math.min(vals.length - 1, i + R); k++) { const f = v * Math.min(1, Math.max(0, 1 - (Math.abs(i - k) - 0.5) / R)); if (f > out[k]) out[k] = f; } }
+    return out;
+  }
+  function analyseLegs(items) {
+    const CELL = 0.004, NEAR = 0.0016, grid = new Map(), key = (x, y) => x * 100003 + y;
+    items.forEach((it, j) => {
+      const P = it.pts = densify(it.path, 0.35);
+      it.cum = [0]; for (let i = 1; i < P.length; i++) it.cum.push(it.cum[i - 1] + hav(P[i - 1], P[i]));
+      it.dirs = { 1.5: headings(P, it.cum, 1.5) }; it.dir = it.dirs[1.5];
+      P.forEach((p, i) => { const k = key(Math.floor(p[0] / CELL), Math.floor(p[1] / CELL)); let a = grid.get(k); if (!a) grid.set(k, a = []); a.push(j, i); });
+    });
+    items.forEach((it, j) => {
+      const P = it.pts, shared = new Uint8Array(P.length), lane = new Uint8Array(P.length);
+      P.forEach((p, i) => {
+        const cx = Math.floor(p[0] / CELL), cy = Math.floor(p[1] / CELL), c = Math.cos(p[1] * rad), seen = new Set();
+        for (let gx = cx - 1; gx <= cx + 1; gx++) for (let gy = cy - 1; gy <= cy + 1; gy++) {
+          const a = grid.get(key(gx, gy)); if (!a) continue;
+          for (let q = 0; q < a.length; q += 2) {
+            const o = a[q]; if (o === j || seen.has(o)) continue;
+            const pp = items[o].pts[a[q + 1]];
+            if (Math.hypot((pp[0] - p[0]) * c, pp[1] - p[1]) > NEAR) continue;
+            seen.add(o); shared[i] = 1;
+            const d2 = items[o].dir[a[q + 1]];
+            if (o < j && d2[0] * it.dir[i][0] + d2[1] * it.dir[i][1] > 0.5) lane[i]++;   // an earlier leg already drives this the same way
+          }
+        }
+      });
+      runFilter(shared, 4);                       // legs that only touch at a stop stay on the road
+      const busy = Uint8Array.from(lane, v => v > 0); runFilter(busy, 10);   // same-way overlaps shorter than ~3.5 km (in-and-out spurs) don't need a new lane
+      for (let i = 0; i < P.length; i++) if (!busy[i] || !shared[i]) lane[i] = 0;
+      it.w = ramp(shared, 5); it.lw = ramp(lane, 5);
+      it.shared = shared.some(Boolean); it.lane = Math.max(0, ...lane);
+    });
+  }
+  function dirFor(it, z) {
+    // a wider heading window when zoomed out, so tight bends don't turn the offset line into loops
+    const k = Math.min(24, Math.max(1.5, 2 ** Math.round(Math.log2(Math.max(1.5, 10 * mpp(it.pts[0][1], z) / 1000) / 1.5)) * 1.5));
+    return it.dirs[k] || (it.dirs[k] = headings(it.pts, it.cum, k));
+  }
+  // the spot at a fraction of a leg's length, moved onto that leg's lane; side = where a label should open
+  // (away from the road, so the "there" and "back" labels of a shared road sit on opposite sides)
+  function laneSpot(it, frac, z) {
+    const P = it.pts, C = it.cum, T = C[C.length - 1] * Math.max(0, Math.min(1, frac));
+    let lo = 0, hi = C.length - 1; while (hi - lo > 1) { const m = (lo + hi) >> 1; if (C[m] <= T) lo = m; else hi = m; }
+    const f = C[hi] > C[lo] ? (T - C[lo]) / (C[hi] - C[lo]) : 0;
+    const p = [P[lo][0] + (P[hi][0] - P[lo][0]) * f, P[lo][1] + (P[hi][1] - P[lo][1]) * f];
+    const off = it.w[lo] * 6 + it.lw[lo] * 10;
+    if (!off) return { ll: p, side: "r" };
+    const d = dirFor(it, z)[lo], m = off * mpp(p[1], z), ne = [d[1], -d[0]];   // right-hand normal as (east, north)
+    const side = Math.abs(ne[0]) >= 0.45 ? (ne[0] > 0 ? "r" : "l") : (ne[1] > 0 ? "up" : "dn");
+    return { ll: [p[0] + ne[0] * m / (111320 * Math.cos(p[1] * rad)), p[1] + ne[1] * m / 111320], side };
+  }
+  const setSide = (el, side) => { el.classList.remove("s-r", "s-l", "s-up", "s-dn"); el.classList.add("s-" + side); };
+  function offsetPath(it, z) {
+    const dir = dirFor(it, z);
+    return it.pts.map((p, i) => {
+      const off = it.w[i] * 6 + it.lw[i] * 10; if (!off) return { lat: p[1], lng: p[0] };
+      const m = off * mpp(p[1], z), d = dir[i];            // right-hand normal of (dx, dy) is (dy, -dx)
+      return { lat: p[1] - d[0] * m / 111320, lng: p[0] + d[1] * m / (111320 * Math.cos(p[1] * rad)) };
+    });
+  }
+  function clearLegSet(name) {
+    legSets[name].forEach(it => { (it.lines || []).forEach(l => l.setMap(null)); if (it.chip) it.chip.map = null; });
+    legSets[name] = [];
+  }
+  function drawLegSet(name, items) {
+    clearLegSet(name);
+    const roads = items.filter(it => !it.fly && it.path && it.path.length >= 2);
+    analyseLegs(roads);
+    const z = map.getZoom() || 7, chips = roads.length > 1;
+    items.forEach((it, j) => {
+      it.z = 20 + j * 2;
+      if (it.fly) { it.lines = [line(it.fly, "#ffffff", 2, it.z, { strokeOpacity: 0, geodesic: true, icons: flightIcons })]; return; }
+      if (!it.path || it.path.length < 2) return;
+      const path = offsetPath(it, z);
+      it.op = (it.est ? 0.85 : 1) * lineA(); it.casOp = 0.8 * lineA();
+      it.cas = new google.maps.Polyline({ map, path, strokeColor: "#0b1114", strokeOpacity: it.casOp, strokeWeight: 9, zIndex: it.z, clickable: true });
+      it.main = new google.maps.Polyline({ map, path, strokeColor: it.color, strokeOpacity: it.op, strokeWeight: 5, zIndex: it.z + 1, clickable: true, icons: arrowIcons(it.color) });
+      it.lines = [it.cas, it.main];
+      it.lines.forEach(pl => {
+        if (it.onClick) pl.addListener("click", e => { if (IW) IW.close(); it.onClick(e); });
+        if (it.onCtx) { pl.addListener("contextmenu", it.onCtx); try { pl.addListener("rightclick", it.onCtx); } catch (e) { /* not in this API version */ } }
+        pl.addListener("mouseover", () => hiLeg(it.key, true));
+        pl.addListener("mouseout", () => hiLeg(it.key, false));
+      });
+      if (chips && it.label) {
+        it.chipFrac = Math.min(0.8, 0.42 + it.lane * 0.14);
+        const sp = laneSpot(it, it.chipFrac, z), ll = sp.ll;
+        const el = document.createElement("div"); el.className = "gm legchip"; el.style.setProperty("--lc", it.color); if (it.shared) setSide(el, sp.side);
+        el.innerHTML = `<span>${esc(it.label)}</span>`;
+        el.addEventListener("mouseenter", () => hiLeg(it.key, true)); el.addEventListener("mouseleave", () => hiLeg(it.key, false));
+        el.addEventListener("click", ev => { ev.stopPropagation(); lastMarkerClick = Date.now(); if (it.onChip) it.onChip(); });
+        it.chip = makeMarker(ll, el, it.title || it.label, 2);
+      }
+    });
+    legSets[name] = items;
+  }
+  function relayoutLegs() {
+    if (!map) return; const z = map.getZoom() || 7;
+    [...legSets.course, ...legSets.plan].forEach(it => {
+      if (!it.main || !it.shared) return;
+      const path = offsetPath(it, z); it.main.setPath(path); it.cas.setPath(path);
+      if (it.chip) { const sp = laneSpot(it, it.chipFrac, z); it.chip.position = LL(sp.ll); setSide(it.chip.content, sp.side); }
+    });
+    tickMarkers.forEach(m => { const t = m.__tick; if (!t || !t.it || !t.it.shared) return; const sp = laneSpot(t.it, t.frac, z); m.position = LL(sp.ll); setSide(t.el, sp.side); });
+  }
+  let hiKey = null;
+  function hiLeg(key, on) {
+    if (on) hiKey = key; else if (hiKey === key) hiKey = null; else return;
+    [...legSets.course, ...legSets.plan].forEach(it => {
+      if (!it.main) return;
+      const me = hiKey != null && it.key === hiKey, dim = hiKey != null && !me;
+      it.main.setOptions({ strokeWeight: me ? 8 : 5, strokeOpacity: dim ? 0.3 * lineA() : it.op, zIndex: me ? 400 : it.z + 1 });
+      it.cas.setOptions({ strokeWeight: me ? 13 : 9, strokeOpacity: dim ? 0.3 * lineA() : it.casOp, zIndex: me ? 399 : it.z });
+      if (it.chip && it.chip.content) it.chip.content.classList.toggle("dim", dim);
+    });
+    sheet.querySelectorAll("[data-leg]").forEach(el => el.classList.toggle("hl", hiKey != null && el.dataset.leg === hiKey));
+  }
+  // ---------- transparency of labels' background and of route lines (saved in this browser) ----------
+  if (!saved.ui || typeof saved.ui !== "object") saved.ui = {};
+  const VIS_DEF = { labT: 15, lineT: 0, poiT: 0 };
+  const visVal = k => (saved.ui[k] ?? VIS_DEF[k]);
+  function lineA() { return 1 - visVal("lineT") / 100; }
+  function applyVis(touchLines) {
+    document.querySelector(".mapbox").style.setProperty("--lab-a", (1 - visVal("labT") / 100).toFixed(2));
+    document.querySelector(".mapbox").style.setProperty("--poi-a", (1 - visVal("poiT") / 100).toFixed(2));
+    ["labT", "lineT", "poiT"].forEach(k => { $(k).value = visVal(k); $(k + "o").textContent = visVal(k) + "%"; });
+    if (!touchLines) return;
+    [...legSets.course, ...legSets.plan].forEach(it => { if (!it.main) return; it.op = (it.est ? 0.85 : 1) * lineA(); it.casOp = 0.8 * lineA(); it.main.setOptions({ strokeOpacity: it.op }); it.cas.setOptions({ strokeOpacity: it.casOp }); });
+    if (hiKey != null) hiLeg(hiKey, true);
+  }
+  $("visBtn").addEventListener("click", () => { const open = $("visPop").hidden; $("visPop").hidden = !open; $("visBtn").setAttribute("aria-expanded", String(open)); });
+  ["labT", "lineT", "poiT"].forEach(k => $(k).addEventListener("input", e => { saved.ui[k] = +e.target.value; applyVis(k === "lineT"); }));
+  ["labT", "lineT", "poiT"].forEach(k => $(k).addEventListener("change", () => save()));
+  $("visReset").addEventListener("click", () => { delete saved.ui.labT; delete saved.ui.lineT; delete saved.ui.poiT; save(); applyVis(true); });
+  applyVis(false);
+  function flashLegRow(key) {
+    const el = sheet.querySelector(`[data-leg="${key}"]`); if (!el) return;
+    if (window.innerWidth > 860) el.scrollIntoView({ block: "center", behavior: "smooth" });
+    el.classList.remove("flash"); void el.offsetWidth; el.classList.add("flash");
+  }
+  function dayChunks(d) {   // a day's driving as continuous stretches (a flight splits them)
+    const out = []; let cur = null;
+    dayLegs(d).forEach(l => { if (l.fly || !l.path || l.path.length < 2) { cur = null; return; } if (!cur) { cur = [...l.path]; out.push(cur); } else cur.push(...l.path.slice(1)); });
+    return out;
+  }
+  function paintCourseLines() {
+    const items = [], dim = [];
+    if (dayIdx == null) {
+      course.days.forEach((id, i) => {
+        const d = byId[id];
+        dayChunks(d).forEach(path => items.push({ path, color: legColor(i), key: "d" + i, label: `${i + 1}일차`, title: `${i + 1}일차 · ${d.title}`, onClick: () => select(course.id, i), onChip: () => select(course.id, i) }));
+        if (d.fly) items.push({ fly: [S[d.fly[0]].ll, S[d.fly[1]].ll], key: "d" + i });
+        if (d.spurLL) dim.push(line(d.spurLL, legColor(i), 3, 3, { strokeOpacity: 0, icons: [{ icon: { path: "M 0,-1 0,1", strokeOpacity: 1, strokeColor: legColor(i), scale: 3 }, offset: "0", repeat: "10px" }] }));
+      });
+    } else {
+      course.days.forEach((id, i) => { if (i === dayIdx) return; dayChunks(byId[id]).forEach(pl => dim.push(line(pl, "#e8eef2", 3, 1, { strokeOpacity: 0.35 }))); });
+      const d = byId[course.days[dayIdx]];
+      dayLegs(d).forEach((l, j) => {
+        const key = `d${dayIdx}:${j}`;
+        if (l.fly) items.push({ fly: [S[l.from].ll, S[l.to].ll], key });
+        else items.push({ path: l.path, color: legColor(j), key, est: l.src !== "google", label: `구간 ${j + 1}`, title: `구간 ${j + 1} · ${S[l.from].ko} → ${S[l.to].ko}`, onClick: () => flashLegRow(key), onChip: () => flashLegRow(key) });
+      });
+      if (d.spurLL) dim.push(line(d.spurLL, "#ffffff", 3, 3, { strokeOpacity: 0, icons: [{ icon: { path: "M 0,-1 0,1", strokeOpacity: 0.9, strokeColor: "#ffffff", scale: 3 }, offset: "0", repeat: "10px" }] }));
+    }
+    dayLines.all = dim;
+    drawLegSet("course", items);
+  }
+
+  function paintCourse() {
+    const plan_ = mode === "plan";
+    clearDayLines(); clearLegSet("course");
+    if (!plan_) paintCourseLines();
+    const sch = allSchedules();
+    Object.entries(markers).forEach(([k, o]) => {
+      const ds = stopDays[k], s = S[k];
+      let cls = `gm k-${s.kind}${s.opt ? " opt" : ""} g-${ds ? byId[course.days[ds[0]]].grp : "north"}`;
+      if (!plan_) { if (!ds) cls += " off"; else if (dayIdx != null) cls += ds.includes(dayIdx) ? " named" : " dim"; }
+      o.el.className = cls;
+      const show = !plan_ || !!saved.showPois;
+      if (!!o.m.map !== show) o.m.map = show ? map : null;
+      if (s.kind === "visit") o.dot.textContent = s.opt ? "+" : (num[k] || "");
+      if (plan_ || !ds) { setLab(o.lab, s.ko); return; }
+      const i = dayIdx != null ? dayIdx : ds[0];
+      const r = sch[i] && sch[i].rows.find(x => x.type === "stop" && x.k === k);
+      setLab(o.lab, s.ko, r ? (dayIdx != null ? cclock(i, r.arr) : `${i + 1}일 ${clock(r.arr)}`) : null, r && r.warn ? r.warn.lvl : null);
+    });
+    chipMarkers.forEach(m => { m.map = null; }); chipMarkers = [];
+    clearTicks();
+    if (!plan_ && dayIdx != null) addTicks(sch[dayIdx].legs, null, m => cclock(dayIdx, m), legSets.course);
+    if (!plan_ && dayIdx != null) {
+      const d = byId[course.days[dayIdx]], s = sch[dayIdx];
+      const add = (k, text, time) => { const el = document.createElement("div"); el.className = "gm chip"; el.innerHTML = `<span class="dot"></span><span class="lab"></span>`; setLab(el.querySelector(".lab"), text, time); chipMarkers.push(makeMarker(S[k].ll, el, text, 4)); };
+      if (s.rows[0].type === "start" || S[d.startKey].kind === "city") add(d.startKey, `${S[d.startKey].ko} 출발`, cclock(dayIdx, s.start));
+      const last = s.rows[s.rows.length - 1];
+      if (last.type === "end" || S[d.endKey].kind === "city") add(d.endKey, `${S[d.endKey].ko} 도착`, cclock(dayIdx, s.end));
+    }
+  }
+
+  // ---------- info window ----------
+  const gmSearch = k => { const s = S[k], p = new URLSearchParams({ api: "1", query: s.q || s.en }); if (s.pid) p.set("query_place_id", s.pid); return "https://www.google.com/maps/search/?" + p; };
+  function showInfo(k) {
+    const s = S[k];
+    const el = document.createElement("div"); el.className = "iw";
+    let tags = "";
+    if (stopDays[k]) { const sch = allSchedules(); tags = stopDays[k].map(i => { const r = sch[i].rows.find(x => x.type === "stop" && x.k === k); return `<button class="tag" type="button" data-i="${i}">${i + 1}일차${r ? " " + clock(r.arr) : ""}</button>`; }).join(""); }
+    el.innerHTML = `<h3>${num[k] ? num[k] + ". " : ""}${esc(s.ko)}</h3><div class="en">${esc(s.en)}</div>${s.note ? `<p>${esc(s.note)}</p>` : ""}${tags ? `<div class="tags">${tags}</div>` : ""}
+      <div class="planbox"></div><div class="acts" style="margin-top:8px"><a href="${gmSearch(k)}" target="_blank" rel="noopener">구글 지도 ↗</a></div>`;
+    el.querySelectorAll("[data-i]").forEach(b => b.addEventListener("click", () => { IW.close(); select(course.id, +b.dataset.i); }));
+    planBox(el, s.ll, { k }, plan.pts.findIndex(p => p.k === k));
+    IW.setContent(el);
+    IW.open({ map, anchor: markers[k].m });
+  }
+
+  // ---------- attraction layer (reference data, shown on top of any course or plan) ----------
+  if (!saved.ui || typeof saved.ui !== "object") saved.ui = {};
+  const poiMarkers = {};   // id -> { m, el, on }
+  const poiSearch = P => "https://www.google.com/maps/search/?" + new URLSearchParams({ api: "1", query: P.q || P.en });
+  const poiOn = () => !!saved.ui.poiOn;
+  const poiCatOn = c => !(saved.ui.poiOff || []).includes(c);
+  function buildPoiMarkers() {
+    POIS.forEach(P => {
+      const cat = PCAT[P.cat] || PCAT.culture;
+      const el = document.createElement("div"); el.className = "gm poi"; el.style.setProperty("--pc", cat.c);
+      el.innerHTML = `<span class="pdot">${cat.ic}</span><span class="lab">${esc(P.ko)}</span>`;
+      const m = new AME({ map: null, position: LL(P.ll), content: el, title: `${P.ko} · ${cat.ko}`, zIndex: 2, gmpClickable: true });
+      const onClick = ev => { if (ev && ev.stopPropagation) ev.stopPropagation(); if (Date.now() - lastMarkerClick < 300) return; lastMarkerClick = Date.now(); showPoi(P.id); };
+      el.addEventListener("click", onClick);
+      try { m.addListener("gmp-click", onClick); } catch (e) { /* DOM click is enough */ }
+      el.addEventListener("contextmenu", ev => { ev.preventDefault(); ev.stopPropagation(); openCtx(evPt(ev), P.ll, { title: P.ko, nodeOpts: { poi: P.id } }); });
+      poiMarkers[P.id] = { m, el, on: false };
+    });
+  }
+  const poiInPlan = P => plan.pts.findIndex(p => p.poi === P.id || hav(p.ll, P.ll) < 0.25);
+  function paintPois() {
+    if (!map) return;
+    POIS.forEach(P => {
+      const o = poiMarkers[P.id]; if (!o) return;
+      const show = poiOn() && poiCatOn(P.cat);
+      if (show !== o.on) { o.m.map = show ? map : null; o.on = show; }
+      if (show) o.el.classList.toggle("inplan", poiInPlan(P) >= 0);
+    });
+    const vis = POIS.filter(P => poiCatOn(P.cat)).length;
+    $("poiBtn").setAttribute("aria-pressed", String(poiOn()));
+    $("poiCount").textContent = poiOn() ? vis : POIS.length;
+  }
+  function renderPoiPop() {
+    const cnt = c => POIS.filter(P => P.cat === c).length;
+    $("poiPop").innerHTML = `<label class="pc"><input type="checkbox" data-poiall${poiOn() ? " checked" : ""}> 지도에 관광지 표시<small>${POIS.length}곳</small></label>
+      ${Object.entries(PCAT).filter(([c]) => cnt(c)).map(([c, m]) => `<label class="pc"><input type="checkbox" data-pcat="${c}"${poiCatOn(c) ? " checked" : ""}${poiOn() ? "" : " disabled"}><span class="ic" style="--pc:${m.c}">${m.ic}</span>${m.ko}<small>${cnt(c)}</small></label>`).join("")}
+      <div class="row2"><button type="button" class="mini" data-pcall>모두</button><button type="button" class="mini" data-pcnone>모두 끄기</button></div>
+      <p class="note">핀을 누르면 설명과 함께 "플랜에 넣기"가 나와요. 노란 테두리는 지금 플랜에 들어 있는 곳이에요. 지도를 더 확대하면 이름이 보여요.</p>`;
+    $("poiPop").querySelector("[data-poiall]").addEventListener("change", e => { saved.ui.poiOn = e.target.checked; save(); paintPois(); renderPoiPop(); });
+    $("poiPop").querySelectorAll("[data-pcat]").forEach(el => el.addEventListener("change", () => {
+      const off = new Set(saved.ui.poiOff || []); if (el.checked) off.delete(el.dataset.pcat); else off.add(el.dataset.pcat);
+      saved.ui.poiOff = [...off]; save(); paintPois();
+    }));
+    $("poiPop").querySelector("[data-pcall]").addEventListener("click", () => { saved.ui.poiOn = true; saved.ui.poiOff = []; save(); paintPois(); renderPoiPop(); });
+    $("poiPop").querySelector("[data-pcnone]").addEventListener("click", () => { saved.ui.poiOff = Object.keys(PCAT); save(); paintPois(); renderPoiPop(); });
+  }
+  $("poiBtn").addEventListener("click", () => { saved.ui.poiOn = !poiOn(); save(); paintPois(); renderPoiPop(); });
+  $("poiMore").addEventListener("click", () => { const open = $("poiPop").hidden; if (open) renderPoiPop(); $("poiPop").hidden = !open; $("poiMore").setAttribute("aria-expanded", String(open));
+    if (open) { $("visPop").hidden = true; $("visBtn").setAttribute("aria-expanded", "false"); } });
+  $("visBtn").addEventListener("click", () => { $("poiPop").hidden = true; $("poiMore").setAttribute("aria-expanded", "false"); });
+  $("poiCount").textContent = POIS.length;
+
+  // where an attraction would fit in the open plan: the gap that adds the least straight-line detour
+  function bestGap(ll) {
+    const pts = plan.pts, R = 1.3;   // rough road / straight-line ratio
+    if (!pts.length) return null;
+    const end = { at: pts.length, km: hav(pts[pts.length - 1].ll, ll) * R };
+    let best = null;
+    for (let i = 1; i < pts.length; i++) {
+      const km = (hav(pts[i - 1].ll, ll) + hav(ll, pts[i].ll) - hav(pts[i - 1].ll, pts[i].ll)) * R;
+      if (!best || km < best.km) best = { at: i, km };
+    }
+    return { best, end };
+  }
+  const kmTxt = km => km < 1 ? "거의 없음" : `약 +${fmtN(km < 20 ? Math.round(km) : Math.round(km / 5) * 5)}km`;
+  // ---------- adding to the plan only happens from an explicit choice (right-click menu or a card button) ----------
+  const rnd5 = v => Math.round(v * 1e5) / 1e5;
+  const llOf = e => [rnd5(e.latLng.lng()), rnd5(e.latLng.lat())];
+  function addChoices(ll, legI) {
+    const pts = plan.pts, n = pts.length, nm = i => `${i + 1}번 ${pts[i].name}`, out = [];
+    const gapLabel = at => at <= 0 ? "맨 앞(출발지)으로 넣기" : at >= n ? `맨 뒤(${nm(n - 1)} 다음)에 추가` : `${nm(at - 1)} → ${nm(at)} 사이에 넣기`;
+    if (insertAt != null && insertAt <= n) out.push({ at: insertAt, label: gapLabel(insertAt), sub: "목록에서 고른 자리" });
+    if (!n) { if (!out.length) out.push({ at: 0, label: "여기서 출발 (첫 지점으로)" }); }
+    else {
+      if (legI != null && legI >= 1 && legI < n && legI !== insertAt) out.push({ at: legI, label: `이 구간(${legI}→${legI + 1})에 경유지로 넣기`, sub: `${nm(legI - 1)} → ${nm(legI)} 사이` });
+      // the gap that adds the least distance vs. appending at the end — the cheaper one comes first
+      const g = bestGap(ll), cands = [];
+      if (g.best) cands.push({ at: g.best.at, km: g.best.km, label: gapLabel(g.best.at), sub: `중간에 끼우기 · 우회 ${kmTxt(g.best.km)}` });
+      cands.push({ at: n, km: g.end.km, label: gapLabel(n), sub: `이어서 ${kmTxt(g.end.km)}` });
+      cands.sort((x, y) => x.km - y.km);
+      if (cands.length > 1) cands[0].sub += " · 추천";
+      cands.forEach(c => { c.sub += " (직선거리로 어림)"; if (!out.some(o => o.at === c.at)) out.push(c); });
+    }
+    if (out.length) out[0].primary = true;
+    return out;
+  }
+  function doAdd(at, nodeOpts) {
+    closeCtx(); if (IW) IW.close();
+    if (mode !== "plan") setMode("plan");
+    insertNodeAt(at, nodeOpts);
+    const nd = plan.pts[Math.min(at, plan.pts.length - 1)]; if (nd) setTimeout(() => focusRow(nd.id), 60);
+  }
+  // the "put it in the plan" block inside an info card
+  function planBox(el, ll, nodeOpts, inIdx, note) {
+    const box = el.querySelector(".planbox"); if (!box) return;
+    if (inIdx >= 0) {
+      const nd = plan.pts[inIdx];
+      box.innerHTML = `<b class="pn">플랜 「${esc(plan.name)}」</b><p style="margin:0">이미 <b>${inIdx + 1}번 ${esc(nd.name)}</b>(으)로 들어 있어요.</p><button type="button" data-goto>플랜에서 보기</button>`;
+      box.querySelector("[data-goto]").addEventListener("click", () => { IW.close(); if (mode !== "plan") setMode("plan"); setTimeout(() => focusRow(nd.id), 60); });
+      return;
+    }
+    const items = addChoices(ll);
+    box.innerHTML = `<b class="pn">플랜 「${esc(plan.name)}」에 넣기${note ? " · " + esc(note) : ""}</b>` + items.map((it, i) => `<button type="button"${it.primary ? ' class="primary"' : ""} data-ci="${i}">${esc(it.label)}${it.sub ? `<small>${esc(it.sub)}</small>` : ""}</button>`).join("");
+    box.querySelectorAll("[data-ci]").forEach(btn => btn.addEventListener("click", () => doAdd(items[+btn.dataset.ci].at, nodeOpts)));
+  }
+  function showPoi(id) {
+    const P = poiById[id]; if (!P || !map) return;
+    closeCtx();
+    const cat = PCAT[P.cat] || PCAT.culture;
+    const el = document.createElement("div"); el.className = "iw poi-iw";
+    el.innerHTML = `<span class="pchip" style="--pc:${cat.c}"><i>${cat.ic}</i>${cat.ko} · ${esc(P.region)}</span>
+      <h3>${esc(P.ko)}</h3><div class="en">${esc(P.en)}</div>
+      <p>${esc(P.desc)}</p>
+      ${P.tips ? `<p class="tip">💡 ${esc(P.tips)}</p>` : ""}
+      <p class="meta">⏱ 권장 ${dur(P.visitMin || 60)}${P.family ? ` · 👨‍👩‍👧 ${esc(P.family)}` : ""}</p>
+      ${P.approx ? `<p class="approx">📍 핀 위치는 대략이에요. 가기 전에 구글 지도에서 정확한 위치를 확인하세요.</p>` : ""}
+      <div class="planbox"></div>
+      <div class="acts" style="margin-top:8px"><a href="${poiSearch(P)}" target="_blank" rel="noopener">구글 지도 ↗</a></div>
+      ${P.src && P.src.length ? `<div class="srcs">자료: ${P.src.map(u => { let h = ""; try { h = new URL(u).hostname.replace(/^www\./, ""); } catch (e) { h = "링크"; } return `<a href="${esc(u)}" target="_blank" rel="noopener">${esc(h)}</a>`; }).join(" · ")}</div>` : ""}`;
+    planBox(el, P.ll, { poi: P.id }, poiInPlan(P), `머무는 시간 ${dur(Math.round((P.visitMin || 60) / 5) * 5)}`);
+    IW.setContent(el);
+    const o = poiMarkers[id];
+    if (o && o.on) IW.open({ map, anchor: o.m }); else { IW.setPosition(LL(P.ll)); IW.open({ map }); }
+  }
+  // a place Google shows on its own map (shop, hotel, …): left-click shows this card instead of adding it
+  function showPlaceCard(placeId, ll) {
+    closeCtx();
+    const el = document.createElement("div"); el.className = "iw poi-iw";
+    const q = new URLSearchParams({ api: "1", query: `${ll[1]},${ll[0]}`, query_place_id: placeId });
+    el.innerHTML = `<span class="pchip" style="--pc:#4285f4"><i>G</i>구글 지도 장소</span><h3 data-nm>${esc(placeNames[placeId] || "이름 불러오는 중…")}</h3>
+      <div class="en">${ll[1].toFixed(5)}, ${ll[0].toFixed(5)}</div><div class="planbox"></div>
+      <div class="acts" style="margin-top:8px"><a href="https://www.google.com/maps/search/?${q}" target="_blank" rel="noopener">구글 지도에서 자세히 ↗</a></div>`;
+    if (!placeNames[placeId]) fetchPlaceName(placeId).then(nmv => { el.querySelector("[data-nm]").textContent = nmv; }).catch(err => { el.querySelector("[data-nm]").textContent = placeName(ll); notePlacesError(err); });
+    planBox(el, ll, { ll, placeId }, plan.pts.findIndex(p => p.placeId === placeId));
+    IW.setContent(el); IW.setPosition(LL(ll)); IW.open({ map });
+  }
+
+  // right-click menu
+  let ctxEl = null, lastCtx = 0, lastPointer = null;
+  function closeCtx() { if (ctxEl) { ctxEl.remove(); ctxEl = null; } }
+  function openCtx(pt, ll, o) {
+    closeCtx(); lastCtx = Date.now();
+    const box = document.querySelector(".mapbox"), r = box.getBoundingClientRect();
+    const items = o.noAdd ? [] : addChoices(ll, o.legI), extra = o.extra || [];
+    const el = document.createElement("div"); el.className = "ctxmenu"; el.setAttribute("role", "menu");
+    const ttl = o.title || placeName(ll);
+    el.innerHTML = `<div class="cx-h">${esc(ttl === "지점" ? "지도 위 이 위치" : ttl)}<small>${ll[1].toFixed(4)}, ${ll[0].toFixed(4)}</small></div>`
+      + items.map((it, i) => `<button type="button" role="menuitem" class="cx-i${it.primary ? " primary" : ""}" data-ci="${i}">${esc(it.label)}${it.sub ? `<small>${esc(it.sub)}</small>` : ""}</button>`).join("")
+      + extra.map((x, i) => `<button type="button" role="menuitem" class="cx-i${x.danger ? " danger" : ""}" data-x="${i}">${esc(x.label)}</button>`).join("")
+      + `<div class="cx-sep"></div><a class="cx-i" role="menuitem" href="https://www.google.com/maps/search/?api=1&query=${ll[1]},${ll[0]}" target="_blank" rel="noopener">구글 지도에서 이 위치 보기 ↗</a>`
+      + `<button type="button" role="menuitem" class="cx-i cx-cancel" data-cancel>닫기 (Esc)</button>`;
+    box.appendChild(el); ctxEl = el;
+    const w = el.offsetWidth, h = el.offsetHeight;
+    let x = (pt ? pt.x : r.left + r.width / 2) - r.left, y = (pt ? pt.y : r.top + r.height / 2) - r.top;
+    if (x + w > r.width - 8) x = Math.max(8, x - w); if (y + h > r.height - 8) y = Math.max(8, r.height - h - 8);
+    el.style.left = x + "px"; el.style.top = y + "px";
+    el.querySelectorAll("[data-ci]").forEach(b => b.addEventListener("click", () => doAdd(items[+b.dataset.ci].at, typeof o.nodeOpts === "function" ? o.nodeOpts(ll) : o.nodeOpts)));
+    el.querySelectorAll("[data-x]").forEach(b => b.addEventListener("click", () => { closeCtx(); extra[+b.dataset.x].fn(); }));
+    el.querySelector("[data-cancel]").addEventListener("click", closeCtx);
+    el.addEventListener("contextmenu", ev => ev.preventDefault());
+    const first = el.querySelector(".cx-i"); if (first) first.focus({ preventScroll: true });
+  }
+  document.addEventListener("pointerdown", ev => { if (ctxEl && !ctxEl.contains(ev.target)) closeCtx(); }, true);
+  document.addEventListener("keydown", ev => { if (ev.key === "Escape") closeCtx(); });
+  const evPt = ev => ev ? { x: ev.clientX, y: ev.clientY } : (lastPointer && Date.now() - lastPointer.t < 800 ? lastPointer : null);
+  // a one-line hint where the user left-clicked
+  let hintEl = null, hintTimer = null;
+  function mapHint(text) {
+    const box = document.querySelector(".mapbox"), r = box.getBoundingClientRect(), pt = evPt(null);
+    if (!hintEl) { hintEl = document.createElement("div"); hintEl.className = "maphint"; box.appendChild(hintEl); }
+    hintEl.textContent = text; hintEl.style.opacity = "1";
+    hintEl.style.left = ((pt ? pt.x : r.left + r.width / 2) - r.left) + "px"; hintEl.style.top = ((pt ? pt.y : r.top + r.height / 2) - r.top) + "px";
+    clearTimeout(hintTimer); hintTimer = setTimeout(() => { if (hintEl) hintEl.style.opacity = "0"; }, 1600);
+  }
+
+  // ---------- planner: a free list of nodes; start / destination are just the first / last node ----------
+  // node: { id, k (stop key or null), ll, name, stay: { mode: "pass" | "dur" | "at", min, nights, at }, fly (next leg by plane) }
+  let insertAt = null;                     // index the next map click inserts at (null = append)
+  const defStay = k => ({ mode: k && S[k].kind === "city" ? "pass" : "dur", min: k ? (S[k].dw || 30) : 30, nights: 1, at: "08:00" });
+  function placeName(ll) {
+    let best = null, bd = Infinity;
+    for (const s of Object.values(S)) { const d = hav(ll, s.ll); if (d < bd) { bd = d; best = s.ko; } }
+    for (const l of LABELS) { const d = hav(ll, l.ll); if (d < bd) { bd = d; best = l.t; } }
+    return bd < 1.5 ? best : bd < 35 ? `${best} 근처` : "지점";
+  }
+  function nearTown(ll) {
+    let best = null, bd = Infinity;
+    for (const l of LABELS) { const d = hav(ll, l.ll); if (d < bd) { bd = d; best = l.t; } }
+    for (const s of Object.values(S)) if (s.kind === "via" || s.kind === "city") { const d = hav(ll, s.ll); if (d < bd) { bd = d; best = s.ko; } }
+    return bd < 30 ? best : null;
+  }
+  function makeNode(o) {
+    if (o.poi && poiById[o.poi]) {
+      const P = poiById[o.poi];
+      return { id: ++pid, k: null, poi: P.id, ll: [...P.ll], name: P.ko, stay: { mode: "dur", min: Math.max(5, Math.round((P.visitMin || 60) / 5) * 5), nights: 1, at: "08:00" }, fly: false };
+    }
+    const k = o.k || null, ll = k ? S[k].ll : o.ll;
+    const n = { id: ++pid, k, ll, name: k ? S[k].ko : placeName(ll), stay: defStay(k), fly: false };
+    if (!k && o.placeId) {
+      n.placeId = o.placeId;
+      if (o.name) n.name = o.name;
+      else if (placeNames[o.placeId]) n.name = placeNames[o.placeId];
+      else {
+        n.name = "장소 이름 불러오는 중…";
+        fetchPlaceName(o.placeId).then(name => { n.name = name; afterPlanChange(); })
+          .catch(err => { n.name = placeName(ll); notePlacesError(err); afterPlanChange(); });
+      }
+    } else if (!k && o.lookup) {
+      n.name = "주변 장소 찾는 중…";
+      nearbyPlace(ll, o.zoom).then(r => {
+        if (r) { n.name = r.name; n.placeId = r.id; n.ll = r.ll; } else n.name = placeName(ll);
+        afterPlanChange();
+      }).catch(err => { n.name = placeName(ll); notePlacesError(err); afterPlanChange(); });
+    }
+    return n;
+  }
+  function addPoint(o) {
+    const n = makeNode(o);
+    if (insertAt != null && insertAt <= plan.pts.length) { if (insertAt > 0) plan.pts[insertAt - 1].fly = false; plan.pts.splice(insertAt, 0, n); insertAt = null; }
+    else plan.pts.push(n);
+    afterPlanChange();
+  }
+  function insertNodeAt(i, o) { insertAt = i; addPoint(o); }
+  // extra driving time on top of Google's estimate: one % for the whole plan, optionally overridden per leg
+  // (stored on the node the leg arrives at; 0–50 %)
+  const PADS = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50];
+  const planPad = () => Math.max(0, Math.min(50, +plan.pad || 0));
+  const padOf = p => (p.pad != null && isFinite(p.pad)) ? Math.max(0, Math.min(50, +p.pad)) : planPad();
+  const coursePad = () => Math.max(0, Math.min(50, +saved.coursePad || 0));
+  function planSchedule() {
+    const pts = plan.pts, nodes = [], legs = [], dayDrive = {}, dayNight = {};
+    if (!pts.length) return { nodes, legs, km: 0, drive: 0, end: null, days: [] };
+    const t0 = parseHM(planTime()) ?? 420;
+    let t = t0, km = 0, drive = 0;
+    const addDrive = (a, b) => { for (let x = a; x < b;) { const d = Math.floor(x / 1440), e = Math.min(b, (d + 1) * 1440); dayDrive[d] = (dayDrive[d] || 0) + (e - x); dayNight[d] = (dayNight[d] || 0) + nightMin(x, e); x = e; } };
+    pts.forEach((p, i) => {
+      let arr = t, leg = null;
+      if (i > 0) {
+        const prev = pts[i - 1];
+        if (prev.fly) leg = { fly: true, min: FLIGHT_MIN, km: 0, path: [] };
+        else { const L = legFor(prev, p), pad = padOf(p); leg = { ...L, base: L.min, pad, min: r5(L.min * (1 + pad / 100)) }; addDrive(t, t + leg.min); km += L.km; drive += leg.min; }
+        leg.dep = t; leg.i = i; legs.push(leg); arr = t + leg.min;
+      }
+      const st = p.stay || defStay(p.k);
+      let dep = arr, conflict = false;
+      if (i === 0) dep = t0;
+      else if (st.mode === "dur") dep = arr + (+st.min || 0);
+      else if (st.mode === "at") { dep = (Math.floor(arr / 1440) + (+st.nights || 0)) * 1440 + (parseHM(st.at) ?? 480); if (dep < arr) { conflict = true; dep = arr; } }
+      const date = dayDate(Math.floor(arr / 1440));
+      nodes.push({ p, i, arr, dep, leg, conflict, warn: p.k && i > 0 ? checkHours(p.k, arr, date) : null, overnight: Math.floor(dep / 1440) > Math.floor(arr / 1440) });
+      t = dep;
+    });
+    const lastDay = Math.floor(Math.max(...nodes.map(n => n.arr)) / 1440);
+    const days = [];
+    for (let d = 0; d <= lastDay; d++) {
+      const arrs = nodes.filter(n => Math.floor(n.arr / 1440) === d && n.i > 0);
+      const deps = nodes.filter(n => Math.floor(n.dep / 1440) === d && n.i < nodes.length - 1);
+      const sleep = nodes.find(n => n.overnight && Math.floor(n.arr / 1440) <= d && Math.floor(n.dep / 1440) > d) || null;
+      days.push({ d, drive: dayDrive[d] || 0, night: dayNight[d] || 0,
+        first: deps.length ? Math.min(...deps.map(n => n.dep)) : null, last: arrs.length ? Math.max(...arrs.map(n => n.arr)) : null,
+        sleep: d === lastDay && !sleep ? nodes[nodes.length - 1] : sleep });
+    }
+    return { nodes, legs, km, drive, end: nodes[nodes.length - 1].arr, days };
+  }
+  function afterPlanChange() { plan.updated = Date.now(); save(); paint(); renderSheet(true); }
+  const uniqName = (base, except) => {
+    const names = new Set(Object.entries(saved.plans).filter(([id]) => id !== except).map(([, pl]) => pl.name));
+    if (!names.has(base)) return base;
+    for (let i = 2; ; i++) if (!names.has(`${base} (${i})`)) return `${base} (${i})`;
+  };
+  function switchPlan(id) { saved.planId = id; plan = saved.plans[id]; insertAt = null; planUI.edit = null; planUI.del = false; save(); }
+  function addPlan(name, pts, start, date) {
+    const id = newPlanId();
+    saved.plans[id] = { name: uniqName(name), pts, start, date: date || $("dDate").value || isoToday(), updated: Date.now() };
+    switchPlan(id); return id;
+  }
+  function openPlan(id) { switchPlan(id); syncTime(); paint(); renderSheet(); if (plan.pts.length) fitView(); }
+  function deletePlan(id) {
+    delete saved.plans[id];
+    if (!Object.keys(saved.plans).length) addPlan("내 플랜", []);
+    openPlan(saved.plans[saved.planId] ? saved.planId : recentPlanId());
+  }
+  const planUI = { edit: null, del: false, share: false, msg: null, msgErr: false };   // edit: "saveas" | "rename" | "new"
+  if (!Array.isArray(saved.seeded)) saved.seeded = [];
+  COURSES.forEach(c => {
+    if (saved.seeded.includes(c.id)) return;
+    saved.plans[newPlanId()] = { name: uniqName(c.name), pts: coursePts(c, c.days.map((_, i) => i)), start: saved.time || "07:00", updated: 0, from: c.id };
+    saved.seeded.push(c.id);
+  });
+  save();
+
+  // points along a leg at every hour of driving
+  function pointAlong(path, frac) {
+    if (path.length < 2) return path[0];
+    const seg = []; let total = 0;
+    for (let i = 1; i < path.length; i++) { const d = hav(path[i - 1], path[i]); seg.push(d); total += d; }
+    let target = total * frac;
+    for (let i = 1; i < path.length; i++) {
+      if (target <= seg[i - 1]) { const f = seg[i - 1] ? target / seg[i - 1] : 0; return [path[i - 1][0] + (path[i][0] - path[i - 1][0]) * f, path[i - 1][1] + (path[i][1] - path[i - 1][1]) * f]; }
+      target -= seg[i - 1];
+    }
+    return path[path.length - 1];
+  }
+  let tickMarkers = [];
+  function clearTicks() { tickMarkers.forEach(m => { m.map = null; }); tickMarkers = []; }
+  function addTicks(legs, onPick, fmt, items) {
+    const z = map.getZoom() || 7;
+    legs.forEach((L, j) => {
+      const it = items && items[j] && items[j].pts ? items[j] : null;
+      if (L.fly || !L.path || L.path.length < 2 || L.min < 70) return;
+      for (let h = 60; h < L.min - 15; h += 60) {
+        const ll = pointAlong(L.path, h / L.min), town = nearTown(ll);
+        const km = Math.round(L.km * h / L.min), rest = Math.max(0, Math.round(L.km) - km);   // same average-speed split as the dot's position
+        const el = document.createElement("div"); el.className = "gm tick"; el.style.setProperty("--lc", legColor(j));
+        el.innerHTML = `<span class="dot"></span><span class="lab"><span class="tm">${fmt(L.dep + h)}</span><span class="km">${fmtN(km)}km</span>${town ? " · " + esc(town) + " 근처" : ""}<span class="hrs"> · 운전 ${h / 60}시간째 · 다음 지점까지 ${fmtN(rest)}km</span></span>`;
+        el.addEventListener("click", ev => { ev.stopPropagation(); lastMarkerClick = Date.now(); if (IW) IW.close(); if (onPick) flashLegRow("p" + j); });
+        el.addEventListener("contextmenu", ev => { ev.preventDefault(); ev.stopPropagation(); if (onPick) onPick(L, ll, ev, fmt(L.dep + h)); else openCtx(evPt(ev), [rnd5(ll[0]), rnd5(ll[1])], { title: `${fmt(L.dep + h)} 지나는 곳`, nodeOpts: x => ({ ll: x }) }); });
+        const sp = it ? laneSpot(it, h / L.min, z) : { ll, side: "r" }; setSide(el, sp.side);
+        const m = makeMarker(sp.ll, el, `${fmt(L.dep + h)} 통과 예정 · 출발 후 ${fmtN(km)}km · 다음 지점까지 ${fmtN(rest)}km${onPick ? " · 눌러서 여기에 경유지 추가" : ""}`, 3);
+        m.__tick = { it, frac: h / L.min, el }; tickMarkers.push(m);
+      }
+    });
+  }
+
+  function paintPlan() {
+    const on = mode === "plan";
+    $("map").classList.toggle("planning", on);
+    planMarkers.forEach(m => { m.map = null; }); planMarkers = [];
+    clearLegSet("plan");
+    $("pbar").hidden = !on;
+    if (!on) return;
+    const ps = planSchedule();
+    drawLegSet("plan", ps.legs.map((l, j) => {
+      const a = plan.pts[l.i - 1], b = plan.pts[l.i], key = "p" + j;
+      if (l.fly) return { fly: [a.ll, b.ll], key };
+      const ctx = e => { if (!e || !e.latLng || Date.now() - lastCtx < 250) return; lastMarkerClick = Date.now(); openCtx(evPt(e.domEvent), llOf(e), { legI: l.i, title: `${l.i}→${l.i + 1} 구간 위`, nodeOpts: ll => ({ ll }) }); };
+      return { path: l.path, color: legColor(j), key, est: l.src !== "google", label: `${l.i}→${l.i + 1}`, title: `${l.i}→${l.i + 1} · ${a.name} → ${b.name} · 오른쪽 클릭하면 이 구간에 경유지를 넣을 수 있어요`,
+        onClick: () => { lastMarkerClick = Date.now(); flashLegRow(key); }, onCtx: ctx, onChip: () => flashLegRow(key) };
+    }));
+    addTicks(ps.legs, (L, ll, ev, when) => openCtx(evPt(ev), [rnd5(ll[0]), rnd5(ll[1])], { legI: L.i, title: `${when} 지나는 곳 (${L.i}→${L.i + 1} 구간)`, nodeOpts: x => ({ ll: x }) }), dtMap, legSets.plan);
+    ps.nodes.forEach(n => {
+      const el = document.createElement("div"); el.className = "gm pp g-plan" + (n.i === 0 ? " first" : "");
+      el.innerHTML = `<span class="dot">${n.i + 1}</span><span class="lab"></span>`;
+      const isLast = n.i === ps.nodes.length - 1;
+      const tail = n.i === 0 ? `${dtMap(n.dep)} 출발`
+        : isLast || n.dep === n.arr ? `${dtMap(n.arr)} 도착`
+        : n.overnight ? `${dtMap(n.arr)} 도착 · ${Math.floor(n.dep / 1440) - Math.floor(n.arr / 1440)}박 · ${dtMap(n.dep)} 출발`
+        : `${dtMap(n.arr)} 도착 · ${clock(n.dep)} 출발`;
+      setLab(el.querySelector(".lab"), n.p.name, tail, n.warn ? n.warn.lvl : n.conflict ? "bad" : null);
+      const mk = new AME({ map, position: LL(n.p.ll), content: el, title: `${n.i + 1}. ${n.p.name} · 끌어서 옮길 수 있어요`, zIndex: 10, gmpClickable: true, gmpDraggable: true });
+      el.addEventListener("click", ev => { ev.stopPropagation(); lastMarkerClick = Date.now(); if (IW) IW.close(); focusRow(n.p.id); });
+      el.addEventListener("contextmenu", ev => { ev.preventDefault(); ev.stopPropagation(); const idx = plan.pts.indexOf(n.p);
+        openCtx(evPt(ev), n.p.ll, { title: `${idx + 1}번 ${n.p.name}`, noAdd: true, extra: [
+          { label: "플랜 목록에서 보기", fn: () => focusRow(n.p.id) },
+          { label: `이 지점 다음(${idx + 1}번 뒤)에 넣을 곳 고르기`, fn: () => { insertAt = idx + 1; paint(); renderSheet(true); } },
+          { label: "이 지점 삭제", danger: true, fn: () => { const i = plan.pts.indexOf(n.p); if (i < 0) return; if (i > 0) plan.pts[i - 1].fly = false; plan.pts.splice(i, 1); afterPlanChange(); } },
+        ] }); });
+      try {
+        mk.addListener("dragend", () => {
+          const pos = mk.position; if (!pos) return;
+          const lat = typeof pos.lat === "function" ? pos.lat() : pos.lat, lng = typeof pos.lng === "function" ? pos.lng() : pos.lng;
+          n.p.ll = [Math.round(lng * 1e5) / 1e5, Math.round(lat * 1e5) / 1e5]; n.p.k = null; delete n.p.placeId; delete n.p.poi; n.p.name = placeName(n.p.ll);
+          afterPlanChange();
+        });
+      } catch (e) { /* dragging not supported */ }
+      planMarkers.push(mk);
+    });
+    const pending = ps.legs.some(l => l.src === "pending"), pb = $("pbar");
+    const np = plan.pts.length, where = insertAt == null ? "" : insertAt <= 0 ? "<b>맨 앞(출발지)</b>" : insertAt >= np ? `<b>맨 뒤(${np}번 다음)</b>` : `<b>${insertAt}번과 ${insertAt + 1}번 사이</b>`;
+    const ins = insertAt != null ? `<span class="hint">${where}에 넣을 곳을 지도에서 누르세요 (오른쪽 클릭 메뉴도 돼요)</span><button type="button" data-cancel>취소</button>` : "";
+    if (flashMsg) pb.innerHTML = `<span class="hint" style="color:var(--bad)">${esc(flashMsg)}</span>`;
+    else if (ins) pb.innerHTML = ins;
+    else if (!plan.pts.length) pb.innerHTML = `<span class="hint">지도에서 <b>오른쪽 클릭</b> → "여기서 출발"을 고르세요.</span><button type="button" data-pick>지도에서 고르기</button>`;
+    else if (plan.pts.length === 1) pb.innerHTML = `<span class="hint"><b>${esc(plan.pts[0].name)}</b>에서 출발 · 다음 지점은 <b>오른쪽 클릭</b>으로 넣어요</span><button type="button" data-undo>되돌리기</button>`;
+    else pb.innerHTML = `<span><b>${plan.pts.length}곳</b> · <b>${fmtN(Math.round(ps.km))}km</b> · 운전 <b>${dur(ps.drive)}</b> · 도착 <b>${relClock(ps.end)}</b>${pending ? " · 구글 계산 중…" : ""}</span><button type="button" data-undo>되돌리기</button>`;
+    const u = pb.querySelector("[data-undo]"); if (u) u.addEventListener("click", () => { plan.pts.pop(); afterPlanChange(); });
+    const cx = pb.querySelector("[data-cancel]"); if (cx) cx.addEventListener("click", () => { insertAt = null; paint(); renderSheet(true); });
+    const pk = pb.querySelector("[data-pick]"); if (pk) pk.addEventListener("click", () => { insertAt = 0; paint(); renderSheet(true); });
+  }
+  function focusRow(id) {
+    const li = sheet.querySelector(`.tl .stop[data-pid="${id}"]`);
+    if (!li) return;
+    sheet.querySelectorAll(".tl .stop.active").forEach(x => x.classList.remove("active"));
+    li.classList.add("active");
+    if (window.innerWidth > 860) li.scrollIntoView({ block: "center", behavior: "smooth" });
+  }
+  // left click never adds by itself: it adds only after "+ 이 사이에 넣기" / "지도에서 고르기" was pressed;
+  // otherwise a Google place shows a card, and empty map shows a hint to use the right-click menu
+  function onMapClick(e) {
+    closeCtx();
+    if (IW && Date.now() - lastMarkerClick >= 300) IW.close();   // a click on the map outside the card closes it
+    if (mode !== "plan") return;                 // course mode: Google shows its own card for places
+    if (e.placeId && e.stop) e.stop();
+    if (Date.now() - lastMarkerClick < 300) return;
+    const zoom = map.getZoom(), ll = llOf(e);
+    if (insertAt != null) { addPoint({ ll, placeId: e.placeId || null, lookup: !e.placeId && zoom >= 13, zoom }); return; }
+    if (e.placeId) { showPlaceCard(e.placeId, ll); return; }
+    mapHint("지점을 넣으려면 오른쪽 클릭하세요");
+  }
+  function onMapCtx(e) {
+    if (!e || !e.latLng || Date.now() - lastCtx < 250) return;
+    if (e.placeId && e.stop) e.stop();
+    const zoom = map.getZoom(), ll = llOf(e), pid = e.placeId || null;
+    openCtx(evPt(e.domEvent), ll, { title: pid ? (placeNames[pid] || "구글 지도 장소") : null, nodeOpts: x => ({ ll: x, placeId: pid, lookup: !pid && zoom >= 13, zoom }) });
+  }
+  function dayStartHM(c, i) { return i === 0 ? (saved.time || "07:00") : (saved.dayStart[c.id + ":" + i] || byId[c.days[i]].start); }
+  function coursePts(c, idxs) {      // a built-in course as plan nodes; each day's last stop sleeps until the next day's start
+    const pts = [];
+    idxs.forEach((i, n) => {
+      const d = byId[c.days[i]], real = d.stops.filter(k => !S[k].opt), keys = [];
+      if (n === 0 && d.startKey !== real[0]) keys.push(d.startKey);
+      keys.push(...real);
+      if (d.endKey !== real[real.length - 1]) keys.push(d.endKey);
+      keys.forEach(k => {
+        if (pts.length && pts[pts.length - 1].k === k) return;
+        const o = d.dw[k], dw = o ? o[0] : (S[k].dw || 0);
+        pts.push({ id: ++pid, k, ll: S[k].ll, name: S[k].ko, stay: { mode: dw ? "dur" : "pass", min: dw || 30, nights: 1, at: "08:00" }, fly: !!(d.fly && k === d.fly[0]) });
+      });
+      if (n < idxs.length - 1) pts[pts.length - 1].stay = { mode: "at", min: 30, nights: 1, at: dayStartHM(c, idxs[n + 1]) };
+    });
+    return pts;
+  }
+  function loadCourseIntoPlan(onlyDay) {
+    const pts = coursePts(course, onlyDay != null ? [onlyDay] : course.days.map((_, i) => i));
+    addPlan(onlyDay != null ? `${course.label} ${onlyDay + 1}일차` : course.label, pts, clock(startOf(onlyDay != null ? onlyDay : 0)),
+      onlyDay != null ? `${dayDate(onlyDay).getFullYear()}-${String(dayDate(onlyDay).getMonth() + 1).padStart(2, "0")}-${String(dayDate(onlyDay).getDate()).padStart(2, "0")}` : (saved.date || $("dDate").value));
+    setMode("plan"); afterPlanChange(); fitView();
+  }
+  function gmPlanLinks(ps) {
+    const groups = []; let cur = [];
+    ps.nodes.forEach((n, i) => { cur.push(n.p); if ((n.overnight || n.p.fly) && i < ps.nodes.length - 1) { groups.push(cur); cur = n.p.fly ? [] : [n.p]; } });
+    if (cur.length) groups.push(cur);
+    const enc = p => p.k && S[p.k].pid ? { q: S[p.k].q || S[p.k].en, pid: S[p.k].pid } : p.placeId ? { q: p.name, pid: p.placeId } : { q: `${p.ll[1]},${p.ll[0]}` };
+    const links = [];
+    groups.forEach(g => { if (g.length < 2) return; for (let s = 0; s < g.length - 1; s += 9) {
+      const part = g.slice(s, s + 10), o = enc(part[0]), dd = enc(part[part.length - 1]), w = part.slice(1, -1).map(enc);
+      const pr = new URLSearchParams({ api: "1", travelmode: "driving", origin: o.q, destination: dd.q });
+      if (o.pid) pr.set("origin_place_id", o.pid); if (dd.pid) pr.set("destination_place_id", dd.pid);
+      if (w.length) { pr.set("waypoints", w.map(x => x.q).join("|")); if (w.every(x => x.pid)) pr.set("waypoint_place_ids", w.map(x => x.pid).join("|")); }
+      links.push({ href: "https://www.google.com/maps/dir/?" + pr, label: `${part[0].name} → ${part[part.length - 1].name}` }); } });
+    return links;
+  }
+
+  // ---------- view ----------
+  function fitLL(lls) {
+    if (!map || !lls.length) return;
+    const b = new google.maps.LatLngBounds(); lls.forEach(ll => b.extend(LL(ll)));
+    if (lls.length === 1) { map.panTo(LL(lls[0])); map.setZoom(Math.max(map.getZoom(), 10)); return; }
+    map.fitBounds(b, { top: 50, right: 50, bottom: mode === "plan" ? 90 : 50, left: 50 });
+  }
+  function fitView() {
+    if (mode === "plan") { fitLL([...plan.pts.map(p => p.ll), ...planSchedule().legs.flatMap(l => l.path || [])]); return; }
+    const ids = dayIdx == null ? course.days : [course.days[dayIdx]];
+    fitLL(ids.flatMap(id => [...byId[id].polysLL.flat(), ...byId[id].stops.map(k => S[k].ll)]));
+  }
+  function paint() { if (!map) return; paintCourse(); paintPlan(); paintPois(); }
+  const syncTime = () => {
+    $("dDate").value = (mode === "plan" ? plan.date || saved.date : saved.date) || isoToday();
+    $("dTime").value = mode === "plan" ? planTime() : courseTime(); renderWhen();
+  };
+  function setMode(m) {
+    if (mode === m) { syncTime(); return; }
+    mode = m; syncTime(); if (IW) IW.close(); paint(); renderChips(); renderSheet();
+    if (m === "course") fitView(); else if (plan.pts.length) fitView();
+  }
+  function select(cid, idx) {
+    const changed = course.id !== cid;
+    course = courseById[cid] || COURSES[0];
+    dayIdx = idx == null || idx < 0 || idx >= course.days.length ? null : idx;
+    if (changed || !Object.keys(stopDays).length) computeCourse();
+    mode = "course"; syncTime();
+    $("sub").textContent = `두바이 출발 · ${course.name}`;
+    if (IW) IW.close();
+    paint(); renderChips(); renderSheet(); fitView();
+  }
+  function onTimeChange() {
+    const v = $("dTime").value || "07:00";
+    if (mode === "plan") { plan.start = v; plan.date = $("dDate").value; plan.updated = Date.now(); } else { saved.time = v; saved.date = $("dDate").value; }
+    save(); paint(); renderSheet(true);
+  }
+  renderWhen();
+
+  // ---------- chips ----------
+  const pencil = '<svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M14 6l4 4"/></svg>';
+  function renderChips() {
+    const el = $("days");
+    el.innerHTML = `<button class="chip plan" type="button" data-plan aria-pressed="${mode === "plan"}">${pencil}직접 짜기</button><span class="sep"></span>` +
+      COURSES.map(c => `<button class="chip view${c === course && mode === "course" ? " cur" : ""}" type="button" data-c="${c.id}" aria-pressed="${mode === "course" && c === course && dayIdx == null}">${esc(c.label)}</button>`).join("") +
+      (mode === "course" ? `<span class="sep"></span>` + course.days.map((id, i) => `<button class="chip" type="button" data-i="${i}" aria-pressed="${dayIdx === i}"><span class="sw" style="background:${legColor(i)}"></span>${i + 1}일차</button>`).join("") : "");
+    el.querySelector("[data-plan]").addEventListener("click", () => setMode("plan"));
+    el.querySelectorAll("[data-c]").forEach(b => b.addEventListener("click", () => select(b.dataset.c, null)));
+    el.querySelectorAll("[data-i]").forEach(b => b.addEventListener("click", () => select(course.id, +b.dataset.i)));
+  }
+
+  // ---------- sheet ----------
+  const sheet = $("sheet");
+  const navIcon = '<svg viewBox="0 0 24 24"><path d="M3 11l18-8-8 18-2-8-8-2z"/></svg>';
+  function navLegs(d) {
+    let ks = d.stops.filter(k => !S[k].opt); if (S[ks[0]].kind === "city") ks = ks.slice(1);
+    const segs = d.fly ? (() => { const at = ks.indexOf(d.fly[1]); return [{ origin: null, ks: ks.slice(0, at) }, { fly: d.fly }, { origin: d.fly[1], ks: ks.slice(at + 1) }]; })() : [{ origin: null, ks }];
+    const out = [];
+    segs.forEach(sg => { if (sg.fly) { out.push(sg); return; } let origin = sg.origin; for (let i = 0; i < sg.ks.length; i += 4) { const pts = sg.ks.slice(i, i + 4); out.push({ origin, pts }); origin = pts[pts.length - 1]; } });
+    return out;
+  }
+  function gmDir(leg) {
+    const nm = k => S[k].q || S[k].en, p = new URLSearchParams({ api: "1", travelmode: "driving" });
+    if (leg.origin) { p.set("origin", nm(leg.origin)); if (S[leg.origin].pid) p.set("origin_place_id", S[leg.origin].pid); }
+    const dest = leg.pts[leg.pts.length - 1]; p.set("destination", nm(dest)); if (S[dest].pid) p.set("destination_place_id", S[dest].pid);
+    const w = leg.pts.slice(0, -1); if (w.length) { p.set("waypoints", w.map(nm).join("|")); if (w.every(k => S[k].pid)) p.set("waypoint_place_ids", w.map(k => S[k].pid).join("|")); }
+    return "https://www.google.com/maps/dir/?" + p;
+  }
+  function badge(k, grp) {
+    const s = S[k], g = `g-${grp}`;
+    if (s.kind === "visit") return s.opt ? `<span class="badge opt ${g}">+</span>` : `<span class="badge ${g}">${num[k] || "·"}</span>`;
+    if (s.kind === "border") return `<span class="badge border"></span>`;
+    if (s.kind === "air") return `<span class="badge air">✈</span>`;
+    if (s.kind === "via") return `<span class="badge via ${g}"></span>`;
+    return `<span class="badge city"></span>`;
+  }
+  const pill = w => w ? `<span class="pill ${w.lvl}">${esc(w.msg)}</span>` : "";
+  const srcTag = src => src === "google" ? "" : src === "pending" ? ` · <span class="pill est">구글 계산 중</span>` : ` · <span class="pill est">추정</span>`;
+  const nightPill = n => n >= 20 ? `<p class="alert">해가 진 뒤(17:50 전후) 운전이 약 ${dur(r5(n))} 생겨요. 오만 시골길은 밤에 낙타·가축이 길에 나와요.</p>` : "";
+  function srcLine(est, total) {
+    if (routeError) return `<p class="src err">구글 경로 계산이 안 돼서 내장 도로 데이터로 추정했어요: ${esc(routeError)}. 키에 Routes API가 켜져 있는지 확인하세요.</p>`;
+    if (!total) return "";
+    return est ? `<p class="src">구글 경로로 계산 중… (${total - est}/${total} 구간 완료, 나머지는 추정치)</p>` : `<p class="src">거리·운전 시간: 구글 경로 기준 (교통 상황 제외)</p>`;
+  }
+  const coursePadCtl = () => `<div class="padctl"><label for="coursePad">운전 시간 여유</label><select id="coursePad">${PADS.map(v => `<option value="${v}"${v === coursePad() ? " selected" : ""}>+${v}%</option>`).join("")}</select><span class="out">기본 코스의 모든 운전 구간에 더해요</span></div>`;
+  const bindCoursePad = () => { const el = $("coursePad"); if (el) el.addEventListener("change", e => { saved.coursePad = +e.target.value; save(); paint(); renderSheet(true); }); };
+  function renderOverview() {
+    const c = course, sch = allSchedules();
+    const visits = new Set(c.days.flatMap(id => byId[id].stops.filter(k => S[k].kind === "visit" && !S[k].opt)));
+    const km = sch.reduce((a, s) => a + s.km, 0), est = sch.reduce((a, s) => a + s.est, 0), total = sch.reduce((a, s) => a + s.legs.filter(l => !l.fly).length, 0);
+    const rows = c.days.map((id, i) => { const d = byId[id], s = sch[i], warns = s.rows.filter(r => r.warn).length + (s.night >= 20 ? 1 : 0);
+      return `<li><button class="dayrow" type="button" data-i="${i}" data-leg="d${i}"><span class="badge" style="--c:${legColor(i)}">${i + 1}</span><span><b>${esc(d.title)}</b>
+        <small><span class="when2">${dateLabel(s.date)} · ${clock(s.start)} 출발 → ${cclock(i, s.end)} 도착</span>${warns ? ` · <span class="pill warn">확인 ${warns}</span>` : ""}</small>
+        <small>${fmtDist(s)}${d.fly ? ` + 비행 ${dur(FLIGHT_MIN)}` : ""} · 숙박 ${esc(d.stay)}</small></span></button></li>`; }).join("");
+    sheet.innerHTML = `<p class="eyebrow">코스 개요</p><h2>${esc(c.name)}</h2>
+      ${coursePadCtl()}
+      <dl class="facts"><div><dt>총 운전</dt><dd>약 ${fmtN(Math.round(km / 100) * 100)}km</dd></div><div><dt>방문지</dt><dd>${visits.size}곳</dd></div><div><dt>국경</dt><dd>${esc(c.border)}</dd></div>${(c.extra || []).map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>
+      ${srcLine(est, total)}
+      <p class="tip">${esc(c.lead)}</p>${c.alt ? `<p class="alt">${esc(c.alt)}</p>` : ""}
+      <div class="btnrow"><button class="mini" type="button" data-load>이 코스를 새 플랜으로 불러와 고치기</button></div>
+      <p class="sec">일차를 누르면 그날 경로와 시간표로 바뀌어요</p><ol class="daylist">${rows}</ol>
+      <div class="note"><p>위쪽 <b>출발</b> 칸의 날짜와 시간이 1일차에 적용돼요. 날짜를 넣으면 금·토 운영시간도 반영돼요.</p><p>운전 시간은 구글 경로(교통 상황 제외) 기준이고, 휴게·주유는 점심 표시가 있는 곳 말고는 빠져 있어요.</p></div>`;
+    sheet.querySelectorAll(".dayrow").forEach(b => b.addEventListener("click", () => select(course.id, +b.dataset.i)));
+    bindCoursePad();
+    sheet.querySelector("[data-load]").addEventListener("click", () => loadCourseIntoPlan(null));
+  }
+  function timeline(rows, grp, lastLabel, di) {
+    const ck = m => cclock(di, m);
+    const ck2 = (a, b) => Math.floor(b / 1440) > Math.floor(a / 1440) ? ck(b) : clock(b);     // second time of a pair: date only if it moves to a new day
+    const tc = m => m >= 1440 ? `<small>${md(dayDate(di + Math.floor(m / 1440)))}</small>${clock(m)}` : clock(m);
+    return rows.map(r => {
+      if (r.type === "drive") return `<li class="leg" data-leg="d${di}:${r.j}" style="--lc:${legColor(r.j)}"><span class="t"></span><span class="rail"></span><span class="body"><span class="lchip">구간 ${r.j + 1}</span>${r.dep != null ? `<b class="lt">${ck(r.dep)}~${ck2(r.dep, r.dep + r.min)}</b> · ` : ""}운전 ${dur(r.min)}${r.pad ? `<span class="padnote"> (구글 ${dur(r5(r.base))} +${r.pad}%)</span>` : ""} · ${fmtN(Math.round(r.km))}km${srcTag(r.src)}</span></li>`;
+      if (r.type === "fly") return `<li class="leg fly"><span class="t"></span><span class="rail"></span><span class="body">✈ ${r.dep != null ? `<b class="lt">${ck(r.dep)}~${ck2(r.dep, r.dep + r.min)}</b> · ` : ""}비행 ${dur(r.min)} · 실제 항공편 시간에 맞춰 조정하세요</span></li>`;
+      if (r.type === "start") return `<li class="stop"><span class="t">${tc(r.t)}</span><span class="rail"><span class="badge start"></span></span><span class="body"><b>${esc(S[r.k].ko)}</b><p>출발 <b>${ck(r.t)}</b></p></span></li>`;
+      if (r.type === "end") return `<li class="stop"><span class="t">${tc(r.t)}</span><span class="rail"><span class="badge city"></span></span><span class="body"><b>${esc(S[r.k].ko)}</b><p>도착 <b>${ck(r.t)}</b> · 숙소</p></span></li>`;
+      const k = r.k, s = S[k];
+      const stay = r.first
+        ? (r.dw ? `도착 <b>${ck(r.arr)}</b> · ${dur(r.dw)} 머묾 · 출발 <b>${ck2(r.arr, r.dep)}</b>` : `출발 <b>${ck(r.arr)}</b>`)
+        : (r.dw ? `도착 <b>${ck(r.arr)}</b> · ${dur(r.dw)} 머묾${r.note ? ` (${esc(r.note)})` : ""} · 출발 <b>${ck2(r.arr, r.dep)}</b>` : `도착 <b>${ck(r.arr)}</b> · ${lastLabel}`);
+      return `<li class="stop" data-k="${k}"><span class="t">${tc(r.arr)}${r.dw ? `<small>~${clock(r.dep)}</small>` : ""}</span><span class="rail">${badge(k, grp)}</span>
+        <span class="body" tabindex="0"><b>${esc(s.ko)}</b> <span class="en">${esc(s.en)}</span><p>${stay}</p>${s.note ? `<p class="en">${esc(s.note)}</p>` : ""}${pill(r.warn)}
+        ${s.kind === "city" ? "" : `<a class="lnk" href="${gmSearch(k)}" target="_blank" rel="noopener">구글 지도 ↗</a>`}</span></li>`;
+    }).join("");
+  }
+  function renderDay(i) {
+    const d = byId[course.days[i]], last = i === course.days.length - 1, s = schedule(i);
+    const all = navLegs(d), nl = all.filter(l => !l.fly); let j = 0;
+    const navs = all.map(leg => { if (leg.fly) return `<div class="flyrow"><span class="badge air">✈</span>${esc(S[leg.fly[0]].ko)} → ${esc(S[leg.fly[1]].ko)} 비행 · 약 1시간 30~45분</div>`;
+      j++; const a = leg.origin ? S[leg.origin].ko : "현재 위치", b = S[leg.pts[leg.pts.length - 1]].ko, via = leg.pts.length - 1;
+      return `<a class="navbtn" href="${gmDir(leg)}" target="_blank" rel="noopener"><span>${nl.length > 1 ? `길찾기 ${j}/${nl.length}` : "구글 지도 길찾기"}<small>${esc(a)} → ${esc(b)}${via ? ` · 경유 ${via}곳` : ""}</small></span>${navIcon}</a>`; }).join("");
+    const opts = d.stops.filter(k => S[k].opt).map(k => `<li class="stop" data-k="${k}"><span class="t"></span><span class="rail">${badge(k, d.grp)}</span><span class="body" tabindex="0"><b>${esc(S[k].ko)}</b> <span class="en">선택</span><p>${esc(S[k].note || "")}</p></span></li>`).join("");
+    sheet.innerHTML = `<p class="eyebrow g-${d.grp}"><span class="dnum">${i + 1}일차</span>${dateLabel(s.date)} · ${GRP[d.grp]}</p><h2>${esc(d.title)}</h2>
+      <div class="startctl"><label>${i === 0 ? "두바이 출발" : "이날 출발"}</label>${t24("day", clock(s.start))}<span class="out">→ ${cclock(i, s.end)} 도착 · ${esc(d.stay)}</span></div>
+      ${coursePadCtl()}
+      <dl class="facts"><div><dt>운전</dt><dd>${fmtDist(s)}${d.fly ? ` + 비행 ${dur(FLIGHT_MIN)}` : ""}</dd></div></dl>
+      ${srcLine(s.est, s.legs.filter(l => !l.fly).length)}${nightPill(s.night)}
+      <p class="tip">${esc(d.tip)}</p><div class="navs">${navs}</div>
+      <p class="sec">시간표</p><ol class="tl">${timeline(s.rows, d.grp, last ? "도착" : "도착 · 숙소", i)}${opts}</ol>
+      <div class="btnrow"><button class="mini" type="button" data-load>이날 일정을 새 플랜으로 불러와 고치기</button></div>
+      <div class="pager"><button type="button" id="prev" ${i === 0 ? "hidden" : ""}>← ${i}일차</button><button type="button" id="all">코스 개요</button><button type="button" id="next" ${last ? "hidden" : ""}>${i + 2}일차 →</button></div>`;
+    onT24(sheet, "day", v => { if (i === 0) saved.time = v; else saved.dayStart[course.id + ":" + i] = v; save(); syncTime(); paint(); renderSheet(true); });
+    sheet.querySelectorAll(".tl .stop[data-k] .body").forEach(el => el.addEventListener("click", e => { if (e.target.closest("a") || !map) return; const k = el.closest("li").dataset.k; map.panTo(LL(S[k].ll)); map.setZoom(Math.max(map.getZoom(), 13)); showInfo(k); }));
+    bindCoursePad();
+    $("prev").addEventListener("click", () => select(course.id, i - 1));
+    $("next").addEventListener("click", () => select(course.id, i + 1));
+    $("all").addEventListener("click", () => select(course.id, null));
+    sheet.querySelector("[data-load]").addEventListener("click", () => loadCourseIntoPlan(i));
+  }
+  let searchQ = "", searchRes = null, searchMsg = "";
+  async function runSearch(q) {
+    searchQ = q.trim(); if (!searchQ) return;
+    searchMsg = "찾는 중…"; searchRes = null; renderSheet(true);
+    try { searchRes = await textSearch(searchQ); searchMsg = searchRes.length ? "" : "오만·UAE 안에서 찾지 못했어요. 영어 이름으로도 찾아보세요."; }
+    catch (err) { searchRes = []; searchMsg = "검색이 안 돼요: " + String(err && err.message || err) + " · Places API (New)가 켜져 있는지 확인하세요."; notePlacesError(err); }
+    renderSheet(true); paintPlan();
+  }
+  const DAY_WARN = 8 * 60, DAY_BAD = 10 * 60;
+  function dayPill(min) { return min > DAY_BAD ? `<span class="pill bad">하루 운전 10시간 넘음</span>` : min > DAY_WARN ? `<span class="pill warn">하루 운전 8시간 넘음</span>` : ""; }
+  const MIN_OPTS = [0, 5, 10, 15, 20, 30, 40, 45, 50];
+  function stayCtl(n) {
+    const p = n.p, st = p.stay, id = p.id;
+    const h = Math.floor((+st.min || 0) / 60), m = (+st.min || 0) % 60;
+    return `<span class="stay">
+      <select data-mode="${id}" aria-label="머무는 방식"><option value="pass"${st.mode === "pass" ? " selected" : ""}>통과</option><option value="dur"${st.mode === "dur" ? " selected" : ""}>머무는 시간</option><option value="at"${st.mode === "at" ? " selected" : ""}>출발 시각 지정</option></select>
+      ${st.mode === "dur" ? `<input class="num" type="number" min="0" max="240" step="1" data-h="${id}" value="${h}" aria-label="시간"> 시간 <select data-m="${id}" aria-label="분">${[...new Set([...MIN_OPTS, m])].sort((a, b) => a - b).map(v => `<option value="${v}"${v === m ? " selected" : ""}>${v}</option>`).join("")}</select> 분` : ""}
+      ${st.mode === "at" ? `<select data-n="${id}" aria-label="며칠 뒤">${[0, 1, 2, 3, 4, 5, 6, 7].map(v => `<option value="${v}"${v === (+st.nights || 0) ? " selected" : ""}>${v ? `${v}박 후` : "당일"}</option>`).join("")}</select> ${t24("at" + id, st.at || "08:00")} 출발` : ""}
+    </span>
+    <span class="presets"><button type="button" class="pre" data-pre="${id}" data-v="30">30분 휴식</button><button type="button" class="pre" data-pre="${id}" data-v="60">식사 1시간</button><button type="button" class="pre" data-pre="${id}" data-v="night">1박</button></span>`;
+  }
+  function stayText(n, last) {
+    if (n.i === 0) return `출발 <b>${dt(n.dep)}</b>`;
+    const st = n.p.stay, dd = Math.floor(n.dep / 1440) - Math.floor(n.arr / 1440);
+    const arr = `도착 <b>${dt(n.arr)}</b>`;
+    if (last) return arr;
+    if (n.conflict) return `${arr} <span class="pill bad">${clock(parseHM(st.at) ?? 480)} 출발로 잡았는데 그보다 늦게 도착해요</span>`;
+    if (n.dep === n.arr) return `${arr} · 통과`;
+    if (dd > 0) return `${arr} · ${dd}박 · 출발 <b>${dt(n.dep)}</b>`;
+    return `${arr} · ${dur(n.dep - n.arr)} 머묾 · 출발 <b>${clock(n.dep)}</b>`;
+  }
+  // ---------- export: text for an AI chat, and a plan file this page (or a friend's copy) can load back ----------
+  const PLAN_FORMAT = "oman-roadtrip-plan";
+  function planText() {
+    const ps = planSchedule(), pts = plan.pts, n = pts.length;
+    if (!n) return "";
+    const L = [], nameOf = p => p.name + (p.k && S[p.k] ? ` (${S[p.k].en})` : p.poi && poiById[p.poi] ? ` (${poiById[p.poi].en})` : "");
+    const head = d => { const D = ps.days[d]; L.push(""); L.push(`### ${d + 1}일차 · ${dateLabel(dayDate(d))}${D ? ` · 운전 ${dur(D.drive)}` : ""}${D && D.sleep && d < ps.days.length - 1 ? ` · 숙박 ${D.sleep.p.name}` : ""}`); };
+    L.push(`# 오만 로드트립 일정 — ${plan.name}`, "");
+    L.push(`- 출발: ${dt(ps.nodes[0].dep)} / 마지막 도착: ${dt(ps.end)} (${ps.days.length}일)`);
+    L.push(`- 지점 ${n}곳, 총 운전 약 ${fmtN(Math.round(ps.km))}km · ${dur(ps.drive)}`);
+    L.push(`- 시각은 오만 현지 시각(UTC+4, 두바이와 같음) 24시간제예요. 운전 시간·거리는 구글 경로 기준(교통 상황 제외)이고, "(추정)"은 내장 도로망으로 어림한 값이에요.`);
+    const ownPads = pts.filter((q, qi) => qi > 0 && q.pad != null).length;
+    if (planPad() || ownPads) L.push(`- 운전 시간에는 구글 예상 시간에 여유 ${planPad()}%를 더했어요${ownPads ? ` (구간 ${ownPads}곳은 따로 정한 여유를 썼고, 해당 줄에 표시했어요)` : ""}.`);
+    L.push("", "## 날짜별 요약", "", "| 일차 | 날짜 | 운전 | 첫 출발 → 마지막 도착 | 숙박 |", "|---|---|---|---|---|");
+    ps.days.forEach(D => L.push(`| ${D.d + 1}일차 | ${dateLabel(dayDate(D.d))} | ${dur(D.drive)}${D.drive > DAY_BAD ? " (10시간 넘음)" : D.drive > DAY_WARN ? " (8시간 넘음)" : ""} | ${D.first != null ? clock(D.first) : "–"} → ${D.last != null ? clock(D.last) : "–"} | ${D.sleep ? D.sleep.p.name : "–"} |`));
+    L.push("", "## 상세 일정");
+    let cur = 0; head(0);
+    const checks = [];
+    ps.nodes.forEach(nd => {
+      const p = nd.p, i = nd.i, last = i === n - 1, st = p.stay || {};
+      if (nd.leg) {
+        const g = nd.leg, end = g.dep + g.min;
+        L.push(`   ↓ ${g.fly ? `비행 ${dur(g.min)}` : `운전 ${dur(g.min)}${g.pad ? ` (여유 +${g.pad}% 포함)` : ""} · ${fmtN(Math.round(g.km))}km${g.src !== "google" ? " (추정)" : ""}`} · ${clock(g.dep)}~${Math.floor(end / 1440) > Math.floor(g.dep / 1440) ? dt(end) : clock(end)}`);
+        if (!g.fly && g.min > 180) checks.push(`${i}→${i + 1} 구간은 ${dur(g.min)} 연속 운전이에요.`);
+      }
+      const arrDay = Math.floor(nd.arr / 1440); while (cur < arrDay) { cur++; head(cur); }
+      const dd = Math.floor(nd.dep / 1440) - Math.floor(nd.arr / 1440);
+      const when = i === 0 ? `출발 ${clock(nd.dep)}`
+        : last ? `도착 ${clock(nd.arr)} (최종 도착)`
+        : nd.conflict ? `도착 ${clock(nd.arr)} (지정한 출발 ${st.at}보다 늦게 도착)`
+        : nd.dep === nd.arr ? `통과 ${clock(nd.arr)}`
+        : dd > 0 ? `도착 ${clock(nd.arr)} · ${dd}박 · 다음 출발 ${dt(nd.dep)}`
+        : `도착 ${clock(nd.arr)} · ${dur(nd.dep - nd.arr)} 머묾 · 출발 ${clock(nd.dep)}`;
+      L.push(`${i + 1}. ${nameOf(p)} — ${when}${p.fly && !last ? " · 다음 구간은 비행기" : ""}`);
+      L.push(`   좌표: ${p.ll[1].toFixed(5)}, ${p.ll[0].toFixed(5)}`);
+      const note = p.k && S[p.k] && S[p.k].note ? S[p.k].note : p.poi && poiById[p.poi] ? poiById[p.poi].desc : "";
+      if (note) L.push(`   메모: ${note}`);
+      if (p.poi && poiById[p.poi] && poiById[p.poi].tips) L.push(`   팁: ${poiById[p.poi].tips}`);
+      if (nd.warn) { L.push(`   확인: ${nd.warn.msg}`); checks.push(`${i + 1}번 ${p.name}: ${nd.warn.msg}`); }
+      if (nd.conflict) checks.push(`${i + 1}번 ${p.name}: 지정한 출발 시각보다 늦게 도착해요.`);
+      if (!last) { const depDay = Math.floor(nd.dep / 1440); while (cur < depDay) { cur++; head(cur); } }
+    });
+    const dayChecks = [];
+    ps.days.forEach(D => {
+      if (D.drive > DAY_WARN) dayChecks.push(`${D.d + 1}일차(${dateLabel(dayDate(D.d))}) 운전이 ${dur(D.drive)}으로 ${D.drive > DAY_BAD ? "10" : "8"}시간을 넘어요.`);
+      if (D.night >= 20) dayChecks.push(`${D.d + 1}일차에 해가 진 뒤(17:50 전후) 운전이 약 ${dur(r5(D.night))} 있어요.`);
+    });
+    checks.unshift(...dayChecks);
+    if (checks.length) { L.push("", "## 확인할 점"); checks.forEach(c => L.push(`- ${c}`)); }
+    return L.join("\n") + "\n";
+  }
+  const fileSafe = t => String(t).replace(/[\\/:*?"<>|\u0000-\u001f]+/g, "_").trim().slice(0, 60) || "플랜";
+  const stampYMD = () => { const d = new Date(); return `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, "0")}${String(d.getDate()).padStart(2, "0")}`; };
+  // Chrome / Edge: a save dialog so you pick the folder; elsewhere a normal download (to the Downloads folder)
+  async function download(name, text, type) {
+    if (window.showSaveFilePicker) {
+      try {
+        const ext = name.split(".").pop();
+        const h = await window.showSaveFilePicker({ suggestedName: name, types: [{ description: ext === "json" ? "오만 플랜 파일" : "텍스트", accept: { [type.split(";")[0]]: ["." + ext] } }] });
+        const w = await h.createWritable(); await w.write(new Blob([text], { type })); await w.close(); return true;
+      } catch (e) { if (e && e.name === "AbortError") return false; }
+    }
+    const url = URL.createObjectURL(new Blob([text], { type }));
+    const a = document.createElement("a"); a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+    return true;
+  }
+  async function copyText(text) {
+    try { await navigator.clipboard.writeText(text); return true; } catch (e) {
+      const ta = document.createElement("textarea"); ta.value = text; ta.style.cssText = "position:fixed;left:-9999px"; document.body.appendChild(ta); ta.select();
+      let ok = false; try { ok = document.execCommand("copy"); } catch (e2) { ok = false; } ta.remove(); return ok;
+    }
+  }
+  function planFile(ids) {
+    const plans = ids.map(id => saved.plans[id]).filter(Boolean).map(pl => ({ name: pl.name, start: pl.start, date: pl.date, pad: pl.pad || 0, pts: pl.pts }));
+    const routes = {};
+    plans.forEach(pl => pl.pts.forEach((p, i) => { if (!i || pl.pts[i - 1].fly) return; const k = legKey(pl.pts[i - 1].ll, p.ll); if (routeCache[k]) routes[k] = routeCache[k]; }));
+    return JSON.stringify({ format: PLAN_FORMAT, version: 1, app: "오만 로드트립 플래너", exported: new Date().toISOString(), plans, routes });
+  }
+  function shareMsg(msg, err) { planUI.msg = msg; planUI.msgErr = !!err; planUI.share = true; if (mode === "plan") renderSheet(true); clearTimeout(shareMsg.t); shareMsg.t = setTimeout(() => { planUI.msg = null; if (mode === "plan") renderSheet(true); }, 7000); }
+  // loading a file never trusts its contents: every field is checked and rebuilt
+  const isNum = (v, lo, hi) => typeof v === "number" && isFinite(v) && v >= lo && v <= hi;
+  const cleanHM = v => (typeof v === "string" && /^\d{1,2}:\d{2}$/.test(v) && parseHM(v) != null) ? v : null;
+  function cleanPt(p) {
+    if (!p || !Array.isArray(p.ll) || !isNum(p.ll[0], 40, 75) || !isNum(p.ll[1], 5, 35)) return null;
+    const st = p.stay || {}, mode_ = ["pass", "dur", "at"].includes(st.mode) ? st.mode : "pass";
+    const o = { id: ++pid, k: typeof p.k === "string" && S[p.k] ? p.k : null, ll: [+p.ll[0], +p.ll[1]], name: String(p.name || "지점").slice(0, 80),
+      stay: { mode: mode_, min: isNum(st.min, 0, 24 * 60 * 14) ? Math.round(st.min) : 30, nights: isNum(st.nights, 0, 14) ? Math.round(st.nights) : 1, at: cleanHM(st.at) || "08:00" }, fly: p.fly === true };
+    if (isNum(p.pad, 0, 50)) o.pad = Math.round(p.pad);
+    if (typeof p.poi === "string" && poiById[p.poi]) o.poi = p.poi;
+    if (typeof p.placeId === "string" && /^[\w-]{10,300}$/.test(p.placeId)) o.placeId = p.placeId;
+    return o;
+  }
+  function importPlans(text) {
+    let d; try { d = JSON.parse(text); } catch (e) { shareMsg("파일을 읽지 못했어요. 이 플래너에서 저장한 .json 파일인지 확인하세요.", true); return; }
+    if (!d || d.format !== PLAN_FORMAT || !Array.isArray(d.plans)) { shareMsg("오만 로드트립 플래너의 플랜 파일이 아니에요.", true); return; }
+    let first = null, count = 0;
+    d.plans.slice(0, 50).forEach(pl => {
+      if (!pl || !Array.isArray(pl.pts)) return;
+      const pts = pl.pts.slice(0, 200).map(cleanPt).filter(Boolean);
+      if (!pts.length) return;
+      const id = newPlanId();
+      saved.plans[id] = { name: uniqName(String(pl.name || "가져온 플랜").slice(0, 60)), pts, start: cleanHM(pl.start) || undefined, pad: isNum(pl.pad, 0, 50) ? Math.round(pl.pad) : 0,
+        date: typeof pl.date === "string" && /^\d{4}-\d{2}-\d{2}$/.test(pl.date) ? pl.date : undefined, updated: Date.now() };
+      first = first || id; count++;
+    });
+    if (!count) { shareMsg("파일 안에 불러올 플랜이 없어요.", true); return; }
+    if (d.routes && typeof d.routes === "object") Object.entries(d.routes).slice(0, 2000).forEach(([k, r]) => {
+      if (routeCache[k] || !/^-?\d+\.\d{4},-?\d+\.\d{4}>-?\d+\.\d{4},-?\d+\.\d{4}$/.test(k) || !r || !isNum(r.km, 0, 5000) || !isNum(r.min, 0, 10000) || !Array.isArray(r.path)) return;
+      const path = r.path.filter(q => Array.isArray(q) && isNum(q[0], 40, 75) && isNum(q[1], 5, 35)).map(q => [+q[0], +q[1]]);
+      if (path.length >= 2) routeCache[k] = { km: r.km, min: r.min, path };
+    });
+    persistRoutes(); legState.clear();
+    switchPlan(first); save();
+    if (mode !== "plan") setMode("plan"); else { syncTime(); paint(); renderSheet(); }
+    if (plan.pts.length) fitView();
+    shareMsg(`플랜 ${count}개를 불러왔어요${count > 1 ? " (목록에서 골라 보세요)" : ""}.`);
+  }
+  $("importFile").addEventListener("change", e => { const f = e.target.files && e.target.files[0]; e.target.value = ""; if (f) f.text().then(importPlans); });
+  // drop a plan file anywhere on the page
+  let dragDepth = 0;
+  const hasFiles = e => e.dataTransfer && [...(e.dataTransfer.types || [])].includes("Files");
+  window.addEventListener("dragenter", e => { if (!hasFiles(e)) return; dragDepth++; document.body.classList.add("dropping"); });
+  window.addEventListener("dragleave", e => { if (!hasFiles(e)) return; dragDepth = Math.max(0, dragDepth - 1); if (!dragDepth) document.body.classList.remove("dropping"); });
+  window.addEventListener("dragover", e => { if (hasFiles(e)) e.preventDefault(); });
+  window.addEventListener("drop", e => {
+    if (!hasFiles(e)) return; e.preventDefault(); dragDepth = 0; document.body.classList.remove("dropping");
+    const f = [...e.dataTransfer.files].find(x => /\.json$/i.test(x.name) || x.type === "application/json");
+    if (f) f.text().then(importPlans); else shareMsg("플랜 파일(.json)만 불러올 수 있어요.", true);
+  });
+
+  function renderPlan() {
+    const ps = planSchedule(), n = plan.pts.length, links = n >= 2 ? gmPlanLinks(ps) : [];
+    const est = ps.legs.filter(l => !l.fly && l.src !== "google").length, total = ps.legs.filter(l => !l.fly).length;
+    const dayRow = d => { const D = ps.days[d]; if (!D) return ""; const dt = dayDate(d);
+      return `<li class="leg dayhead"><span class="t"></span><span class="rail"></span><span class="body"><b>${dateLabel(dt)}</b> · ${d + 1}일차 · 운전 ${dur(D.drive)} ${dayPill(D.drive)}${D.night >= 20 ? `<span class="pill warn">해 진 뒤 운전 ${dur(r5(D.night))}</span>` : ""}</span></li>`; };
+    let curDay = 0;
+    const rows = [dayRow(0)];
+    ps.nodes.forEach(nd => {
+      const p = nd.p, i = nd.i, s = p.k ? S[p.k] : null, P = p.poi ? poiById[p.poi] : null, last = i === n - 1;
+      if (nd.leg) {
+        const L = nd.leg;
+        const long = !L.fly && L.min > 180 ? ` <span class="pill warn">3시간 넘게 연속 운전 · 중간에 쉬기 좋아요</span>` : "";
+        rows.push(`<li class="leg${L.fly ? " fly" : ""}"${L.fly ? "" : ` data-leg="p${i - 1}" style="--lc:${legColor(i - 1)}"`}><span class="t"></span><span class="rail"></span><span class="body">${L.fly ? "✈ " : `<span class="lchip">${i}→${i + 1}</span>`}<b class="lt">${clock(L.dep)}~${Math.floor((L.dep + L.min) / 1440) > Math.floor(L.dep / 1440) ? dt(L.dep + L.min) : clock(L.dep + L.min)}</b> · ${L.fly ? `비행 ${dur(L.min)}` : `운전 ${dur(L.min)}${L.pad ? `<span class="padnote"> (구글 ${dur(r5(L.base))} +${L.pad}%)</span>` : ""} · ${fmtN(Math.round(L.km))}km${srcTag(L.src)} · <select class="padsel${p.pad != null ? " own" : ""}" data-legpad="${p.id}" title="이 구간만 운전 시간 여유를 따로 정해요" aria-label="${i}→${i + 1} 구간 운전 시간 여유"><option value=""${p.pad == null ? " selected" : ""}>여유 일괄(+${planPad()}%)</option>${PADS.map(v => `<option value="${v}"${p.pad != null && +p.pad === v ? " selected" : ""}>여유 +${v}%</option>`).join("")}</select>`}${long}
+          <button class="ins" type="button" data-ins="${i}">+ 이 사이에 넣기</button></span></li>`);
+      }
+      const arrDay = Math.floor(nd.arr / 1440);
+      while (curDay < arrDay) { curDay++; rows.push(dayRow(curDay)); }
+      const tm = i === 0 ? nd.dep : nd.arr;
+      const tcol = `<small>${md(dayDate(Math.floor(tm / 1440)))}</small>${clock(tm)}<small>${i === 0 ? "출발" : "도착"}</small>`;
+      rows.push(`<li class="stop" data-pid="${p.id}"><span class="t">${tcol}</span><span class="rail"><span class="badge plan${i === 0 ? " first" : ""}">${i + 1}</span></span>
+        <span class="body"><b>${esc(p.name)}</b> <span class="en">${s ? esc(s.en) : P ? esc(P.en) : p.placeId ? "구글 장소" : `${p.ll[1].toFixed(4)}, ${p.ll[0].toFixed(4)}`}</span>
+        <p>${stayText(nd, last)}</p>${s && s.note ? `<p class="en">${esc(s.note)}</p>` : ""}${P ? `<p class="en">${esc(P.desc)}</p>` : ""}${pill(nd.warn)}
+        <span class="pctl">${i === 0 ? `<span>출발 시간은 위쪽 출발 칸에서 바꿔요</span>` : stayCtl(nd)}</span>
+        <span class="pctl">${!last ? `<label><input type="checkbox" data-fly="${p.id}"${p.fly ? " checked" : ""}> 다음 구간 비행기</label>` : ""}
+          <button class="ic" type="button" data-up="${p.id}" aria-label="위로" ${i === 0 ? "disabled" : ""}>↑</button><button class="ic" type="button" data-down="${p.id}" aria-label="아래로" ${last ? "disabled" : ""}>↓</button><button class="ic" type="button" data-del="${p.id}" aria-label="삭제">×</button>
+          ${P ? `<button class="ic" type="button" data-poiinfo="${P.id}" title="관광지 설명 카드 보기">ⓘ</button><a class="lnk" href="${poiSearch(P)}" target="_blank" rel="noopener">구글 지도 ↗</a>` : s ? `<a class="lnk" href="${gmSearch(p.k)}" target="_blank" rel="noopener">구글 지도 ↗</a>` : p.placeId ? `<a class="lnk" href="https://www.google.com/maps/search/?${new URLSearchParams({ api: "1", query: p.name, query_place_id: p.placeId })}" target="_blank" rel="noopener">구글 지도 ↗</a>` : ""}</span></span></li>`);
+      const depDay = Math.floor(nd.dep / 1440);
+      if (!last) while (curDay < depDay) { curDay++; rows.push(dayRow(curDay)); }
+    });
+    rows.push(`<li class="leg"><span class="t"></span><span class="rail"></span><span class="body"><button class="ins" type="button" data-ins="${n}">+ 맨 뒤에 이어서 추가</button></span></li>`);
+    const daysTable = ps.days.length && n >= 2 ? `<table class="days-t"><thead><tr><th>일차</th><th>운전</th><th>출발 → 마지막 도착</th><th>숙박</th></tr></thead><tbody>${ps.days.map(D => `<tr><td>${dateLabel(dayDate(D.d))}<small>${D.d + 1}일차</small></td><td class="${D.drive > DAY_BAD ? "bad" : D.drive > DAY_WARN ? "warn" : ""}">${dur(D.drive)}</td><td>${D.first != null ? clock(D.first) : "–"} → ${D.last != null ? clock(D.last) : "–"}</td><td>${D.sleep ? esc(D.sleep.p.name) : "–"}</td></tr>`).join("")}</tbody></table>` : "";
+    const plist = Object.entries(saved.plans).sort((a, b) => (b[1].updated || 0) - (a[1].updated || 0));
+    const stamp = t => { if (!t) return ""; const d = new Date(t); return `${d.getMonth() + 1}/${d.getDate()} ${clock(d.getHours() * 60 + d.getMinutes())}`; };
+    const ed = planUI.edit;
+    const edDefault = ed === "rename" ? plan.name : ed === "saveas" ? uniqName(plan.name + " 사본") : uniqName("새 플랜");
+    const planBar = `<div class="planbar">
+        <label class="pl-lab" for="planSel">저장된 플랜 ${plist.length}개</label>
+        <select id="planSel">${plist.map(([id, pl]) => `<option value="${id}"${id === saved.planId ? " selected" : ""}>${esc(pl.name)} · ${pl.pts.length}곳${pl.updated ? " · " + stamp(pl.updated) : pl.from ? " · 기본 코스" : ""}</option>`).join("")}<option value="__new">+ 새 빈 플랜 만들기</option></select>
+        <div class="pl-btns"><button class="mini" type="button" data-saveas>다른 이름으로 저장</button><button class="mini" type="button" data-rename>이름 바꾸기</button><button class="mini${planUI.del ? " danger" : ""}" type="button" data-delplan>${planUI.del ? "한 번 더 누르면 삭제" : "삭제"}</button></div>
+        ${ed ? `<form class="pl-name" id="plName"><label for="plNameIn">${ed === "rename" ? "새 이름" : ed === "saveas" ? "다른 이름으로 저장 · 지금 플랜을 복사해요" : "새 빈 플랜 이름"}</label><div><input id="plNameIn" maxlength="40" value="${esc(edDefault)}" autocomplete="off"><button class="mini" type="submit">${ed === "rename" ? "바꾸기" : "저장"}</button><button class="mini" type="button" data-plcancel>취소</button></div></form>` : ""}
+      </div>`;
+    const shareBox = `<details class="share" id="shareBox"${planUI.share ? " open" : ""}><summary>내보내기 · 불러오기</summary><div class="sh-body">
+        <div class="sh-group"><b>AI에 붙여 넣을 텍스트 · 지금 플랜</b><div><button class="mini" type="button" data-exptxt${n ? "" : " disabled"}>텍스트 파일로 저장</button><button class="mini" type="button" data-copytxt${n ? "" : " disabled"}>텍스트 복사</button></div></div>
+        <div class="sh-group"><b>다시 불러올 수 있는 플랜 파일(.json) · 백업·공유용</b><div><button class="mini" type="button" data-expjson${n ? "" : " disabled"}>이 플랜 저장</button><button class="mini" type="button" data-expall>모든 플랜 저장 (${plist.length}개)</button><button class="mini" type="button" data-imp>파일 불러오기</button></div></div>
+        ${planUI.msg ? `<p class="sh-msg${planUI.msgErr ? " err" : ""}">${esc(planUI.msg)}</p>` : `<p class="sh-msg" style="background:none;padding:0;color:var(--muted)">받은 플랜 파일은 "파일 불러오기"를 누르거나 이 창에 끌어다 놓으면 목록에 추가돼요. 지금 플랜은 바뀌지 않아요.</p>`}
+      </div></details>`;
+    sheet.innerHTML = `<p class="eyebrow">직접 짜기</p>${planBar}${shareBox}<h2>${esc(plan.name)}</h2>
+      ${n >= 2 ? (() => { const own = plan.pts.filter((q, qi) => qi > 0 && q.pad != null).length;
+        return `<div class="padctl"><label for="planPad">운전 시간 여유</label><select id="planPad">${PADS.map(v => `<option value="${v}"${v === planPad() ? " selected" : ""}>+${v}%</option>`).join("")}</select>
+          <span class="out">모든 구간의 구글 예상 운전 시간에 더해요${own ? ` · 구간별로 따로 정한 곳 ${own}개` : " · 구간마다 따로 정할 수도 있어요"}</span>${own ? `<button class="mini" type="button" data-padreset>모두 일괄로 되돌리기</button>` : ""}</div>`; })() : ""}
+      ${n >= 2 ? `<dl class="facts"><div><dt>지점</dt><dd>${n}곳</dd></div><div><dt>운전</dt><dd>약 ${fmtN(Math.round(ps.km))}km · ${dur(ps.drive)}</dd></div><div><dt>출발</dt><dd>${dt(ps.nodes[0].dep)}</dd></div><div><dt>마지막 도착</dt><dd>${dt(ps.end)}${ps.days.length > 1 ? ` (${ps.days.length}일)` : ""}</dd></div></dl>` : ""}
+      ${daysTable}${srcLine(est, total)}${placesError ? `<p class="src err">장소 이름을 가져오지 못해 가까운 지명으로 표시했어요: ${esc(placesError)}. 구글 콘솔에서 Places API (New)를 켜고 키의 API 제한에도 추가하세요.</p>` : ""}
+      <form class="psearch" id="psearch"><input id="pq" type="search" value="${esc(searchQ)}" placeholder="장소 이름으로 찾기 (예: Anantara Jabal Akhdar)" aria-label="장소 검색"><button type="submit">찾기</button></form>
+      ${searchMsg ? `<p class="src">${esc(searchMsg)}</p>` : ""}
+      ${searchRes && searchRes.length ? `<ul class="presults">${searchRes.map((r, x) => `<li><button type="button" class="pr-go" data-go="${x}"><b>${esc(r.name)}</b><small>${esc(r.addr)}</small></button><button type="button" class="mini" data-addr="${x}">${insertAt != null ? `${insertAt}번 뒤에 넣기` : "플랜에 추가"}</button></li>`).join("")}</ul>` : ""}
+      <label class="poitoggle"><input type="checkbox" data-pois${saved.showPois ? " checked" : ""}> 코스 추천 장소 핀도 지도에 보기</label>
+      <div class="btnrow"><button class="mini" type="button" data-loadc>${esc(course.label)} 코스를 새 플랜으로 불러오기</button>${n ? `<button class="mini" type="button" data-undo>마지막 지점 지우기</button><button class="mini" type="button" data-clear>모두 지우기</button>` : ""}</div>
+      ${n ? "" : `<div class="empty"><b>지도에서 오른쪽 클릭하면 "여기서 출발 / 맨 뒤에 추가" 메뉴가 나와요.</b> 실수로 들어가지 않게 왼쪽 클릭만으로는 추가되지 않아요. 지도를 충분히 확대해서 리조트·식당 위를 오른쪽 클릭하면 구글에 등록된 이름으로 들어가요(왼쪽 클릭은 이름 카드만 보여줘요). 관광지 핀이나 위 검색창으로도 넣을 수 있어요. 그다음엔 이렇게 고쳐요.<br>· 경로 선이나 1시간 표시를 오른쪽 클릭하면 그 구간에 경유지를 넣는 메뉴가 나와요.<br>· 목록의 <b>+ 이 사이에 넣기</b>를 누른 뒤에는 지도를 왼쪽 클릭해도 그 자리에 들어가요.<br>· 번호 핀을 오른쪽 클릭하면 삭제할 수 있고, 끌어서 옮길 수도 있어요. 머무는 시간이나 출발 시각을 바꾸면 뒤쪽 시간이 모두 다시 계산돼요.</div>`}
+      ${links.length ? `<div class="navs">${links.map((l, x) => `<a class="navbtn" href="${l.href}" target="_blank" rel="noopener"><span>${links.length > 1 ? `길찾기 ${x + 1}/${links.length}` : "구글 지도 길찾기"}<small>${esc(l.label)}</small></span>${navIcon}</a>`).join("")}</div>` : ""}
+      ${n ? `<p class="sec">시간표 · 구간마다 선 색이 달라요 · 지도의 점은 1시간마다 지나는 곳 (시각 · 그 구간 출발 후 km) · 추가는 지도에서 오른쪽 클릭</p><ol class="tl">${rows.join("")}</ol>` : ""}
+      <div class="note"><p>확대한 지도에서 누르거나 검색하면 구글 장소 정보를 한 번 받아 와요(Places API, 종류별 월 5,000회 무료). 많이 축소한 상태에서 누른 곳은 장소를 찾지 않고 가까운 지명으로 표시해요.</p><p>하루 운전이 8시간을 넘으면 노랑, 10시간을 넘으면 빨강으로 표시해요. 1시간 표시의 위치와 km는 구간 평균 속도로 나눈 대략적인 값이에요. km는 직전 지점에서 출발한 뒤 달린 거리예요.</p><p>플랜과 계산한 경로는 이 브라우저에 저장돼서, 같은 구간은 다시 계산(과금)하지 않아요.</p></div>`;
+    const idx = id => plan.pts.findIndex(p => p.id === +id);
+    const nodeOf = el => plan.pts[idx(el.dataset[Object.keys(el.dataset)[0]])];
+    sheet.querySelectorAll("[data-mode]").forEach(el => el.addEventListener("change", () => {
+      const i = idx(el.dataset.mode), p = plan.pts[i], nd = ps.nodes[i];
+      p.stay.mode = el.value;
+      if (el.value === "dur" && !(+p.stay.min)) p.stay.min = 30;
+      if (el.value === "at" && nd) {   // default: leave about an hour after arriving, same day
+        const target = Math.ceil((nd.arr + 60) / 15) * 15;
+        p.stay.nights = Math.floor(target / 1440) - Math.floor(nd.arr / 1440); p.stay.at = clock(target);
+      }
+      afterPlanChange();
+    }));
+    sheet.querySelectorAll("[data-h]").forEach(el => el.addEventListener("change", () => { const p = nodeOf(el); p.stay.min = Math.max(0, Math.round(+el.value || 0)) * 60 + ((+p.stay.min || 0) % 60); afterPlanChange(); }));
+    sheet.querySelectorAll("[data-m]").forEach(el => el.addEventListener("change", () => { const p = nodeOf(el); p.stay.min = Math.floor((+p.stay.min || 0) / 60) * 60 + (+el.value || 0); afterPlanChange(); }));
+    sheet.querySelectorAll("[data-n]").forEach(el => el.addEventListener("change", () => { nodeOf(el).stay.nights = +el.value || 0; afterPlanChange(); }));
+    plan.pts.forEach(p => { if (sheet.querySelector(`[data-t24h="at${p.id}"]`)) onT24(sheet, "at" + p.id, v => { p.stay.at = v; afterPlanChange(); }); });
+    sheet.querySelectorAll("[data-pre]").forEach(el => el.addEventListener("click", () => { const p = plan.pts[idx(el.dataset.pre)];
+      if (el.dataset.v === "night") p.stay = { ...p.stay, mode: "at", nights: 1, at: p.stay.at || "08:00" }; else p.stay = { ...p.stay, mode: "dur", min: +el.dataset.v }; afterPlanChange(); }));
+    sheet.querySelectorAll("[data-fly]").forEach(el => el.addEventListener("change", () => { nodeOf(el).fly = el.checked; afterPlanChange(); }));
+    sheet.querySelectorAll("[data-ins]").forEach(el => el.addEventListener("click", () => { insertAt = +el.dataset.ins; paint(); renderSheet(true); }));
+    const move = (id, dl) => { const i = idx(id), j = i + dl; if (j < 0 || j >= plan.pts.length) return; [plan.pts[i], plan.pts[j]] = [plan.pts[j], plan.pts[i]]; plan.pts.forEach(p => { p.fly = false; }); afterPlanChange(); };
+    sheet.querySelectorAll("[data-up]").forEach(el => el.addEventListener("click", () => move(el.dataset.up, -1)));
+    sheet.querySelectorAll("[data-down]").forEach(el => el.addEventListener("click", () => move(el.dataset.down, 1)));
+    sheet.querySelectorAll("[data-del]").forEach(el => el.addEventListener("click", () => { const i = idx(el.dataset.del); if (i > 0) plan.pts[i - 1].fly = false; plan.pts.splice(i, 1); afterPlanChange(); }));
+    const u = sheet.querySelector("[data-undo]"); if (u) u.addEventListener("click", () => { plan.pts.pop(); afterPlanChange(); });
+    const c = sheet.querySelector("[data-clear]"); if (c) c.addEventListener("click", () => { plan.pts = []; insertAt = null; afterPlanChange(); });
+    sheet.querySelector("[data-loadc]").addEventListener("click", () => loadCourseIntoPlan(null));
+    if ($("planPad")) $("planPad").addEventListener("change", e => { plan.pad = +e.target.value; afterPlanChange(); });
+    const pr = sheet.querySelector("[data-padreset]"); if (pr) pr.addEventListener("click", () => { plan.pts.forEach(q => { delete q.pad; }); afterPlanChange(); });
+    sheet.querySelectorAll("[data-legpad]").forEach(el => el.addEventListener("change", () => { const q = plan.pts.find(x => x.id === +el.dataset.legpad); if (!q) return; if (el.value === "") delete q.pad; else q.pad = +el.value; afterPlanChange(); }));
+    $("shareBox").addEventListener("toggle", e => { planUI.share = e.target.open; });
+    const sb = $("shareBox");
+    sb.querySelector("[data-exptxt]").addEventListener("click", async () => { if (await download(`오만일정_${fileSafe(plan.name)}_${stampYMD()}.txt`, planText(), "text/plain;charset=utf-8")) shareMsg("텍스트 파일을 저장했어요. AI 채팅에 파일째 올리거나 내용을 붙여 넣으면 돼요."); });
+    sb.querySelector("[data-copytxt]").addEventListener("click", async () => { const ok = await copyText(planText()); shareMsg(ok ? "일정 텍스트를 복사했어요. AI 채팅창에 붙여 넣으세요." : "복사가 안 됐어요. '텍스트 파일로 저장'을 써 주세요.", !ok); });
+    sb.querySelector("[data-expjson]").addEventListener("click", async () => { if (await download(`오만플랜_${fileSafe(plan.name)}_${stampYMD()}.json`, planFile([saved.planId]), "application/json")) shareMsg("플랜 파일을 저장했어요. 받는 사람은 이 플래너 HTML에서 '파일 불러오기'로 열면 돼요."); });
+    sb.querySelector("[data-expall]").addEventListener("click", async () => { if (await download(`오만플랜_전체_${stampYMD()}.json`, planFile(plist.map(([id]) => id)), "application/json")) shareMsg(`플랜 ${plist.length}개를 한 파일로 저장했어요.`); });
+    sb.querySelector("[data-imp]").addEventListener("click", () => $("importFile").click());
+    sheet.querySelectorAll("[data-poiinfo]").forEach(el => el.addEventListener("click", () => { const P = poiById[el.dataset.poiinfo]; if (!P || !map) return; map.panTo(LL(P.ll)); showPoi(P.id); }));
+    $("planSel").addEventListener("change", e => {
+      if (e.target.value === "__new") { planUI.edit = "new"; planUI.del = false; renderSheet(true); const i = $("plNameIn"); if (i) { i.focus(); i.select(); } return; }
+      openPlan(e.target.value);
+    });
+    const editMode = m => { planUI.edit = m; planUI.del = false; renderSheet(true); const i = $("plNameIn"); if (i) { i.focus(); i.select(); } };
+    sheet.querySelector("[data-saveas]").addEventListener("click", () => editMode("saveas"));
+    sheet.querySelector("[data-rename]").addEventListener("click", () => editMode("rename"));
+    sheet.querySelector("[data-delplan]").addEventListener("click", () => {
+      if (!planUI.del) { planUI.del = true; planUI.edit = null; renderSheet(true); setTimeout(() => { if (planUI.del) { planUI.del = false; if (mode === "plan") renderSheet(true); } }, 4000); return; }
+      deletePlan(saved.planId);
+    });
+    const pf = $("plName");
+    if (pf) {
+      pf.addEventListener("submit", e => {
+        e.preventDefault(); const name = $("plNameIn").value.trim(); if (!name) return;
+        if (planUI.edit === "rename") { plan.name = uniqName(name, saved.planId); planUI.edit = null; afterPlanChange(); return; }
+        if (planUI.edit === "saveas") addPlan(name, JSON.parse(JSON.stringify(plan.pts)), plan.start, plan.date);
+        else addPlan(name, [], plan.start, plan.date);
+        afterPlanChange(); syncTime();
+      });
+      sheet.querySelector("[data-plcancel]").addEventListener("click", () => { planUI.edit = null; renderSheet(true); });
+      $("plNameIn").addEventListener("keydown", e => { if (e.key === "Escape") { planUI.edit = null; renderSheet(true); } });
+    }
+    sheet.querySelector("[data-pois]").addEventListener("change", e => { saved.showPois = e.target.checked; save(); paint(); });
+    $("psearch").addEventListener("submit", e => { e.preventDefault(); runSearch($("pq").value); });
+    sheet.querySelectorAll("[data-go]").forEach(el => el.addEventListener("click", () => { const r = searchRes[+el.dataset.go]; if (r && map) { map.panTo(LL(r.ll)); map.setZoom(Math.max(map.getZoom(), 14)); } }));
+    sheet.querySelectorAll("[data-addr]").forEach(el => el.addEventListener("click", () => { const r = searchRes[+el.dataset.addr]; if (!r) return; addPoint({ ll: r.ll, placeId: r.id, name: r.name }); if (map) map.panTo(LL(r.ll)); }));
+    sheet.querySelectorAll(".tl .stop[data-pid] .body").forEach(el => el.addEventListener("click", e => { if (e.target.closest("a,button,select,input,label")) return; const p = plan.pts[idx(el.closest("li").dataset.pid)]; if (p && map) { map.panTo(LL(p.ll)); map.setZoom(Math.max(map.getZoom(), 11)); } }));
+  }
+  function renderSheet(keep) {
+    const top = sheet.scrollTop;
+    if (mode === "plan") renderPlan(); else if (dayIdx == null) renderOverview(); else renderDay(dayIdx);
+    hiKey = null;
+    sheet.querySelectorAll("[data-leg]").forEach(el => { el.addEventListener("mouseenter", () => hiLeg(el.dataset.leg, true)); el.addEventListener("mouseleave", () => hiLeg(el.dataset.leg, false)); });
+    sheet.scrollTop = keep ? top : 0;
+  }
+
+  // ---------- Google Maps loading ----------
+  function showKeyPanel(err) {
+    $("keyErr").hidden = !err; $("keyErr").textContent = err || "";
+    $("keyInput").value = ls.get(KEY_STORE) || "";
+    $("keypanel").hidden = false;
+    setTimeout(() => $("keyInput").focus(), 50);
+  }
+  $("keyBtn").addEventListener("click", () => showKeyPanel(null));
+  $("keyClear").addEventListener("click", () => { ls.del(KEY_STORE); $("keyInput").value = ""; });
+  $("keySave").addEventListener("click", () => {
+    const k = $("keyInput").value.trim();
+    if (!/^[A-Za-z0-9_\-]{20,}$/.test(k)) { $("keyErr").hidden = false; $("keyErr").textContent = "키 모양이 아니에요. 구글 콘솔에서 복사한 키(보통 AIza로 시작)를 붙여 넣으세요."; return; }
+    const had = ls.get(KEY_STORE); ls.set(KEY_STORE, k);
+    if (window.google && window.google.maps && had && had !== k) { location.reload(); return; }   // a loaded Maps API can't switch keys
+    $("keypanel").hidden = true;
+    if (!window.google || !window.google.maps) loadGoogle(k);
+  });
+  $("keyInput").addEventListener("keydown", e => { if (e.key === "Enter") $("keySave").click(); });
+  function loadGoogle(key) {
+    window.gm_authFailure = () => showKeyPanel("구글이 이 키를 거부했어요. 키가 맞는지, Maps JavaScript API가 켜져 있는지, 결제 계정이 연결돼 있는지 확인하세요. 키에 웹사이트(리퍼러) 제한을 걸었다면 이 파일처럼 내 컴퓨터에서 연 페이지는 막혀요.");
+    window.__omanMapsReady = () => { initMap().catch(err => showKeyPanel("지도를 여는 중 문제가 생겼어요: " + (err && err.message || err))); };
+    const s = document.createElement("script");
+    s.src = "https://maps.googleapis.com/maps/api/js?" + new URLSearchParams({ key, v: "weekly", loading: "async", callback: "__omanMapsReady", language: "ko", region: "OM" });
+    s.async = true;
+    s.onerror = () => showKeyPanel("구글 지도를 불러오지 못했어요. 인터넷 연결을 확인하세요.");
+    document.head.appendChild(s);
+  }
+  async function initMap() {
+    const maps = await google.maps.importLibrary("maps");
+    const marker = await google.maps.importLibrary("marker");
+    try { const core = await google.maps.importLibrary("core"); SymPath = (core && core.SymbolPath) || (google.maps.SymbolPath) || null; } catch (e) { SymPath = google.maps.SymbolPath || null; }
+    AME = marker.AdvancedMarkerElement;
+    try { RouteCls = (await google.maps.importLibrary("routes")).Route || null; } catch (e) { RouteCls = null; routeError = "routes 라이브러리를 불러오지 못했어요"; }
+    legState.clear();   // estimates made before Google loaded should now be re-asked
+    try { const pl = await google.maps.importLibrary("places"); PlaceCls = pl.Place || null; RankPref = pl.SearchNearbyRankPreference || null; } catch (e) { PlaceCls = null; }
+    map = new maps.Map($("map"), {
+      center: { lat: 21.6, lng: 56.6 }, zoom: 6, mapId: "DEMO_MAP_ID", mapTypeId: "hybrid",
+      mapTypeControl: true, mapTypeControlOptions: { mapTypeIds: ["hybrid", "satellite", "roadmap", "terrain"] },
+      streetViewControl: false, fullscreenControl: true, clickableIcons: true, gestureHandling: "greedy",
+    });
+    IW = new google.maps.InfoWindow();
+    map.addListener("click", onMapClick);
+    map.addListener("contextmenu", onMapCtx);
+    try { map.addListener("rightclick", onMapCtx); } catch (e) { /* not in this API version */ }
+    map.addListener("dragstart", closeCtx);
+    $("map").addEventListener("contextmenu", ev => { ev.preventDefault(); lastPointer = { x: ev.clientX, y: ev.clientY, t: Date.now() }; }, true);
+    $("map").addEventListener("pointerdown", ev => { lastPointer = { x: ev.clientX, y: ev.clientY, t: Date.now() }; }, true);
+    map.addListener("zoom_changed", () => { closeCtx(); $("map").classList.toggle("zin", map.getZoom() >= 10); $("map").classList.toggle("zin2", map.getZoom() >= 12); relayoutLegs(); });
+    buildStopMarkers(); buildPoiMarkers();
+    const hash = (location.hash || "").slice(1), m = /^(c\d+[a-z]?)(?:d(\d))?$/.exec(hash);
+    if (hash === "plan") { computeCourse(); select(course.id, null); setMode("plan"); }
+    else select(m && courseById[m[1]] ? m[1] : course.id, m && m[2] ? +m[2] - 1 : null);
+  }
+
+  // ---------- resizable split between map and sheet ----------
+  (function () {
+    const app = document.querySelector("main.app"), sp = $("split"), KEY = "omanGmaps.sheetW";
+    const clamp = w => Math.max(300, Math.min(app.clientWidth - 320, w));
+    const setW = w => { app.style.setProperty("--sheet-w", clamp(w) + "px"); };
+    const sw = +(ls.get(KEY) || 0); if (sw) setW(sw);
+    let dragging = false;
+    sp.addEventListener("pointerdown", e => { dragging = true; sp.setPointerCapture(e.pointerId); sp.classList.add("drag"); document.body.classList.add("resizing"); e.preventDefault(); });
+    sp.addEventListener("pointermove", e => { if (!dragging) return; setW(app.getBoundingClientRect().right - e.clientX - 4); });
+    const end = () => { if (!dragging) return; dragging = false; sp.classList.remove("drag"); document.body.classList.remove("resizing");
+      ls.set(KEY, String(parseInt(getComputedStyle(app).getPropertyValue("--sheet-w")) || 430)); };
+    sp.addEventListener("pointerup", end); sp.addEventListener("pointercancel", end);
+    sp.addEventListener("dblclick", () => { app.style.removeProperty("--sheet-w"); ls.del(KEY); });
+    sp.addEventListener("keydown", e => { if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return; e.preventDefault();
+      const cur = parseInt(getComputedStyle(app).getPropertyValue("--sheet-w")) || 430; setW(cur + (e.key === "ArrowLeft" ? 30 : -30)); ls.set(KEY, String(parseInt(getComputedStyle(app).getPropertyValue("--sheet-w")))); });
+    window.addEventListener("resize", () => { const cur = parseInt(getComputedStyle(app).getPropertyValue("--sheet-w")); if (cur) setW(cur); });
+  })();
+
+  // ---------- start ----------
+  computeCourse(); renderChips(); renderSheet();
+  const key = ls.get(KEY_STORE);
+  if (key) loadGoogle(key); else showKeyPanel(null);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+node_modules/
+tools/mapdata.json
+*.png
+.DS_Store

@@ -1,0 +1,1944 @@
+[
+ {
+  "id": "sultan-qaboos-grand-mosque",
+  "ko": "술탄 카부스 그랜드 모스크",
+  "en": "Sultan Qaboos Grand Mosque",
+  "cat": "culture",
+  "region": "무스카트",
+  "desc": "2001년에 문을 연 오만의 대표 모스크예요. 본 예배당에 약 6,500명, 전체 약 2만 명이 들어갈 수 있고, 세계에서 두 번째로 큰 수작업 페르시아 카펫이 깔려 있어요. 대리석 회랑과 정원이 정갈해서 무스카트 여행의 첫 방문지로 좋아요.",
+  "tips": "비무슬림 관람은 토~목 오전 8~11시만 가능하고 금요일엔 관람할 수 없어요(관광청 사이트, 2025년 블로그). 여성은 머리 스카프와 팔·다리를 가리는 헐렁한 옷, 남성은 긴바지가 필요하고 입구에서 아바야·스카프를 빌릴 수 있어요. 2025년 1월 입장료 도입 보도 이후 정보가 엇갈리니 요금은 현장에서 확인하세요.",
+  "visitMin": 75,
+  "family": "아이도 팔다리 가리는 옷 필요, 조용히 관람",
+  "q": "Sultan Qaboos Grand Mosque, Muscat",
+  "ll": [
+   58.38867,
+   23.58381
+  ],
+  "src": [
+   "https://experienceoman.om/destinations/muscat/sultan-qaboos-grand-mosque",
+   "https://maps.app.goo.gl/EBgNzrbEsAsGa67TA",
+   "https://en.wikipedia.org/wiki/Sultan_Qaboos_Grand_Mosque"
+  ]
+ },
+ {
+  "id": "mutrah-souq",
+  "ko": "무트라 수크",
+  "en": "Mutrah Souq",
+  "cat": "culture",
+  "region": "무스카트",
+  "desc": "약 200년 역사를 지닌, 오만에서 가장 오래된 시장 중 하나예요. 지붕 덮인 좁은 골목에 유향, 향유, 향신료, 오만 은세공품, 칸자르(전통 단검) 가게가 모여 있어요. 항구 바로 앞이라 코니시 산책과 묶어 보기 좋아요.",
+  "tips": "보통 토~목 9~13시·16~23시, 금요일 9~11시·16~23시에 열어요(2024년 이후 작성된 블로그 기준). 한낮엔 쉬는 가게가 많아 해 질 무렵이 좋아요. 골목이 좁고 붐벼 유모차보다 아기띠가 편해요.",
+  "visitMin": 60,
+  "family": "구경거리 많지만 저녁엔 붐벼요",
+  "q": "Mutrah Souq",
+  "ll": [
+   58.5645,
+   23.6204
+  ],
+  "src": [
+   "https://experienceoman.om/destinations/muscat/mutrah-souq",
+   "https://maps.app.goo.gl/84AN3M3A9whSxhXH9",
+   "https://ryo.co/en/destinations/oman/places/muttrah-souk/"
+  ]
+ },
+ {
+  "id": "mutrah-corniche",
+  "ko": "무트라 코니시",
+  "en": "Mutrah Corniche",
+  "cat": "culture",
+  "region": "무스카트",
+  "desc": "무트라 항구를 따라 약 3 km 이어지는 해안 산책로예요. 한쪽은 바다와 정박한 배, 다른 쪽은 하얀 옛 건물과 바위산이라 무스카트다운 풍경을 볼 수 있어요. 수산시장, 수크, 무트라 요새가 모두 이 길에 붙어 있어요.",
+  "tips": "10월 낮은 더우니 해 질 녘에 걷는 걸 추천해요. 서쪽 수산시장에서 수크를 거쳐 동쪽 요새 방향으로 걸으면 동선이 좋아요.",
+  "visitMin": 45,
+  "family": "해안 산책로라 아이와 걷기 쉬워요",
+  "q": "Mutrah Corniche",
+  "ll": [
+   58.5628,
+   23.62179
+  ],
+  "src": [
+   "https://wanderlog.com/list/geoCategory/105939/top-things-to-do-and-attractions-in-muscat",
+   "https://omanwanderlust.com/things-to-do-in-muttrah-oman-muscats-old-city",
+   "https://ryo.co/en/destinations/oman/places/corniche-sculptures/"
+  ]
+ },
+ {
+  "id": "muttrah-fish-market",
+  "ko": "무트라 수산시장",
+  "en": "Muttrah Fish Market",
+  "cat": "culture",
+  "region": "무스카트",
+  "desc": "코니시 서쪽 끝, 노르웨이 건축사무소 스노헤타가 설계한 건물에 들어선 어시장이에요. 아침이면 갓 잡은 생선을 손질하고 사고파는 현지 풍경을 가까이서 볼 수 있어요.",
+  "tips": "이른 아침에 가야 활기차요(블로그는 금요일 아침을 추천해요). 바닥이 젖어 있을 수 있으니 미끄럽지 않은 신발을 신으세요.",
+  "visitMin": 30,
+  "family": "아이들 생선 구경 재미, 냄새 주의",
+  "q": "Muttrah Fish Market",
+  "ll": [
+   58.56181,
+   23.62464
+  ],
+  "src": [
+   "https://wanderlog.com/place/details/2000195",
+   "https://www.snohetta.com/projects/muttrah-fish-market",
+   "https://omanwanderlust.com/things-to-do-in-muttrah-oman-muscats-old-city"
+  ]
+ },
+ {
+  "id": "muttrah-fort",
+  "ko": "무트라 요새",
+  "en": "Muttrah Fort",
+  "cat": "fort",
+  "region": "무스카트",
+  "desc": "1580년대 포르투갈이 짓기 시작하고 야루바 왕조 때 다시 쌓은 요새로, 큰 원형 탑 하나와 작은 탑 두 개가 있어요. 언덕 위에 있어 무트라 코니시와 옛 항구가 한눈에 내려다보여요.",
+  "tips": "매일 08:00~23:00 열어요(관광청 사이트, 2024년 이후 블로그). 입장료는 출처마다 금액이 달라 현장에서 확인하세요. 수크를 지나 바로 오른쪽 언덕길로 올라가면 요새 주차장이 있어요.",
+  "visitMin": 45,
+  "family": "오르막·계단 있음, 아이 손 잡기",
+  "q": "Muttrah Fort",
+  "ll": [
+   58.56683,
+   23.62016
+  ],
+  "src": [
+   "https://experienceoman.om/destinations/muscat/muttrah-fort",
+   "https://wanderlog.com/list/geoCategory/105939/top-things-to-do-and-attractions-in-muscat",
+   "https://muscat.platinumlist.net/event-tickets/muttrah-fort"
+  ]
+ },
+ {
+  "id": "al-alam-palace",
+  "ko": "알 알람 궁전",
+  "en": "Al Alam Palace (exterior)",
+  "cat": "culture",
+  "region": "무스카트",
+  "desc": "술탄이 외국 정상을 맞이하는 의전용 궁전으로, 1972년 옛 궁터에 지금의 건물이 완성됐어요. 파란색과 금색 기둥이 있는 화려한 외관이 유명하고, 양옆 바위 위에 포르투갈 요새인 알 미라니와 알 잘랄리가 서 있어 함께 사진에 담기 좋아요.",
+  "tips": "내부는 공개되지 않아 정문 앞에서 외관만 볼 수 있어요. 빛이 부드러운 늦은 오후가 사진 찍기 좋아요. 동쪽 알 잘랄리 요새는 일반인 출입이 안 돼요.",
+  "visitMin": 30,
+  "family": "짧게 들르기 좋음, 그늘 적어요",
+  "q": "Al Alam Palace",
+  "ll": [
+   58.5947,
+   23.61591
+  ],
+  "src": [
+   "https://experienceoman.om/destinations/muscat/al-alam-palace",
+   "https://maps.app.goo.gl/owJUTRttQjgzvfDi7",
+   "https://en.wikipedia.org/wiki/Al_Alam_Palace"
+  ]
+ },
+ {
+  "id": "al-mirani-fort",
+  "ko": "알 미라니 요새",
+  "en": "Al Mirani Fort",
+  "cat": "fort",
+  "region": "무스카트",
+  "desc": "알 알람 궁전 서쪽 바위 위의 요새로, 1588년 포르투갈이 다시 지은 뒤 야루바·부사이디 시대에 보수·확장됐어요. 2025년 4월부터 일반에 공개돼 무기 전시, 디지털 전시, 궁전과 알 잘랄리 요새가 내려다보이는 전망 탑을 볼 수 있어요.",
+  "tips": "매일 오전 8시부터 열고 관광청 사이트엔 자정까지로 나와 있어요. 2025년 9월 기사 기준 외국인 입장료가 95디르함 수준으로 비싼 편이에요. 엘리베이터와 카페가 있어요.",
+  "visitMin": 60,
+  "family": "엘리베이터 있어 아이와 이동 편해요",
+  "q": "Al Mirani Fort Muscat",
+  "ll": [
+   58.59348,
+   23.61726
+  ],
+  "src": [
+   "https://experienceoman.om/destinations/muscat/al-mirani-fort",
+   "https://www.thenationalnews.com/travel/2025/09/22/muscat-ancient-al-mirani-fort-opens-to-public-oman/",
+   "https://wanderlog.com/list/geoCategory/105939/top-things-to-do-and-attractions-in-muscat"
+  ]
+ },
+ {
+  "id": "national-museum-of-oman",
+  "ko": "오만 국립박물관",
+  "en": "National Museum of Oman",
+  "cat": "culture",
+  "region": "무스카트",
+  "desc": "2016년 올드 무스카트에 문을 연 국가 박물관으로, 알 알람 궁전 맞은편에 있어요. 고고 유물, 옛 항해 도구, 초기 이슬람 필사본 등 7,000점이 넘는 소장품으로 오만 역사를 보여 줘요. 몰입형 디지털 전시와 어린이 교육 공간도 있어요.",
+  "tips": "공식 사이트 기준 매일 10:00~17:00(마지막 입장 16:30)이고, 금요일은 오후에만 연다는 출처도 있으니 확인하세요. 외국인 입장료는 5리알이에요(관광청 사이트). 실내라 한낮 더위를 피하기 좋아요.",
+  "visitMin": 120,
+  "family": "어린이 교육 공간, 실내 냉방",
+  "q": "National Museum of Oman",
+  "ll": [
+   58.59373,
+   23.6116
+  ],
+  "src": [
+   "https://www.nm.gov.om/en/visit",
+   "https://wanderlog.com/place/details/23856/national-museum-of-oman",
+   "https://experienceoman.om/destinations/muscat/national-museum"
+  ]
+ },
+ {
+  "id": "bait-al-zubair-museum",
+  "ko": "바이트 알 주바이르 박물관",
+  "en": "Bait Al Zubair Museum",
+  "cat": "culture",
+  "region": "무스카트",
+  "desc": "1998년 주바이르 가문이 개인 소장품으로 연 민속 박물관이에요. 칸자르와 옛 무기, 장신구, 전통 의상, 생활 도구를 전통 가옥 여러 채에 나눠 전시해요. 마당에는 오만 마을을 축소한 모형이 있어요.",
+  "tips": "토~목 09:30~18:00, 금요일은 휴관이에요. 외국인 3리알, 12세 미만은 무료예요(관광청 사이트). 국립박물관·알 알람 궁전과 걸어서 묶어 보기 좋아요.",
+  "visitMin": 60,
+  "family": "12세 미만 무료, 마을 모형 볼거리",
+  "q": "Bait Al Zubair Museum",
+  "ll": [
+   58.58957,
+   23.61445
+  ],
+  "src": [
+   "https://experienceoman.om/destinations/muscat/bait-al-zubair-museum",
+   "https://maps.app.goo.gl/tBurpBMKS7oavQ3i9",
+   "https://en.wikipedia.org/wiki/Bait_Al_Zubair"
+  ]
+ },
+ {
+  "id": "royal-opera-house-muscat",
+  "ko": "로열 오페라 하우스 무스카트",
+  "en": "Royal Opera House Muscat",
+  "cat": "culture",
+  "region": "무스카트",
+  "desc": "2011년 걸프 지역 최초로 문을 연 오페라 하우스로, 샤티 알 쿠룸의 술탄 카부스 거리에 있어요. 오만 전통 양식을 살린 하얀 석조 건물과 정원, 상점가가 있고 오페라·발레·오케스트라와 아랍 음악 공연이 열려요.",
+  "tips": "가이드 투어는 토~목 08:30~17:30이고 금요일엔 없어요. 요금은 성인 3.15리알, 어린이 1.05리알이에요(관광청 사이트). 공연을 볼 땐 드레스 코드가 있으니 공식 사이트에서 확인하세요.",
+  "visitMin": 60,
+  "family": "건물 투어는 짧고 무난해요",
+  "q": "Royal Opera House Muscat",
+  "ll": [
+   58.46851,
+   23.61395
+  ],
+  "src": [
+   "https://experienceoman.om/destinations/muscat/royal-opera-house",
+   "https://maps.app.goo.gl/x6FDbR31qcPAdNSTA",
+   "https://en.wikipedia.org/wiki/Royal_Opera_House_Muscat"
+  ]
+ },
+ {
+  "id": "qurum-beach",
+  "ko": "쿠룸 해변",
+  "en": "Qurum Beach",
+  "cat": "sea",
+  "region": "무스카트",
+  "desc": "무스카트 도심에서 가장 쉽게 갈 수 있는 긴 모래 해변으로, 해변을 따라 산책로가 있어요. 오페라 하우스와 쿠룸 자연공원이 가까워 하루 일정에 넣기 편해요.",
+  "tips": "10월 한낮엔 햇볕이 강하니 아침이나 해 질 녘이 좋아요. 물놀이할 땐 아이 곁을 꼭 지켜 주세요.",
+  "visitMin": 90,
+  "family": "모래놀이·물놀이 좋아요",
+  "q": "Qurum Beach Muscat",
+  "ll": [
+   58.47928,
+   23.62501
+  ],
+  "src": [
+   "https://experienceoman.om/destinations/muscat/qurum-beach",
+   "https://maps.app.goo.gl/yZh8EQSBUy2b52kd6"
+  ]
+ },
+ {
+  "id": "qurum-natural-park",
+  "ko": "쿠룸 자연공원",
+  "en": "Qurum Natural Park",
+  "cat": "nature",
+  "region": "무스카트",
+  "desc": "무스카트 도심의 큰 공원으로 보트를 탈 수 있는 호수, 술탄 카부스 장미정원, 인공 폭포와 분수가 있어요. 놀이기구와 놀이터, 넓은 잔디밭이 있어 가족 나들이 장소로 평이 좋아요.",
+  "tips": "밤에는 폭포와 분수에 조명이 들어와 선선한 저녁 방문이 좋아요. 주말·공휴일은 붐비니 평일을 추천해요.",
+  "visitMin": 90,
+  "family": "놀이터·놀이기구, 아이들이 좋아해요",
+  "q": "Qurum Natural Park",
+  "ll": [
+   58.49269,
+   23.62156
+  ],
+  "src": [
+   "https://wanderlog.com/place/details/562666/qurum-natural-park",
+   "https://wanderlog.com/list/geoCategory/159909/best-parks-and-gardens-in-muscat"
+  ]
+ },
+ {
+  "id": "oman-aquarium",
+  "ko": "오만 아쿠아리움",
+  "en": "Oman Aquarium (Mall of Oman)",
+  "cat": "sea",
+  "region": "무스카트",
+  "desc": "몰 오브 오만 안에 있는 7,500㎡ 규모의 아쿠아리움으로, 100개가 넘는 전시에 1만 마리 이상의 해양 생물이 있어요. 오만의 항해가 아흐마드 빈 마지드의 항해를 주제로 꾸며져 있어요.",
+  "tips": "10:00~22:00 운영해요(관광청 사이트). 펭귄·거북이 먹이 주기, 4세 이상 스노클링, 12세 이상 다이빙 체험이 있어요. 요금은 공식 사이트(omanaquarium.om)에서 확인하세요.",
+  "visitMin": 120,
+  "family": "실내 냉방, 더운 날 아이들에게 최고",
+  "q": "Oman Aquarium Mall of Oman",
+  "ll": [
+   58.40501,
+   23.57191
+  ],
+  "src": [
+   "https://experienceoman.om/destinations/muscat/oman-aquarium"
+  ]
+ },
+ {
+  "id": "marina-bandar-al-rowdha",
+  "ko": "마리나 반다르 알 로우다 (돌고래 투어)",
+  "en": "Marina Bandar Al Rowdha (dolphin & boat tours)",
+  "cat": "sea",
+  "region": "무스카트",
+  "desc": "올드 무스카트 남동쪽 해안의 마리나로, 돌고래 관찰 투어와 해안 보트 투어가 출발해요. 반다르 카이란처럼 배로 가기 좋은 만과 해변으로 가는 투어도 여기서 떠나요.",
+  "tips": "돌고래 투어는 보통 2시간 안팎이고 이른 아침 출발이 많아요. 미리 예약하고 아이용 구명조끼가 있는지 확인하세요.",
+  "visitMin": 150,
+  "family": "돌고래 보기 좋음, 뱃멀미 대비",
+  "q": "Marina Bandar Al Rowdha",
+  "ll": [
+   58.60621,
+   23.58161
+  ],
+  "src": [
+   "https://wanderlog.com/place/details/1725547/marina-bandar-al-rowdha",
+   "https://omanwanderlust.com/things-to-do-in-muttrah-oman-muscats-old-city"
+  ]
+ },
+ {
+  "id": "qantab-beach",
+  "ko": "칸타브 해변",
+  "en": "Qantab Beach",
+  "cat": "sea",
+  "region": "무스카트",
+  "desc": "바위산에 둘러싸인 작은 어촌 해변으로, 물이 맑아 수영과 스노클링을 즐기기 좋아요. 해변에서 현지 보트를 타고 해안 절벽과 아치형 바위를 둘러볼 수 있어요. 9세기 다우선을 복원한 '주얼 오브 무스카트'가 이 마을 조선소에서 만들어졌어요.",
+  "tips": "주말엔 붐비니 평일 오전을 추천해요. 햇볕을 가릴 그늘막과 물을 챙기세요. 보트 요금과 소요 시간은 타기 전에 확인하세요.",
+  "visitMin": 120,
+  "family": "물놀이·보트 체험 가능",
+  "q": "Qantab Beach",
+  "ll": [
+   58.63119,
+   23.56164
+  ],
+  "src": [
+   "https://wanderlog.com/place/details/5132138/qantab-beach",
+   "https://en.wikipedia.org/wiki/Qantab"
+  ]
+ },
+ {
+  "id": "bandar-khayran",
+  "ko": "반다르 카이란",
+  "en": "Bandar Khayran",
+  "cat": "sea",
+  "region": "무스카트",
+  "desc": "무스카트 남동쪽 해안에 바위섬과 작은 만이 이어지는 석호 지형이에요. 테이블 산호와 열대어가 많아 스노클링, 카약, 보트 투어 장소로 인기가 높아요. 전망대에서 내려다보는 청록색 바다 풍경이 유명해요.",
+  "tips": "그랜드 모스크에서 차로 약 45분이고 전망대 주차장까지는 일반 차량으로 갈 수 있어요. 일부 해변(바나나 비치 등)은 4x4로만 갈 수 있고, 약 2 km 트레킹 길은 그늘이 없어 물과 모자가 필수예요. 차로 가기 힘든 해변은 마리나 반다르 알 로우다 출발 보트 투어를 이용하세요.",
+  "visitMin": 180,
+  "family": "보트 투어로 가면 아이와 무난",
+  "q": "Bandar Khayran",
+  "ll": [
+   58.7325,
+   23.50139
+  ],
+  "approx": 1,
+  "src": [
+   "https://en.wikipedia.org/wiki/Bandar_Khayran",
+   "https://omantripper.com/bandar-al-khayran/",
+   "https://www.omanobserver.om/ampArticle/1104593"
+  ]
+ },
+ {
+  "id": "daymaniyat-islands",
+  "ko": "다이마니야트 제도 (보트 출발: 알 무즈 마리나)",
+  "en": "Daymaniyat Islands (boat from Al Mouj Marina)",
+  "cat": "sea",
+  "region": "무스카트",
+  "desc": "바르카 해안에서 약 18 km 떨어진 9개 섬으로 이뤄진 자연보호구역이에요. 산호초가 잘 발달했고 푸른바다거북과 매부리바다거북이 알을 낳는 곳이라 스노클링·다이빙 명소로 꼽혀요. 무스카트에서는 알 무즈 마리나에서 해양 투어와 다이빙 보트가 출발해요.",
+  "tips": "5~10월에는 섬 해변에 상륙할 수 없어서 10월에는 보트 위 스노클링만 할 수 있어요(환경청, 2024년 기사). 환경청 허가가 포함된 투어를 예약하고, 아이 나이 제한과 소요 시간은 투어사에 미리 확인하세요. 바닷길이 30km 남짓이라 멀미약을 챙기세요.",
+  "visitMin": 300,
+  "family": "스노클링 가능한 아이에게 추천",
+  "q": "Al Mouj Marina Muscat",
+  "ll": [
+   58.26444,
+   23.63035
+  ],
+  "src": [
+   "https://www.almoujmarina.com/",
+   "https://www.almouj.com/en/contact-us/",
+   "https://en.wikipedia.org/wiki/Ad_Dimaniyat_Islands"
+  ]
+ },
+ {
+  "id": "wadi-dayqah-dam",
+  "ko": "와디 다이카 댐",
+  "en": "Wadi Dayqah Dam",
+  "cat": "nature",
+  "region": "무스카트",
+  "desc": "쿠리야트 마자라 마을 근처에 있는 오만 최대의 댐으로, 높이 75 m 본댐 뒤로 최대 1억 ㎥를 담는 호수가 산 사이에 펼쳐져요. 사막 지대에서 보기 드문 청록색 호수 풍경이 인상적이에요. 댐 아래엔 전망대, 잔디밭, 피크닉 그늘막, 화장실을 갖춘 공원이 있어요.",
+  "tips": "무스카트에서 약 110 km, 차로 1시간 반 정도예요. 댐까지는 포장도로라 일반 차량으로 갈 수 있지만 와디 안쪽 비포장길은 4x4가 필요해요. 10월엔 한낮 더위가 강하니 오전에 다녀오세요.",
+  "visitMin": 90,
+  "family": "잔디밭 피크닉 좋음, 물가 안전 주의",
+  "q": "Wadi Dayqah Dam",
+  "ll": [
+   58.84908,
+   23.0834
+  ],
+  "src": [
+   "https://rccdams.co.uk/dams/wadi-dayqah/",
+   "https://therestlessbeans.com/?p=123700",
+   "https://en.wikipedia.org/wiki/Wadi_Dayqah"
+  ]
+ },
+ {
+  "id": "nakhal-fort",
+  "ko": "나클 요새",
+  "en": "Nakhal (Nakhl) Fort",
+  "cat": "fort",
+  "region": "바티나",
+  "desc": "알하자르 산맥 자락의 바위 언덕 위에 세운 요새로, 이슬람 이전에 기원을 두고 17세기에 재건됐으며 1834년에 성문과 탑이 더해졌어요. 내부는 박물관으로 운영되고, 탑 위에서 대추야자 농장과 산세가 한눈에 보여요.",
+  "tips": "오만 관광청 공식 사이트는 매일 08:00–22:00 운영으로 안내하지만 방문 전 다시 확인하세요. 입장권은 현장 매표소에서 사요. 탑 계단이 가팔라서 아이 손을 잡아 주시고, 차로 몇 분 거리인 아인 알 사와라 온천과 묶어서 오전에 둘러보면 좋아요.",
+  "visitMin": 75,
+  "family": "탑과 성벽을 오르내리는 재미가 있어 아이들이 좋아해요",
+  "q": "Nakhal Fort",
+  "ll": [
+   57.82867,
+   23.39474
+  ],
+  "src": [
+   "https://experienceoman.om/destinations/al-batinah-south/nakhl-fort",
+   "https://en.wikipedia.org/wiki/Nakhal_Fort",
+   "https://www.omanobserver.om/article/1166378/features/culture/the-transformation-of-nakhal-fort-as-a-world-class-attraction"
+  ]
+ },
+ {
+  "id": "ain-al-thowarah",
+  "ko": "아인 알 사와라 온천",
+  "en": "Ain Al Thowarah Hot Spring",
+  "cat": "nature",
+  "region": "바티나",
+  "desc": "나클 요새에서 몇 km 떨어진 와디에서 따뜻한 샘물이 솟아 개울로 흘러가는 녹지예요. 대추야자 숲 사이 물가에서 쉬어 가기 좋은 곳이에요.",
+  "tips": "물에 발을 담그면 작은 물고기가 발 각질을 쪼아 먹는 체험을 무료로 할 수 있다고 소개돼요(2025년 기사). 나클 요새 관람 뒤 들러 쉬어 가는 코스로 좋아요.",
+  "visitMin": 45,
+  "family": "얕은 물가에서 발 담그고 물고기 구경하기 좋아요",
+  "q": "Ain Al Thowarah Hot Spring Nakhal",
+  "ll": [
+   57.82833,
+   23.37528
+  ],
+  "src": [
+   "https://en.wikipedia.org/wiki/Al_Thowarah_hot_spring",
+   "https://www.geonames.org/search.html?q=thawwarah&country=OM",
+   "https://en.wikipedia.org/wiki/Nakhal_Fort"
+  ]
+ },
+ {
+  "id": "rustaq-fort",
+  "ko": "루스타크 요새",
+  "en": "Rustaq Fort",
+  "cat": "fort",
+  "region": "바티나",
+  "desc": "알하자르 산기슭 루스타크 오아시스에 있는 대형 요새로, 이슬람 이전 시기에 기원을 두고 여러 왕조를 거치며 확장됐어요. 이슬람 유산 목록에 오른 오만의 대표 요새 중 하나예요.",
+  "tips": "유산관광부의 대규모 복원 공사가 2027년 11월~연말까지 예정돼 있고(2025년 8월 기사), 구글 지도에도 '임시 휴업'으로 나와요. 외관 사진 위주로 계획하세요. 서쪽 약 1.5km에 유황 온천 아인 알 카스파(수온 최대 약 45°C)가 있어요.",
+  "visitMin": 20,
+  "family": "공사 중이라 외관만 잠깐 보는 정도예요",
+  "q": "Rustaq Fort",
+  "ll": [
+   57.42683,
+   23.39202
+  ],
+  "src": [
+   "https://wanderlog.com/place/details/34787",
+   "https://commons.wikimedia.org/wiki/Category:Rustaq_Fort",
+   "https://www.muscatdaily.com/2025/08/31/rustaq-fort-an-icon-of-omani-history-returns-to-life/"
+  ]
+ },
+ {
+  "id": "al-hazm-castle",
+  "ko": "알 하즘 성",
+  "en": "Al Hazm Castle",
+  "cat": "fort",
+  "region": "바티나",
+  "desc": "1708년 이맘 술탄 빈 사이프 2세가 와디 루스타크 옆 평지에 지은 성으로, 나무 대들보 없이 돌 아치로 천장을 받친 구조가 독특해요. 비밀 통로와 포르투갈·스페인제 옛 대포가 남아 있어요.",
+  "tips": "오만 관광청 사이트 기준 토~목 07:30–18:00, 금 09:00–18:00 운영이에요. 입장권은 현장 매표소에서 사요. 10월에도 한낮은 더우니 오전에 루스타크와 묶어 둘러보세요.",
+  "visitMin": 60,
+  "family": "비밀 통로와 대포가 있어 아이들이 흥미로워해요",
+  "q": "Al Hazm Castle Rustaq",
+  "ll": [
+   57.47283,
+   23.55072
+  ],
+  "src": [
+   "https://experienceoman.om/destinations/al-batinah-south/al-hazm-castle",
+   "https://www.omanobserver.om/article/1189020/oman/community/when-is-the-best-time-to-explore-omans-forts-castles"
+  ]
+ },
+ {
+  "id": "snake-canyon",
+  "ko": "스네이크 캐니언(와디 바니 아우프)",
+  "en": "Snake Canyon (Snake Gorge), Wadi Bani Awf",
+  "cat": "mountain",
+  "region": "바티나",
+  "desc": "와디 바니 아우프 깊은 곳에 있는 좁고 구불구불한 협곡으로, 물웅덩이를 헤엄치고 바위에서 뛰어내리는 캐니어링 명소예요. 협곡으로 가는 와디 바니 아우프 산길도 경치가 뛰어난 오프로드 코스예요.",
+  "tips": "가파른 비포장 산길이라 4x4가 꼭 필요해요. 협곡 통과는 수영·점프·로프 하강이 필요해 전문 가이드 동행이 권장되고, 비 예보가 있으면 돌발 홍수 위험 때문에 절대 들어가지 마세요.",
+  "visitMin": 120,
+  "family": "협곡 트레킹은 어린아이에게 무리라 가족은 4x4 드라이브와 경치 감상 위주로 추천해요",
+  "q": "Snake Canyon Wadi Bani Awf",
+  "ll": [
+   57.3865,
+   23.21
+  ],
+  "src": [
+   "https://en.wikipedia.org/wiki/Snake_Gorge",
+   "https://atlasobscura.com/places/snake-canyon",
+   "https://omantripper.com/?p=2190"
+  ]
+ },
+ {
+  "id": "bilad-sayt",
+  "ko": "빌라드 사이트 마을",
+  "en": "Bilad Sayt (Balad Sayt) Village",
+  "cat": "village",
+  "region": "바티나",
+  "desc": "알하자르 산맥 깊은 곳, 제벨 샴스 근처 산비탈에 흙·돌집과 계단식 밭이 모여 있는 산골 마을이에요. 마을 전체가 계단식 밭과 어우러진 풍경으로 유명해요.",
+  "tips": "오만 관광청은 4x4 차량과 산악 운전 경험이 필요하다고 안내해요. 와디 바니 아우프(루스타크 쪽) 또는 알 함라 쪽 비포장 고갯길로 들어가요. 주민이 사는 마을이니 조용히 둘러보세요.",
+  "visitMin": 60,
+  "family": "가는 길 자체가 모험이고, 마을에선 조용히 걷기만 하면 돼요",
+  "q": "Bilad Sayt village",
+  "ll": [
+   57.38792,
+   23.19025
+  ],
+  "src": [
+   "https://en.wikipedia.org/wiki/Bilad_Sayt",
+   "https://experienceoman.om/destinations/al-batinah-south/balad-sayt-village"
+  ]
+ },
+ {
+  "id": "wakan-village",
+  "ko": "와칸 마을",
+  "en": "Wakan (Wekan) Village",
+  "cat": "village",
+  "region": "바티나",
+  "desc": "와디 미스탈 끝, 해발 약 1,500m 산비탈에 자리한 마을로 계단식 과수원과 수로(팔라즈) 사이로 산책로가 이어져요. 위쪽 복원된 망루 전망대에서 제벨 아크다르 산군과 분지가 내려다보여요.",
+  "tips": "마지막 오르막은 아주 가파른 길이라 4x4가 필요해요(2024년 기사 기준). 마을 입구에서 약 700개 계단 산책로를 따라 전망대까지 올라가며, 마을 꼭대기까지는 20분쯤 걸려요. 마을에 카페가 있어요(2025년 기사).",
+  "visitMin": 120,
+  "family": "계단 산책이라 잘 걷는 아이에게 좋고 해안보다 선선해요",
+  "q": "Wakan Village",
+  "ll": [
+   57.73472,
+   23.14361
+  ],
+  "src": [
+   "https://en.wikipedia.org/wiki/Wakan,_Oman",
+   "https://www.geonames.org/search.html?q=wakan&country=OM",
+   "https://www.muscatdaily.com/2024/04/02/wakan-village-to-get-cable-car-new-road/"
+  ]
+ },
+ {
+  "id": "sohar-fort",
+  "ko": "소하르 요새",
+  "en": "Sohar Fort",
+  "cat": "fort",
+  "region": "바티나",
+  "desc": "13세기 말~14세기 초에 지어진 해안 요새로, 1985~1993년 복원 후 박물관으로 공개됐어요. 소하르의 구리 교역과 중국과의 해상 교류 역사를 보여주는 발굴 유물이 전시돼 있어요.",
+  "tips": "운영시간과 휴관일은 2024년 이후 공식 자료를 찾지 못해 현장 확인이 필요해요. 실내 전시 위주라 한낮 더위를 피해 들르기 괜찮아요.",
+  "visitMin": 60,
+  "family": "전시실 위주라 짧고 가볍게 보기 좋아요",
+  "q": "Sohar Fort",
+  "ll": [
+   56.74957,
+   24.36225
+  ],
+  "src": [
+   "https://wanderlog.com/place/details/341966/sohar-fort",
+   "https://timesofoman.com/article/156588-sohar-fort-attracts-more-than-1000-visitors-during-eid-al-fitr-holiday",
+   "https://next.archnet.org/sites/22171"
+  ]
+ },
+ {
+  "id": "al-sawadi-beach",
+  "ko": "알 사와디 해변",
+  "en": "Al Sawadi Beach & Islands",
+  "cat": "sea",
+  "region": "바티나",
+  "desc": "바르카 북쪽의 모래 해변으로, 앞바다에 망루가 늘어선 바위섬들이 떠 있어요. 50m가 넘는 높이의 전망 탑에 오르면 해변과 작은 섬들이 내려다보여요.",
+  "tips": "썰물 때는 모래톱을 걸어 본섬까지 갈 수 있지만 물이 빨리 차오르니 물때를 꼭 확인하세요. 섬까지는 허가받은 보트를 이용하세요. 그늘이 거의 없으니 아침이나 늦은 오후가 좋아요.",
+  "visitMin": 120,
+  "family": "조개 줍기와 물놀이를 하기 좋지만 물때를 꼭 확인해야 해요",
+  "q": "Al Sawadi Beach",
+  "ll": [
+   57.79111,
+   23.78222
+  ],
+  "approx": 1,
+  "src": [
+   "https://experienceoman.om/destinations/al-batinah-south/al-sawadi-beach",
+   "https://www.geonames.org/search.html?q=suwadi&country=OM",
+   "https://roughguides.com/oman/al-batinah-al-dhahirah/north-barka-sohar"
+  ]
+ },
+ {
+  "id": "al-khandaq-fort",
+  "ko": "알 칸다크 요새",
+  "en": "Al Khandaq Fort",
+  "cat": "fort",
+  "region": "다히라·부라이미",
+  "desc": "부라이미 오아시스에 있는 19세기 전반의 정사각형 요새로, 주위를 둘러싼 방어용 도랑(칸다크)에서 이름이 왔어요. 네 모서리에 탑이 있고, UAE 알아인과 맞닿은 도시라 두바이에서 가까운 편이에요.",
+  "tips": "UAE에서 가려면 국경 검문소를 통과해야 하니 여권과 비자 서류를 챙기세요. 부라이미 옛 시장과 가까워 함께 둘러보기 좋아요. 운영시간은 현장 확인이 필요해요.",
+  "visitMin": 45,
+  "family": "규모가 아담해서 짧게 둘러보기 좋아요",
+  "q": "Al Khandaq Fort Buraimi",
+  "ll": [
+   55.77063,
+   24.24259
+  ],
+  "src": [
+   "https://wanderlog.com/place/details/1121821/al-khandaq-fort",
+   "https://www.geonames.org/search.html?q=khandaq&country=OM",
+   "https://en.wikipedia.org/wiki/Al-Buraimi"
+  ]
+ },
+ {
+  "id": "bat-tombs",
+  "ko": "바트 고분군",
+  "en": "Bat Necropolis (Bat, Al-Khutm and Al-Ayn UNESCO site)",
+  "cat": "fort",
+  "region": "다히라·부라이미",
+  "desc": "기원전 3천년기의 벌집 모양 돌무덤 약 100기와 원형 석조 구조물이 남은 유적으로, 1988년 유네스코 세계유산에 등재됐어요. 메마른 언덕 위로 돌무덤이 줄지어 선 풍경이 인상적이에요.",
+  "tips": "공식 입구 없이 울타리 틈으로 들어가는 형태라는 후기가 있고 안내판도 적어요(2023년 업데이트 기준). 그늘이 전혀 없으니 이른 아침이나 늦은 오후에 물을 챙겨 가세요. 이브리에서 차로 약 30분이에요.",
+  "visitMin": 60,
+  "family": "그늘이 없어서 아이와는 짧게 보는 걸 추천해요",
+  "q": "Bat Tombs Oman",
+  "ll": [
+   56.74773,
+   23.2746
+  ],
+  "src": [
+   "https://www.atlasobscura.com/places/beehive-tombs-of-bat",
+   "https://en.wikipedia.org/wiki/Archaeological_Sites_of_Bat,_Al-Khutm_and_Al-Ayn",
+   "https://www.zigzagonearth.com/al-ayn-bat-necropolis-unesco-oman/"
+  ]
+ },
+ {
+  "id": "al-ayn-tombs",
+  "ko": "알 아인 벌집무덤(오만)",
+  "en": "Al-Ayn Beehive Tombs",
+  "cat": "fort",
+  "region": "다히라·부라이미",
+  "desc": "바트·알쿠틈과 함께 유네스코 세계유산을 이루는 고분군으로, 셋 중 보존 상태가 가장 좋아요. 능선 위에 일렬로 늘어선 벌집 모양 돌무덤 뒤로 거대한 바위산(제벨 미슈트)이 펼쳐져요.",
+  "tips": "도로변에 차를 세우고 마른 와디와 농장 사이 길을 약 10분 걸어 올라가요. 편의시설이 없으니 물과 모자를 챙기세요. 이브리에서 차로 약 50분이에요.",
+  "visitMin": 45,
+  "family": "짧은 오르막 산책이라 아이와도 갈 만해요",
+  "q": "Al Ayn Beehive Tombs Oman",
+  "ll": [
+   56.96215,
+   23.21458
+  ],
+  "src": [
+   "https://www.atlasobscura.com/places/beehive-tombs-of-al-ayn-oman",
+   "https://en.wikipedia.org/wiki/Archaeological_Sites_of_Bat,_Al-Khutm_and_Al-Ayn",
+   "https://www.zigzagonearth.com/al-ayn-bat-necropolis-unesco-oman/"
+  ]
+ },
+ {
+  "id": "ibri-fort",
+  "ko": "이브리 요새·옛 시장",
+  "en": "Ibri Fort (Ibri Castle) & Old Souq",
+  "cat": "fort",
+  "region": "다히라·부라이미",
+  "desc": "약 500년 전 나반 부족이 짓기 시작한 것으로 전해지는 요새로, 1990년대에 복원돼 1995년부터 공개되고 있어요. 안에 지금도 쓰이는 오래된 모스크와 우물, 마구간이 있고 성벽에서 이브리 구시가가 내려다보여요.",
+  "tips": "운영시간이 일정하지 않다는 정보가 있어 현장 확인이 필요해요. 갈색 안내판을 따라 구시가로 들어가면 요새와 옛 시장을 함께 볼 수 있어요.",
+  "visitMin": 60,
+  "family": "요새와 시장을 짧게 묶어 보기 좋아요",
+  "q": "Ibri Castle",
+  "ll": [
+   56.51556,
+   23.22556
+  ],
+  "approx": 1,
+  "src": [
+   "https://omantripper.com/ibri-castle/",
+   "https://www.lonelyplanet.com/points-of-interest/ibri-castle/1352015",
+   "https://castles.nl/ibri-castle"
+  ]
+ },
+ {
+  "id": "as-sulaif",
+  "ko": "술라이프 옛 마을",
+  "en": "Harat As Sulaif (As Sulayf) Old Village",
+  "cat": "village",
+  "region": "다히라·부라이미",
+  "desc": "이브리 오아시스 동쪽 끝 바위 절벽 위에 세운 성곽 마을로, 탑과 성벽, 물 분배 수로가 남아 있어요. 버려진 흙집 골목을 걸으며 옛 오아시스 마을 구조를 볼 수 있어요.",
+  "tips": "인적이 드문 곳이라 일행과 함께 가세요. 무너진 벽과 돌길이 많아 운동화가 필요해요. 이브리 요새와 차로 가까워 함께 묶기 좋아요.",
+  "visitMin": 45,
+  "family": "폐허 탐험은 재미있지만 무너진 벽 근처는 주의해야 해요",
+  "q": "Harat As Sulaif Ibri",
+  "ll": [
+   56.52606,
+   23.20456
+  ],
+  "src": [
+   "https://www.archiam.co.uk/documentation-and-heritage-management-plan-harat-as-sulayf-ibri-oasis/",
+   "https://www-lonelyplanet-com-57e2.imagizer.com/oman/ibri/attractions/sulaif-castle/a/poi-sig/1612820/1331785",
+   "https://www.geonames.org/search.html?q=sulayf&country=OM"
+  ]
+ },
+ {
+  "id": "khasab-castle",
+  "ko": "카사브 성",
+  "en": "Khasab Castle (Khasab Fort)",
+  "cat": "fort",
+  "region": "무산담",
+  "desc": "17세기 초에 지어지고 포르투갈 점령기에 보강된 해안 요새로, 네 모서리 탑과 가장 오래된 가운데 원형 탑이 특징이에요. 옛 대포와 전통 배가 전시돼 있었어요.",
+  "tips": "2026년 8월 기사 기준 복원·정비 공사로 임시 휴관 중이고, 재개관은 2027년 상반기 예정이에요. 카사브 항 바로 근처라 크루즈 앞뒤로 외관만 잠깐 보세요.",
+  "visitMin": 15,
+  "family": "휴관 중이라 외관 사진만 찍을 수 있어요",
+  "q": "Khasab Castle",
+  "ll": [
+   56.24923,
+   26.19849
+  ],
+  "src": [
+   "https://www.omanobserver.om/article/1194773/oman/khasab-fort-to-reopen-in-the-first-half-of-2027",
+   "https://experienceoman.om/destinations/musandam/khasab-fort",
+   "https://wanderlog.com/explore/85981/khasab"
+  ]
+ },
+ {
+  "id": "khasab-dhow-cruise",
+  "ko": "카사브 다우 크루즈(카사브 항)",
+  "en": "Khasab Dhow Cruise (Khasab Port departure)",
+  "cat": "sea",
+  "region": "무산담",
+  "desc": "카사브 항에서 전통 목선 다우를 타고 피오르드 같은 지형으로 유명한 무산담 협만을 도는 투어예요. 깎아지른 절벽 사이를 지나며 돌고래를 보고, 중간에 수영과 스노클링을 즐겨요.",
+  "tips": "반나절 단체 투어가 가장 흔하고 종일·전세·1박 상품도 있으니 주말엔 미리 예약하세요. 두바이에서는 RAK 쪽 알 다라(UAE)–티바트(오만) 해안 국경으로 들어가며, 주말·연휴엔 붐비니 일찍 출발하세요. 돌고래는 9~4월이 성수기예요(2024년 기사).",
+  "visitMin": 240,
+  "family": "돌고래 구경과 배 위 물놀이로 아이들 만족도가 높아요",
+  "q": "Khasab Port",
+  "ll": [
+   56.24944,
+   26.20333
+  ],
+  "src": [
+   "https://en.wikipedia.org/wiki/Port_of_Khasab",
+   "https://en.wikipedia.org/wiki/Khasab",
+   "https://againstthecompass.com/en/musandam-trip-oman/"
+  ]
+ },
+ {
+  "id": "telegraph-island",
+  "ko": "텔레그래프 섬",
+  "en": "Telegraph Island (Jazirat al Maqlab)",
+  "cat": "sea",
+  "region": "무산담",
+  "desc": "코르 아쉬 샴 협만 안의 작은 섬으로, 1864년 영국이 런던–카라치 전신선의 중계소를 세웠던 곳이에요. 혹독한 더위로 몇 년 만에 버려졌고 지금은 건물 터만 남아 있어요.",
+  "tips": "다우 크루즈의 대표 정박지라 따로 예약할 필요는 없어요. 2024년 6월부터 접안 시설과 산책로 등 관광시설 공사가 시작돼, 섬 상륙 여부는 투어 상품별로 확인하세요. 물때에 따라 상륙이 어려울 수 있어요.",
+  "visitMin": 30,
+  "family": "크루즈 중 섬 근처 바다에서 수영하는 시간이 즐거워요",
+  "q": "Telegraph Island Musandam",
+  "ll": [
+   56.34278,
+   26.19528
+  ],
+  "src": [
+   "https://en.wikipedia.org/wiki/Telegraph_Island",
+   "https://gulfconstructiononline.com/ArticleTA/422908/Oman-breaks-ground-on-historical-Telegraph-Island-project"
+  ]
+ },
+ {
+  "id": "jebel-harim",
+  "ko": "제벨 하림",
+  "en": "Jebel Harim (Jabal Al Harim)",
+  "cat": "mountain",
+  "region": "무산담",
+  "desc": "해발 2,087m로 무산담 반도에서 가장 높은 산이에요. 정상 부근까지 구불구불한 산길이 이어지며, 협곡 속 외딴 농가와 계단식 밭이 내려다보여요.",
+  "tips": "구불구불한 비포장 산길이라 카사브에서 출발하는 4x4 산악 사파리 투어로 많이 가요. 정상 약 400m 앞에서 일반인 통행이 막혀요. 멀미가 잦은 아이는 멀미약을 챙기세요.",
+  "visitMin": 180,
+  "family": "차 안에 있는 시간이 길어 멀미에 주의해야 해요",
+  "q": "Jebel Harim Musandam",
+  "ll": [
+   56.23222,
+   25.97639
+  ],
+  "approx": 1,
+  "src": [
+   "https://en.wikipedia.org/wiki/Jabal_Al_Harim",
+   "https://www.geonames.org/search.html?q=harim&country=OM",
+   "https://www-lonelyplanet-com-6c06.imagizer.com/points-of-interest/jebel-harim-pass/1613054"
+  ]
+ },
+ {
+  "id": "khor-najd",
+  "ko": "코르 나즈드 전망대",
+  "en": "Khor Najd Viewpoint & Beach",
+  "cat": "sea",
+  "region": "무산담",
+  "desc": "카사브에서 약 30km 떨어진 협만으로, 산 위 전망대에서 바다로 깊이 파고든 만과 작은 해변이 한눈에 보여요. 전망대에서 비포장길로 해변까지 내려가 쉬거나 캠핑할 수 있어요.",
+  "tips": "마지막 약 6km는 급경사와 헤어핀 커브가 있는 비포장이라 4x4를 권해요. 오후 4시가 지나면 산그늘이 지니 사진은 그 전에 찍으세요. 물이 깊고 바위가 많아 수영할 땐 조심하세요.",
+  "visitMin": 90,
+  "family": "전망은 훌륭하지만 물이 깊어 아이 물놀이는 주의해야 해요",
+  "q": "Khor Najd viewpoint",
+  "ll": [
+   56.34194,
+   26.10694
+  ],
+  "approx": 1,
+  "src": [
+   "https://www.geonames.org/search.html?q=najd&country=OM",
+   "https://www.loc.wiki/car-trails/oman-khasab-to-khor-najd-musandam-offroading-102632720",
+   "https://www.loc.wiki/hiking-trails/oman-khor-al-najd-khasab-musandam-102632681"
+  ]
+ },
+ {
+  "id": "nizwa-fort",
+  "ko": "니즈와 요새",
+  "en": "Nizwa Fort",
+  "cat": "fort",
+  "region": "다킬리야",
+  "desc": "17세기 중반 야아리바 왕조의 이맘 술탄 빈 사이프 때 지은 요새로, 높이 약 34m·지름 약 45m의 거대한 원형 탑이 상징이에요. 좁은 계단과 여러 겹의 방어 문을 직접 오르며 옛 방어 구조를 볼 수 있고, 탑 위에서 야자 오아시스와 시내가 내려다보여요. 바로 옆에 전통 수크가 붙어 있어 함께 둘러보기 좋아요.",
+  "tips": "관광청 사이트 기준 토~목 08:00–20:00, 금요일은 08:00–11:30·13:30–20:00이에요(방문 전 재확인 권장). 탑 위는 그늘이 적어 오전 일찍 가는 게 좋아요. 계단이 좁고 가팔라 어린아이는 손을 잡아 주세요.",
+  "visitMin": 90,
+  "family": "계단과 성벽을 탐험하는 재미가 있어 아이들이 좋아해요",
+  "q": "Nizwa Fort",
+  "ll": [
+   57.5302,
+   22.93321
+  ],
+  "src": [
+   "https://experienceoman.om/destinations/al-dakhiliyah/nizwa-fort",
+   "https://mapcarta.com/Nizwa_Fort"
+  ]
+ },
+ {
+  "id": "nizwa-souq",
+  "ko": "니즈와 수크",
+  "en": "Nizwa Souq",
+  "cat": "culture",
+  "region": "다킬리야",
+  "desc": "니즈와 요새 바로 옆에 있는 전통 시장으로, 도자기 같은 수공예품과 할와, 대추야자, 향신료, 과일·채소를 파는 구역이 나뉘어 있어요. 요새와 함께 니즈와 여행의 중심이 되는 곳이에요.",
+  "tips": "가게마다 영업시간이 달라 현장 확인이 필요해요. 더운 한낮보다 오전이나 해 질 무렵이 걷기 편해요. 금요일이라면 이른 아침 가축시장과 묶어 보세요.",
+  "visitMin": 60,
+  "family": "구경거리가 많고 동선이 짧아 아이와 무난해요",
+  "q": "Nizwa Souq",
+  "ll": [
+   57.53178,
+   22.93286
+  ],
+  "src": [
+   "https://mapcarta.com/W277932170",
+   "https://mapcarta.com/W1347374000",
+   "https://experienceoman.om/destinations/al-dakhiliyah/nizwa-fort"
+  ]
+ },
+ {
+  "id": "nizwa-goat-market",
+  "ko": "니즈와 금요 가축시장(염소 시장)",
+  "en": "Nizwa Friday Goat Market",
+  "cat": "culture",
+  "region": "다킬리야",
+  "desc": "매주 금요일 아침 수크 옆 지붕 있는 마당에서 열리는 가축 시장이에요. 상인들이 염소와 소를 끌고 원을 따라 돌면 사람들이 살펴보며 값을 외치는데, 관광용 행사가 아니라 실제 거래 현장이라 내륙 오만의 생활 문화를 생생하게 볼 수 있어요.",
+  "tips": "해 뜰 무렵 시작해 오전 일찍 끝나는 장이라 이른 아침에 도착하는 게 핵심이에요(정확한 시간은 현장 확인). 동물을 거칠게 다루는 장면이 있고 사람과 동물이 붐비니 아이를 꼭 붙잡고, 앞이 막힌 신발과 긴 옷을 입으세요. 사람을 가까이 찍을 땐 먼저 허락을 구하세요.",
+  "visitMin": 60,
+  "family": "동물 구경은 신나지만 혼잡해서 보호자가 꼭 붙어 있어야 해요",
+  "q": "Nizwa Goat Market",
+  "ll": [
+   57.53264,
+   22.93134
+  ],
+  "src": [
+   "https://mapcarta.com/W263951095",
+   "https://omanwanderlust.com/?p=24500"
+  ]
+ },
+ {
+  "id": "bahla-fort",
+  "ko": "바흘라 요새",
+  "en": "Bahla Fort",
+  "cat": "fort",
+  "region": "다킬리야",
+  "desc": "1987년 오만에서 처음으로 유네스코 세계유산에 오른 거대한 흙벽돌 요새예요. 야자 오아시스 언덕 위에 있고 나바니 왕조의 수도 역할을 했으며, 오아시스를 둘러싼 옛 성벽이 12km 넘게 이어져요. 2012년 대규모 복원을 마치고 다시 문을 열었어요.",
+  "tips": "관광청 사이트 기준 매일 08:00–19:00이에요. 그늘이 적어 오전 방문이 좋아요. 도자기 공방과 옛 시장으로 알려진 바흘라 마을도 가까워 함께 둘러보기 좋아요.",
+  "visitMin": 75,
+  "family": "넓은 마당과 망루가 많아 아이들이 탐험하기 좋아요",
+  "q": "Bahla Fort",
+  "ll": [
+   57.30025,
+   22.9644
+  ],
+  "src": [
+   "https://experienceoman.om/destinations/al-dakhiliyah/bahla-fort",
+   "https://en.wikipedia.org/wiki/Bahla_Fort",
+   "https://mapcarta.com/12923476"
+  ]
+ },
+ {
+  "id": "jabreen-castle",
+  "ko": "자브린 성",
+  "en": "Jabreen Castle",
+  "cat": "fort",
+  "region": "다킬리야",
+  "desc": "1675년 무렵 야아리바 왕조의 이맘 빌아랍 빈 술탄이 지은 성이에요. 요새이면서 학문과 행정의 중심지로 쓰여, 회의실·법정·생활 공간·감옥 등이 남아 있고 '해와 달의 방'이 특히 유명해요.",
+  "tips": "관광청 사이트 기준 매일 07:30–21:00이에요(현장 재확인 권장). 바흘라 중심에서 약 8km라 바흘라 요새와 같은 날 묶기 좋아요. 계단이 가팔라 어린아이는 손을 잡아 주세요.",
+  "visitMin": 60,
+  "family": "방과 통로가 많아 아이들이 구석구석 둘러보기 좋아요",
+  "q": "Jabreen Castle",
+  "ll": [
+   57.24915,
+   22.91522
+  ],
+  "src": [
+   "https://experienceoman.om/destinations/al-dakhiliyah/jabreen-fort",
+   "https://mapcarta.com/Jabrin_Castle"
+  ]
+ },
+ {
+  "id": "al-hamra-bait-al-safah",
+  "ko": "알 함라 옛 마을 & 바이트 알 사파",
+  "en": "Al Hamra Old Village & Bait Al Safah",
+  "cat": "village",
+  "region": "다킬리야",
+  "desc": "약 400년 된 알 함라 옛 마을에는 2~4층짜리 흙벽돌 집들이 바위 비탈을 따라 늘어서 있어요. 그 가운데 바이트 알 사파는 17세기 가옥을 복원한 '살아 있는 박물관'으로, 옛 생활 공간과 실잣기·직조·도자기 같은 전통 공예를 보여줘요.",
+  "tips": "운영 시간과 입장료는 현장 확인이 필요해요. 차는 옛 마을 주차장에 두고 걸어서 들어가세요. 빈집이 많고 골목이 울퉁불퉁해 운동화가 좋아요.",
+  "visitMin": 60,
+  "family": "옛 생활을 직접 보는 곳이라 아이 눈높이에 잘 맞아요",
+  "q": "Bait Al Safah Al Hamra",
+  "ll": [
+   57.28153,
+   23.12037
+  ],
+  "src": [
+   "https://mapcarta.com/Bait_al_Safah",
+   "https://mapstr.com/place/OJhY1TdqL4g",
+   "https://timesofoman.com/article/149240-bait-al-safah-in-al-dakhiliyah-governorate-represents-the-ingenuity-of-omani-people-1"
+  ]
+ },
+ {
+  "id": "misfat-al-abriyeen",
+  "ko": "미스팟 알 아브리옌",
+  "en": "Misfat Al Abriyeen",
+  "cat": "village",
+  "region": "다킬리야",
+  "desc": "해발 약 900m 산비탈 바위 위에 흙집이 층층이 얹힌 마을로, 2천 년 넘은 팔라즈 수로가 계단식 대추야자·과일 밭을 적셔요. 2021년 UN 세계관광기구의 '최우수 관광 마을'에 선정됐어요.",
+  "tips": "골목이 매우 좁으니 차는 마을 입구 주차장에 세우세요. 주민이 사는 마을이라 남녀 모두 어깨와 무릎을 가리고, 사람을 찍을 땐 허락을 구하세요. 계단과 비탈이 가팔라 운동화가 필요해요.",
+  "visitMin": 75,
+  "family": "수로를 따라 걷는 산책이 재미있지만 가파른 계단은 주의해요",
+  "q": "Misfat Al Abriyeen",
+  "ll": [
+   57.31141,
+   23.14063
+  ],
+  "src": [
+   "https://mapcarta.com/Misfat_al_Abriyeen",
+   "https://en.wikipedia.org/wiki/Misfat_al_Abriyeen",
+   "https://www.atlasobscura.com/places/misfat-al-abriyyin"
+  ]
+ },
+ {
+  "id": "ghul-old-village-viewpoint",
+  "ko": "굴 옛 마을 전망 지점",
+  "en": "Old Ghul Village Viewpoint (Wadi Ghul)",
+  "cat": "village",
+  "region": "다킬리야",
+  "desc": "제벨 샴스로 오르는 길 초입, 와디 굴 협곡 입구 언덕에 버려진 흙벽돌 마을이 남아 있어요. 길가 전망 지점에서 협곡 입구와 폐허 마을을 한눈에 볼 수 있어 잠깐 멈춰 사진 찍기 좋아요.",
+  "tips": "길가에서 바라보는 것으로 충분해요. 무너진 벽 위로는 올라가지 마세요. 제벨 샴스를 오가는 길에 10~15분 들르기 좋아요.",
+  "visitMin": 15,
+  "family": "차에서 내려 잠깐 보는 곳이라 부담이 없어요",
+  "q": "Old Ghul Village Oman",
+  "ll": [
+   57.20382,
+   23.14936
+  ],
+  "src": [
+   "https://mapcarta.com/N2158343594",
+   "https://mapcarta.com/W205854340",
+   "https://en.wikipedia.org/wiki/Ghul,_Oman"
+  ]
+ },
+ {
+  "id": "jebel-shams-canyon-viewpoint",
+  "ko": "제벨 샴스 그랜드캐니언 전망대",
+  "en": "Jebel Shams Canyon Viewpoint (Wadi Ghul / Grand Canyon of Arabia)",
+  "cat": "mountain",
+  "region": "다킬리야",
+  "desc": "오만 최고봉 제벨 샴스(약 3,000m) 고원에서 깊이 약 1,000m의 와디 굴 협곡을 내려다보는 곳으로, '아라비아의 그랜드캐니언'이라 불려요. 가장 높은 북봉은 군사 지역이라 들어갈 수 없고, 고원 위 협곡 가장자리에서 경치를 즐겨요.",
+  "tips": "대부분 포장도로지만 마지막 약 7km는 다져진 비포장길이라 4WD를 권해요(비가 오면 상태가 급변해요). 협곡 가장자리는 대부분 난간이 없으니 아이 손을 꼭 잡으세요. 고지대라 해가 지면 쌀쌀하니 겉옷을 챙기세요.",
+  "visitMin": 30,
+  "family": "경치는 최고지만 난간 없는 절벽이라 밀착 보호가 필요해요",
+  "q": "Jebel Shams Canyon Viewpoint",
+  "ll": [
+   57.20202,
+   23.20428
+  ],
+  "src": [
+   "https://mapcarta.com/N4745201342",
+   "https://www.komoot.com/highlight/8183775",
+   "https://www.zigzagonearth.com/jebel-shams-oman/"
+  ]
+ },
+ {
+  "id": "jebel-shams-balcony-walk",
+  "ko": "발코니 워크(W6) 출발점 – 알 키타임",
+  "en": "Balcony Walk (W6) Trailhead, Al Khitaym",
+  "cat": "mountain",
+  "region": "다킬리야",
+  "desc": "알 키타임 마을에서 협곡 절벽 중턱을 따라 버려진 마을 아스 사브까지 이어지는 지정 트레킹 코스 W6예요. 왕복 약 8km, 3~4시간이 걸리고, 발아래로 수백 m 절벽이 펼쳐지는 풍경이 압권이에요.",
+  "tips": "길은 대체로 넓지만 한쪽이 수직 절벽이라 어린아이와 함께라면 처음 15~30분만 걷고 돌아오세요. 그늘이 거의 없어 1인당 물 3L 정도와 모자가 필요해요. 노랑·흰·빨강 깃발 표식을 따라가세요.",
+  "visitMin": 120,
+  "family": "어린아이에게는 위험해 짧은 맛보기 구간만 권해요",
+  "q": "Balcony Walk Jebel Shams",
+  "ll": [
+   57.20121,
+   23.19384
+  ],
+  "src": [
+   "https://www.loc.wiki/hiking-trails/oman-w6-jebel-shams-balcony-hike-to-as-sab-village-ruins-101755302",
+   "https://www.lnkoman.com/jebel-shams-balcony-walk-trailhead-distance-exposure-safety/",
+   "https://mapcarta.com/Al_Khitaym"
+  ]
+ },
+ {
+  "id": "al-hoota-cave",
+  "ko": "알 후타 동굴",
+  "en": "Al Hoota Cave",
+  "cat": "nature",
+  "region": "다킬리야",
+  "desc": "제벨 샴스 기슭에 있는 200만 년 넘은 석회암 동굴로, 아라비아 반도에서 보기 드문 관광 동굴이에요. 조명이 설치된 약 860m 구간을 따라 지하 호수 등을 볼 수 있고, 호수에는 눈이 퇴화한 희귀 물고기가 살아요. 방문자센터 위층에는 지질 박물관도 있어요.",
+  "tips": "공식 사이트 기준 09:00–17:00 운영하고 온라인 예약을 받아요. 공식 요금은 외국인 성인 7리알, 어린이 3.5리알, 6세 미만 무료예요(세금 별도일 수 있음). 과거 홍수로 몇 년간 문을 닫았고 비 오는 날엔 닫을 수 있어 출발 전 운영 여부를 꼭 확인하세요.",
+  "visitMin": 90,
+  "family": "카트로 이동하고 로프 코스·짚라인 체험도 있어 가족 나들이에 좋아요",
+  "q": "Al Hoota Cave",
+  "ll": [
+   57.35071,
+   23.08122
+  ],
+  "src": [
+   "https://www.alhootacave.om/",
+   "https://www.alhootacave.om/shop",
+   "https://omran.om/projects/al-hoota-cave"
+  ]
+ },
+ {
+  "id": "tanuf-ruins",
+  "ko": "타누프 폐허 마을",
+  "en": "Tanuf Ruins",
+  "cat": "village",
+  "region": "다킬리야",
+  "desc": "니즈와 북서쪽 와디 타누프 어귀에 있는 흙벽돌 마을 폐허예요. 1957년 제벨 아크다르 전쟁 때 영국 공군의 폭격을 받은 뒤 버려져, 지붕부터 서서히 무너진 다른 폐촌과 달리 벽 일부만 덩그러니 남아 있어요.",
+  "tips": "벽이 약하니 올라가지 마세요. 바닥이 울퉁불퉁해 운동화가 좋아요. 그늘이 없어 아침이나 늦은 오후가 좋아요.",
+  "visitMin": 30,
+  "family": "잠깐 들르기 좋지만 무너진 벽 주변은 주의해요",
+  "q": "Tanuf Castle Ruins",
+  "ll": [
+   57.46843,
+   23.0518
+  ],
+  "src": [
+   "https://atlasobscura.com/places/tanuf-oman",
+   "https://www.realjourneytravels.com/places/tanuf-castle-ruins/"
+  ]
+ },
+ {
+  "id": "birkat-al-mouz-bait-al-radidah",
+  "ko": "비르캇 알 모즈 – 바이트 알 리다이다 & 팔라즈 알 카트민",
+  "en": "Bait Al Radidah & Falaj Al Khatmeen, Birkat Al Mouz",
+  "cat": "fort",
+  "region": "다킬리야",
+  "desc": "제벨 아크다르로 오르는 길목인 비르캇 알 모즈에 있는 17세기 요새 저택으로, 모서리 망루가 있는 성벽 안에 2층 건물과 우물이 있어요. 유네스코 세계유산 '오만의 아플라즈 관개 시스템'(2006)에 포함된 팔라즈 알 카트민 수로가 안뜰을 가로질러 흘러요.",
+  "tips": "관광청 사이트 기준 매일 08:30–22:00이에요. 제벨 아크다르 검문소로 올라가기 직전에 들르기 좋아요. 수로 가장자리는 미끄러울 수 있으니 아이를 지켜봐 주세요.",
+  "visitMin": 60,
+  "family": "물이 흐르는 수로를 직접 보며 아이들이 즐거워해요",
+  "q": "Bait Al Radidah Birkat Al Mouz",
+  "ll": [
+   57.66652,
+   22.92524
+  ],
+  "src": [
+   "https://experienceoman.om/destinations/al-dakhiliyah/bayt-ar-ridaydah",
+   "https://en.wikipedia.org/wiki/Aflaj_Irrigation_Systems_of_Oman"
+  ]
+ },
+ {
+  "id": "jebel-akhdar-dianas-point",
+  "ko": "다이애나 포인트(제벨 아크다르)",
+  "en": "Diana's Point, Jebel Akhdar",
+  "cat": "mountain",
+  "region": "다킬리야",
+  "desc": "해발 약 2,000m 사이크 고원 남쪽 끝에서 깊은 협곡과 절벽 위 마을을 내려다보는 전망대예요. 1986년 다이애나 왕세자비가 이곳을 찾은 데서 이름이 붙었고, 바위에서 바다 생물 화석도 찾아볼 수 있어요.",
+  "tips": "제벨 아크다르는 산 아래 검문소에서 4WD 차량만 통과시켜요(면허증·차량등록증·신분증 지참). 무료 공개 전망대는 레스토랑 '라얄리 알 자발' 뒤편에 있고, 정확한 '다이애나 자리'는 아난타라 리조트 안이에요. 난간 없는 가장자리가 있어 아이를 꼭 잡아 주세요.",
+  "visitMin": 30,
+  "family": "짧게 들르기 좋지만 절벽 가장자리는 주의해요",
+  "q": "Diana's Point Jebel Akhdar",
+  "ll": [
+   57.6685,
+   23.06697
+  ],
+  "src": [
+   "https://mapcarta.com/Diana's_Point",
+   "https://evendo.com/locations/oman/jebel-akhdar/landmark/diana-s-viewpoint",
+   "https://omanwanderlust.com/?p=25294"
+  ]
+ },
+ {
+  "id": "jebel-akhdar-terrace-villages",
+  "ko": "알 아인·알 아크르·아쉬 쉬라이자 계단식 마을",
+  "en": "Terraced Villages of Al Ain, Al Aqr & Ash Shirayjah (Saiq Plateau)",
+  "cat": "village",
+  "region": "다킬리야",
+  "desc": "사이크 고원 남동쪽 절벽 가장자리에 알 아크르·알 아인·아쉬 쉬라이자 마을이 계단식 밭과 함께 매달리듯 자리해 있어요. 마을 사이를 잇는 표시된 오솔길을 따라 수로와 과수원, 장미 밭 사이를 걸으며 와디 무아이딘 협곡을 내려다볼 수 있어요.",
+  "tips": "장미 철은 3월 중순~5월이라 10월에는 꽃을 볼 수 없어요. 마을 산책 전 구간은 편도 약 4km(2시간 안팎)라 아이와는 전망대를 보고 일부만 걸어 보세요. 4WD만 올라갈 수 있고, 해발 약 2,000m라 아침저녁엔 쌀쌀해요.",
+  "visitMin": 90,
+  "family": "전망대만 봐도 충분하고 짧은 산책도 가능해요",
+  "q": "Al Ain village Jebel Akhdar",
+  "ll": [
+   57.66275,
+   23.07198
+  ],
+  "src": [
+   "https://mapcarta.com/N6449823487",
+   "https://mapcarta.com/13169984",
+   "https://www.geonames.org/search.html?q=Shirayjah&country=OM"
+  ]
+ },
+ {
+  "id": "wadi-bani-habib",
+  "ko": "와디 바니 하빕 버려진 마을",
+  "en": "Wadi Bani Habib Abandoned Village",
+  "cat": "village",
+  "region": "다킬리야",
+  "desc": "사이크 고원 서쪽 계곡 양쪽 비탈에 버려진 흙돌집 마을이 남아 있고, 모스크와 옛 회합 건물이 비교적 잘 보존돼 있어요. 계곡 바닥에서는 호두·석류 나무가 자라는 계단식 과수원을 지금도 주민들이 가꾸고 있어요.",
+  "tips": "약 10대 규모의 작은 주차장에서 고르지 않은 돌계단 약 200개를 내려가야 해요. 운동화는 필수고, 넘어지기 쉬운 지형이라 아이를 가까이서 지켜봐 주세요. 녹색 표식을 따라 한 바퀴 도는 데 1시간쯤 잡으세요.",
+  "visitMin": 60,
+  "family": "계단과 비탈이 많아 걷기를 좋아하는 아이에게 맞아요",
+  "q": "Wadi Bani Habib",
+  "ll": [
+   57.60287,
+   23.07145
+  ],
+  "src": [
+   "https://www.atlasobscura.com/places/wadi-bani-habib",
+   "https://www.komoot.com/highlight/623255",
+   "https://omanwanderlust.com/?p=25365"
+  ]
+ },
+ {
+  "id": "oman-across-ages-museum",
+  "ko": "오만 어크로스 에이지스 박물관",
+  "en": "Oman Across Ages Museum",
+  "cat": "culture",
+  "region": "다킬리야",
+  "desc": "2023년 문을 연 대형 역사 박물관으로, 선사 시대부터 이슬람 시대와 현대까지 오만의 역사를 체험형 전시로 보여줘요. 무역로·유적·전통 공예를 다루고, 카페·정원 등 편의 시설과 휠체어 접근성도 잘 갖춰져 있어요.",
+  "tips": "공식 사이트 기준 전시관은 토~목 09:00–17:00, 금 13:30–19:00이에요. 관광청 기준 입장료는 GCC 국민 1리알, 거주자 2리알, GCC 외 방문객 5리알이에요(거주자 구분은 현장 확인). 한낮 더위를 피하는 실내 일정으로 좋아요.",
+  "visitMin": 150,
+  "family": "체험형 전시와 넓은 실내라 아이와 가기 좋아요",
+  "q": "Oman Across Ages Museum",
+  "ll": [
+   57.55754,
+   22.77806
+  ],
+  "src": [
+   "https://oaam.om/",
+   "https://experienceoman.om/destinations/al-dakhiliyah/oman-across-ages-museum",
+   "https://mapcarta.com/Oman_Across_Ages_Museum"
+  ]
+ },
+ {
+  "id": "sharaf-al-alamayn-viewpoint",
+  "ko": "샤라프 알 알라마인 전망대",
+  "en": "Sharfat Al Alamayn Viewpoint",
+  "cat": "mountain",
+  "region": "다킬리야",
+  "desc": "알 함라에서 산을 넘어 와디 바니 아우프 쪽으로 이어지는 길에서 포장도로가 끝나는 가장 높은 지점(해발 약 2,000m) 부근의 전망대예요. 하자르 산맥의 겹겹이 이어진 능선이 한눈에 펼쳐져요.",
+  "tips": "전망대 너머 와디 바니 아우프로 내려가는 길은 비포장 산악로라 4WD와 경험이 필요해요. 가족 여행이라면 알 함라 쪽 포장도로로 올라왔다가 되돌아가는 것을 권해요. 고지대라 바람이 차가울 수 있으니 겉옷을 챙기세요.",
+  "visitMin": 30,
+  "family": "차로 올라가 경치만 보면 돼서 부담이 적어요",
+  "q": "Shorfet Al Alamin Hotel",
+  "ll": [
+   57.41678,
+   23.16685
+  ],
+  "approx": 1,
+  "src": [
+   "https://www.lonelyplanet.com/points-of-interest/sharfat-al-alamayn-viewpoint/1608107",
+   "https://mapcarta.com/N11790965569",
+   "https://www.loc.wiki/hiking-trails/balad-sayt-haat-shorfet-al-ameen-birkat-sharaf-grand-loop-w8a-w8b-w10h-w8-130017243"
+  ]
+ },
+ {
+  "id": "bimmah-sinkhole",
+  "ko": "비마 싱크홀 (하위야트 나즘 공원)",
+  "en": "Bimmah Sinkhole (Hawiyat Najm Park)",
+  "cat": "nature",
+  "region": "샤르키야",
+  "desc": "석회암 지반이 내려앉아 생긴 가로세로 약 50~70m 크기의 싱크홀로, 바닥에 청록색 물이 고여 있어요. 시에서 공원으로 꾸며 울타리, 물가로 내려가는 계단, 화장실을 갖췄어요. 수르 방향 고속도로 바로 옆이라 이동 중에 들르기 좋아요.",
+  "tips": "2025년 2월 후기 기준 오전 8시~오후 8시 개방, 입장 무료예요. 계단이 가파르니(난간 있음) 아이 손을 잡아 주시고, 물가는 얕다가 가운데로 갈수록 깊어져요. 입구에서 긴 옷을 입었는지 확인한다는 후기가 있으니 반바지는 피하세요.",
+  "visitMin": 60,
+  "family": "짧은 산책과 물놀이, 수영 못하는 아이는 구명조끼 필수",
+  "q": "Bimmah Sinkhole",
+  "ll": [
+   59.07197,
+   23.03594
+  ],
+  "src": [
+   "https://en.wikipedia.org/wiki/Bimmah_Sinkhole",
+   "https://www.komoot.com/highlight/7261390",
+   "https://www.walkmyworld.com/posts/bimmah-sinkhole"
+  ]
+ },
+ {
+  "id": "fins-white-beach",
+  "ko": "핀스 화이트 비치",
+  "en": "Fins Beach (White Beach)",
+  "cat": "sea",
+  "region": "샤르키야",
+  "desc": "핀스 마을 근처의 해변으로, 바닥이 흰 모래라 물빛 변화가 선명한 곳으로 알려져 있어요. 저녁에 텐트를 치고 캠핑하는 현지인과 거주 외국인이 많고, 낮에는 비교적 한산하다는 후기가 있어요. 비마 싱크홀과 와디 샵 사이에 있어 해안 드라이브 중 쉬어 가기 좋아요.",
+  "tips": "편의시설은 기대하기 어려우니 그늘막과 물을 챙기세요. 바다에 들어갈 때는 아쿠아슈즈를 신고 아이 곁을 지켜 주세요.",
+  "visitMin": 60,
+  "family": "모래놀이·얕은 물놀이에 좋지만 편의시설은 거의 없음",
+  "q": "White Beach Fins Oman",
+  "ll": [
+   59.22236,
+   22.89158
+  ],
+  "approx": 1,
+  "src": [
+   "https://www.omanobserver.om/article/61508/Features/escaping-to-the-sweet-embrace-of-white-beach",
+   "https://www.cabaigne.net/mag/plus-belles-plages-d-oman/",
+   "https://www.omanobserver.om/article/1127012/oman/tourism/popular-beach-fronts-to-get-major-facelift"
+  ]
+ },
+ {
+  "id": "wadi-shab",
+  "ko": "와디 샵",
+  "en": "Wadi Shab",
+  "cat": "nature",
+  "region": "샤르키야",
+  "desc": "석회암 협곡 사이로 청록색 물이 흐르는 와디로, 입구에서 작은 보트로 강을 건넌 뒤 협곡 길을 따라 걸어 올라가요. 안쪽에는 수영할 수 있는 웅덩이가 이어지고, 마지막 웅덩이 끝의 좁은 틈을 헤엄쳐 들어가면 폭포가 있는 동굴이 나와요. 오만에서 가장 유명한 와디 트레킹 코스 중 하나예요.",
+  "tips": "보트는 1인 1리알(현금)이고, 2026년 후기 기준 오전 7~8시경부터 오후 5시경까지 운행해요. 웅덩이까지 편도 45~60분, 전체 3~4시간을 잡고 붐비기 전 이른 아침에 출발하세요. 동굴 구간은 수영 실력이 필요하니 아이는 구명조끼를 챙기세요.",
+  "visitMin": 240,
+  "family": "걸을 수 있는 초등학생 이상 추천, 유아는 앞 구간만",
+  "q": "Wadi Shab Parking",
+  "ll": [
+   59.246,
+   22.8391
+  ],
+  "src": [
+   "https://opencanyon.org/en/canyon/e93dc885-ab36-4447-acf5-78f84668b134/pdf",
+   "https://therestlessbeans.com/how-to-hike-wadi-shab-oman/",
+   "https://www.maptrotting.com/oman-wadis-tiwi-shab-guide/"
+  ]
+ },
+ {
+  "id": "wadi-tiwi",
+  "ko": "와디 티위",
+  "en": "Wadi Tiwi",
+  "cat": "nature",
+  "region": "샤르키야",
+  "desc": "하자르산맥이 바다와 만나는 티위 마을에서 내륙으로 이어지는 협곡으로, 상류에는 1년 내내 물이 흐르고 작은 웅덩이가 많아요. 팔라즈 수로로 물을 대는 대추야자·바나나·망고 농장과 계단식 밭 사이로 오래된 마을들이 이어져요. 와디 샵보다 한적하게 오아시스 풍경을 둘러볼 수 있어요.",
+  "tips": "안쪽 길은 좁고 매우 가팔라서 4x4로 천천히 달리고 마주 오는 차에 주의하세요. 상류(미밤 방면) 협곡 트레킹에는 체인을 잡고 내려가는 구간이 있어 7세 미만 아이에게는 어렵다는 후기가 있어요.",
+  "visitMin": 90,
+  "family": "차로 풍경 감상 위주, 깊은 트레킹은 큰 아이만",
+  "q": "Wadi Tiwi",
+  "ll": [
+   59.25867,
+   22.82239
+  ],
+  "src": [
+   "https://en.wikipedia.org/wiki/Wadi_Tiwi",
+   "https://mapcarta.com/12917896",
+   "https://playground.opencanyon.org/en/canyon/1366f757-9cab-45c2-bbe2-9e5861e26480/pdf"
+  ]
+ },
+ {
+  "id": "qalhat-bibi-maryam",
+  "ko": "깔하트 비비 마리암 영묘",
+  "en": "Qalhat – Bibi Maryam Mausoleum",
+  "cat": "fort",
+  "region": "샤르키야",
+  "desc": "중세 인도양 교역으로 번성한 옛 항구 도시 깔하트의 유적으로, 2018년 유네스코 세계유산에 등재됐어요. 마르코 폴로와 이븐 바투타도 기록을 남긴 도시이며, 14세기 초에 지어진 비비 마리암 영묘가 거의 유일하게 온전히 남은 건물이에요. 돔은 대부분 무너졌지만 바다를 내려다보는 모습이 인상적이에요.",
+  "tips": "2025년 7월 방문자센터 건립 협약이 맺어져 공사·개방 상황이 바뀔 수 있으니 출입 가능 여부는 현장에서 확인하세요. 야외 유적이라 한낮보다 아침이나 늦은 오후가 좋아요.",
+  "visitMin": 45,
+  "family": "짧게 둘러보는 역사 유적",
+  "q": "Bibi Maryam Mausoleum Qalhat",
+  "ll": [
+   59.3729,
+   22.69666
+  ],
+  "src": [
+   "https://en.wikipedia.org/wiki/Mausoleum_of_Bibi_Maryam",
+   "https://en.wikipedia.org/wiki/Qalhat",
+   "https://experienceoman.om/destinations/al-sharqiyah-south/bibi-maryam-mausoleum"
+  ]
+ },
+ {
+  "id": "sur-dhow-yard",
+  "ko": "수르 다우선 조선소",
+  "en": "Sur Dhow Yard & Fath Al Khair Maritime Museum",
+  "cat": "culture",
+  "region": "샤르키야",
+  "desc": "수르는 삼부크·간자 같은 전통 목조 범선(다우)을 만들어 온 조선 도시로, 석호 가에서 다우선 조선 현장을 볼 수 있다고 알려져 있어요. 근처 파트 알 카이르 센터는 2021년 문을 연 해양박물관으로, 오만의 마지막 전통 간자선으로 소개되는 '파트 알 카이르' 호와 항해 도구, 선박 모형을 전시해요.",
+  "tips": "박물관 입장료는 비오만인 성인 3리알, 6~12세 500바이사예요(공식 관광 사이트). 운영시간은 사이트 표기가 엇갈리니 방문 전 확인하세요. 조선소 작업 여부는 날마다 달라요.",
+  "visitMin": 60,
+  "family": "배 구경과 박물관 관람으로 아이들 흥미가 높음",
+  "q": "Dhow Factory Sur Oman",
+  "ll": [
+   59.53672,
+   22.5617
+  ],
+  "src": [
+   "https://mapcarta.com/N7107914484",
+   "https://experienceoman.om/destinations/al-sharqiyah-south/fath-al-khair-center",
+   "https://en.wikipedia.org/wiki/Sur,_Oman"
+  ]
+ },
+ {
+  "id": "al-ayjah-lighthouse",
+  "ko": "알 아이자 등대",
+  "en": "Al Ayjah Lighthouse",
+  "cat": "sea",
+  "region": "샤르키야",
+  "desc": "수르 석호 건너편 알 아이자 마을에 있는 등대로, 석호를 잇는 다리 바로 옆이라 석호와 수르 시가지 풍경을 함께 보기 좋아요. 동쪽으로 약 370m 거리에 바다와 석호를 내려다보는 알 아이자 요새도 있어 짧은 산책 코스로 묶기 좋아요.",
+  "tips": "해 질 녘 석호 풍경을 보러 가기 좋아요. 등대 내부 개방 여부는 확인되지 않았으니 외관과 주변 산책 위주로 계획하세요.",
+  "visitMin": 30,
+  "family": "가볍게 산책하며 사진 찍기 좋음",
+  "q": "Al Ayjah Lighthouse",
+  "ll": [
+   59.5396,
+   22.56557
+  ],
+  "src": [
+   "https://mapcarta.com/N5250183622",
+   "https://en.wikipedia.org/wiki/List_of_lighthouses_in_Oman",
+   "https://en.wikipedia.org/wiki/Sur,_Oman"
+  ]
+ },
+ {
+  "id": "sunaysilah-fort",
+  "ko": "수나이실라 요새",
+  "en": "Sunaysilah Fort",
+  "cat": "fort",
+  "region": "샤르키야",
+  "desc": "수르 시가지를 내려다보는 바위 언덕 위 요새로, 17세기 전반에 지어졌다고 전해지며 둥근 탑 3개와 사각 탑 1개가 있어요. 안에는 작은 모스크, 교실, 감옥, 저수조 등이 남아 있고 1989년에 복원됐어요. 수르 시가지와 바다 전망이 좋아요.",
+  "tips": "공식 관광 사이트 기준 매일 오전 8시~오후 5시 운영하고 표는 현장 매표소에서 사요. 탑 계단에서는 아이 손을 잡아 주세요.",
+  "visitMin": 45,
+  "family": "요새 탐험 분위기로 아이들도 즐거워함",
+  "q": "Sunaysilah Fort Sur",
+  "ll": [
+   59.50371,
+   22.57939
+  ],
+  "src": [
+   "https://experienceoman.om/destinations/al-sharqiyah-south/al-sunaysla-fort",
+   "https://en.wikipedia.org/wiki/Sur,_Oman"
+  ]
+ },
+ {
+  "id": "ras-al-hadd-castle",
+  "ko": "라스 알 하드 성채",
+  "en": "Ras Al Hadd Castle",
+  "cat": "fort",
+  "region": "샤르키야",
+  "desc": "아라비아반도 동쪽 끝 라스 알 하드 마을의 성채로, 16세기에 짓기 시작했고 높은 대지 위에서 마을과 해안, 코르 알 하자르 입구를 내려다봐요. 이 일대는 아라비아반도에서 해가 가장 먼저 뜨는 곳으로 소개되고, 주변 해변은 푸른바다거북 산란지예요.",
+  "tips": "공식 관광 사이트 기준 매일 오전 8시~오후 5시 운영해요. 라스 알 진즈 거북 투어와 묶어 하루 일정으로 짜기 좋아요.",
+  "visitMin": 45,
+  "family": "거북 투어 전후로 가볍게 들르기 좋음",
+  "q": "Ras Al Hadd Castle",
+  "ll": [
+   59.7901,
+   22.52425
+  ],
+  "src": [
+   "https://experienceoman.om/destinations/al-sharqiyah-south/ras-al-hadd-castle",
+   "https://en.wikipedia.org/wiki/Ras_al_Hadd"
+  ]
+ },
+ {
+  "id": "ras-al-jinz-turtle-reserve",
+  "ko": "라스 알 진즈 거북 보호구역",
+  "en": "Ras Al Jinz Turtle Reserve",
+  "cat": "sea",
+  "region": "샤르키야",
+  "desc": "오만 해안에 산란하는 푸른바다거북 대부분이 찾는 해안의 보호구역으로, 1996년 자연보호구역으로 지정됐어요. 가이드 동행 투어로 밤에는 알을 낳는 어미 거북을, 새벽에는 바다로 향하는 새끼 거북을 볼 수 있고 방문자센터에 박물관도 있어요. 10월은 산란이 줄어드는 대신 새끼 거북이 부화해 나오는 시기예요.",
+  "tips": "공식 사이트 기준 관람은 밤 9시(8시 30분까지 도착)와 새벽 5시(4시 45분까지 도착)이며 시즌에 따라 바뀔 수 있어요. 요금은 관광객 성인 12리알, 6~12세 6리알, 6세 미만 무료이고 미리 예약하세요. 플래시와 휴대폰 불빛은 금지라 아이에게 미리 알려 주세요.",
+  "visitMin": 120,
+  "family": "아이들에게 최고 인기, 밤·새벽 일정이라 숙박 연계 추천",
+  "q": "Ras Al Jinz Turtle Reserve",
+  "ll": [
+   59.82733,
+   22.4256
+  ],
+  "src": [
+   "https://rasaljinz-turtlereserve.com/en/turtle-viewing/index.html",
+   "https://www.lnkoman.com/ras-al-jinz-turtle-watching-guide-2026/",
+   "https://www.omanobserver.om/article/1192404/oman/environment-authority-urges-public-not-to-touch-baby-turtles"
+  ]
+ },
+ {
+  "id": "wadi-bani-khalid",
+  "ko": "와디 바니 칼리드",
+  "en": "Wadi Bani Khalid",
+  "cat": "nature",
+  "region": "샤르키야",
+  "desc": "1년 내내 물이 흐르는 와디로, 바위 사이 에메랄드빛 천연 웅덩이와 야자수 숲이 어우러져 있어요. 포장도로가 웅덩이 가까이까지 이어져 오래 걷지 않고도 수영할 수 있고, 더 안쪽에는 장비를 갖춰야 들어갈 수 있는 무깔 동굴이 있어요. 와히바 사막과 가까워 사막 캠프 전후 일정에 넣기 좋아요.",
+  "tips": "2026년 자료 기준 입장·주차 무료이고 입구에 기본 화장실과 작은 카페가 있어요. 투어 버스가 몰리는 오전 9시 30분~11시 30분을 피하면 한적해요. 현지 관습에 맞게 노출이 적은 수영복을 입으세요.",
+  "visitMin": 150,
+  "family": "앞쪽 웅덩이는 어린아이도 물놀이 가능, 4x4 불필요",
+  "q": "Wadi Bani Khalid",
+  "ll": [
+   59.0939,
+   22.6158
+  ],
+  "src": [
+   "https://www.opencanyon.org/fr/canyon/dd56e258-2ce6-4315-8fba-02da2a515024",
+   "https://www.komoot.com/highlight/6393705",
+   "https://www.maptrotting.com/oman-wadis-tiwi-shab-guide/"
+  ]
+ },
+ {
+  "id": "wahiba-sands",
+  "ko": "와히바 사막 (샤르키야 샌즈)",
+  "en": "Wahiba Sands (Sharqiya Sands) – Al Wasil entry",
+  "cat": "desert",
+  "region": "샤르키야",
+  "desc": "오만 동부에 남북 약 180km로 펼쳐진 모래사막으로, 북쪽 사구는 높이가 100m 가까이 돼요. 알 와실과 비디야 일대 도로변에서 모래길로 들어가면 사막 캠프들이 모여 있고, 낙타 타기, 샌드보딩, 사구 드라이브, 별 보기를 즐길 수 있어요.",
+  "tips": "모래길은 4x4가 필수이고, 진입 전 타이어 공기압을 15~20 PSI 정도로 낮췄다가 포장도로에 나오면 주유소에서 다시 채우세요. 모래 운전이 처음이면 캠프 픽업 서비스를 미리 예약하세요. 10월은 한낮이 더우니 오후 늦게 들어가 일몰을 보고 1박하는 일정이 좋아요.",
+  "visitMin": 240,
+  "family": "낙타·모래썰매로 아이 만족도 높음, 1박 캠프 추천",
+  "q": "Al Wasil Oman",
+  "ll": [
+   58.74913,
+   22.50443
+  ],
+  "approx": 1,
+  "src": [
+   "https://en.wikipedia.org/wiki/Wahiba_Sands",
+   "https://experienceoman.om/destinations/ash-sharqiyah-north/asharqiyah-sands",
+   "https://www.mustseespots.com/oman/articles/how-to-get-from-muscat-to-wahiba-sands-travel-options-explained/"
+  ]
+ },
+ {
+  "id": "ibra-souq",
+  "ko": "이브라 수크 & 수요 여성시장",
+  "en": "Ibra Souq & Wednesday Women's Market",
+  "cat": "culture",
+  "region": "샤르키야",
+  "desc": "샤르키야 내륙의 오래된 교역 도시 이브라의 전통 시장으로, 수요일 아침에 여성 전용 구역이 열리는 여성 시장으로 유명해요. 자수 옷, 스카프, 바구니, 향수와 유향, 향신료, 장신구 등을 팔아요. 남쪽 알 민지파에는 진흙 벽돌로 지은 2~3층짜리 옛 저택들이 폐허로 남아 있어 함께 둘러보기 좋아요.",
+  "tips": "여성 시장은 수요일 오전에 열리고, 여성 전용 구역에는 남성이 들어갈 수 없어요. 알 민지파 옛 저택은 무너질 위험이 있으니 아이가 벽에 오르지 않게 해 주세요. 사람을 찍을 때는 먼저 허락을 구하세요.",
+  "visitMin": 90,
+  "family": "시장 구경은 짧게, 옛 마을 산책은 아이 손을 잡고",
+  "q": "Ibra Souq",
+  "ll": [
+   58.54516,
+   22.69289
+  ],
+  "src": [
+   "https://www.omanobserver.om/article/1194253/features/lifestyle/where-wednesdays-belong-to-women",
+   "https://www.lonelyplanet.com/points-of-interest/ibra-souq/1529153",
+   "https://mapcarta.com/N6195648395"
+  ]
+ },
+ {
+  "id": "al-mintirib-fort",
+  "ko": "알 민티립 요새",
+  "en": "Al Mintirib Fort",
+  "cat": "fort",
+  "region": "샤르키야",
+  "desc": "와히바 사막 북쪽 관문인 알 민티립(비디야) 마을에 있는 옛 요새예요. 공식 관광 사이트도 사막 진입로로 알 민티립 일대를 소개하는데, 사막 캠프로 들어가기 전후에 마을 분위기를 느끼며 잠깐 들르기 좋아요.",
+  "tips": "개방 시간과 내부 입장 가능 여부는 확인하지 못했으니 현장에서 확인하세요. 비디야에 상점과 주유소가 있으니 사막에 들어가기 전 연료와 물을 채우세요.",
+  "visitMin": 30,
+  "family": "사막 가는 길에 짧은 사진 스톱",
+  "q": "Mintirib Fort",
+  "ll": [
+   58.80005,
+   22.43389
+  ],
+  "src": [
+   "https://mapcarta.com/N314614227",
+   "https://experienceoman.om/destinations/ash-sharqiyah-north/asharqiyah-sands",
+   "https://omanwanderlust.com/?p=25173"
+  ]
+ },
+ {
+  "id": "jalan-bani-bu-ali-al-hamoda",
+  "ko": "잘란 바니 부 알리 알 하모다 모스크",
+  "en": "Jami Al Hamoda, Jalan Bani Bu Ali",
+  "cat": "culture",
+  "region": "샤르키야",
+  "desc": "샤르키야 남부 내륙 도시 잘란 바니 부 알리의 역사적인 모스크로, 공식 관광 사이트에서 '돔 모스크'로 소개돼요. 가까이에 옛 요새도 있어 전통 도시 분위기를 함께 느낄 수 있어요.",
+  "tips": "보수적인 지역으로 알려져 있으니 긴 옷을 입고, 내부 출입은 현지에 문의하세요. 금요일 낮 예배 시간은 피하세요.",
+  "visitMin": 30,
+  "family": "외관 감상 위주의 짧은 들름",
+  "q": "Jami Al Hamoda Jalan Bani Bu Ali",
+  "ll": [
+   59.31993,
+   22.01147
+  ],
+  "src": [
+   "https://mapcarta.com/N700754309",
+   "https://experienceoman.om/destinations/al-sharqiyah-south",
+   "https://www.roughguides.com/destinations/middle-east/oman/sharqiya/south-muscat-inland-route"
+  ]
+ },
+ {
+  "id": "sinaw-souq",
+  "ko": "시나우 수크",
+  "en": "Sinaw Souq",
+  "cat": "culture",
+  "region": "샤르키야",
+  "desc": "사막과 가까운 내륙 도시 시나우의 전통 시장으로, 수르·이브라와 함께 동부 오만의 주요 시장으로 꼽혀요. 주변 베두인들이 생필품을 사고 가축과 수공예품을 팔러 모여서 장날에 특히 활기가 넘쳐요.",
+  "tips": "목요일 아침 장이 가장 붐빈다고 알려져 있으니 일찍 가세요(시간은 현장 확인). 가축 시장에서는 아이가 동물에게 너무 가까이 가지 않게 해 주세요.",
+  "visitMin": 60,
+  "family": "가축 구경에 아이들이 흥미로워함",
+  "q": "Sinaw Souq",
+  "ll": [
+   58.02639,
+   22.4967
+  ],
+  "src": [
+   "https://en.wikipedia.org/wiki/Sinaw",
+   "https://mapcarta.com/W1393245034",
+   "https://www.roughguides.com/destinations/middle-east/oman/sharqiya/south-muscat-inland-route"
+  ]
+ },
+ {
+  "id": "masirah-island",
+  "ko": "마시라 섬",
+  "en": "Masirah Island (ferry from Shannah)",
+  "cat": "sea",
+  "region": "샤르키야",
+  "desc": "오만 동쪽 바다에 남북 약 95km로 길게 뻗은 섬으로, 붉은바다거북(로거헤드) 등 바다거북의 중요한 산란지이고 펠리컨·홍학 같은 철새도 찾아와요. 본토 샤나 항에서 국영 페리를 타고 건너가며, 한적한 해변과 여름 몬순철 카이트서핑으로 알려져 있어요.",
+  "tips": "거리가 멀어 최소 1박 일정으로 생각하세요. 페리 시간·요금·차량 선적은 국영 페리(NFC)에 미리 확인하세요. 마시라 섬의 새끼 거북 부화는 8~10월에 가장 많다고 해요.",
+  "visitMin": 480,
+  "family": "일정 여유가 있을 때 고려할 한적한 해변 휴양지",
+  "q": "Masirah Island",
+  "ll": [
+   58.87295,
+   20.66004
+  ],
+  "approx": 1,
+  "src": [
+   "https://en.wikipedia.org/wiki/Masirah_Island",
+   "https://experienceoman.om/destinations/al-sharqiyah-south/the-island-of-masirah",
+   "https://www.omanobserver.om/article/1192404/oman/environment-authority-urges-public-not-to-touch-baby-turtles"
+  ]
+ },
+ {
+  "id": "duqm-rock-garden",
+  "ko": "두큼 록 가든",
+  "en": "Duqm Rock Garden",
+  "cat": "nature",
+  "region": "우스타",
+  "desc": "두큼 특별경제구역 안에 있는 약 6km² 넓이의 바위 지대로, 바람과 물에 깎인 사암·석회암 바위들이 조각상처럼 늘어서 있어요. 약 4,600만 년 전에 형성된 것으로 소개되고 일부 바위에서는 화석도 볼 수 있어요. 무스카트에서 약 550km 떨어져 있어 남쪽(두큼) 방향으로 갈 때만 들를 만한 선택 일정이에요.",
+  "tips": "2025년 후기 기준 입장 무료이고 입구에 주차장이 있어요. 그늘이 거의 없으니 아침 일찍 가고 물과 모자를 챙기세요. 온라인 사전 등록은 가능하지만 필수는 아니라고 해요.",
+  "visitMin": 60,
+  "family": "바위 사이 탐험 놀이에 좋지만 그늘이 없음",
+  "q": "Duqm Rock Garden",
+  "ll": [
+   57.65718,
+   19.65023
+  ],
+  "src": [
+   "https://www.komoot.com/highlight/7264669",
+   "https://en.wikipedia.org/wiki/Duqm_Rock_Garden",
+   "https://duqm.gov.om/upload/files/tourism-guide-en.pdf"
+  ]
+ },
+ {
+  "id": "bar-al-hikman",
+  "ko": "바르 알 히크만 (홍학 습지)",
+  "en": "Barr Al Hikman",
+  "cat": "sea",
+  "region": "우스타",
+  "desc": "우스타주 북동쪽 해안의 반도와 갯벌 습지로, 오만에서 가장 중요한 철새 중간 기착지 중 하나로 꼽혀요. 홍학을 비롯한 물새가 모이고, 2023년 10월 '우스타주 습지 보호구역'으로 람사르 습지에 등록됐어요. 대부분 사람이 살지 않는 지역이라 마시라 섬 페리를 타러 가는 길에 함께 들르는 일정이 현실적이에요.",
+  "tips": "편의시설이 거의 없으니 물과 연료를 넉넉히 준비하세요. 포장도로를 벗어나면 갯벌이나 소금 평지에 차가 빠질 수 있으니 주의하고, 새는 쌍안경으로 멀리서 보세요.",
+  "visitMin": 120,
+  "family": "쌍안경으로 새 관찰, 먼 거리라 선택 일정",
+  "q": "Bar Al Hikman",
+  "ll": [
+   58.7279,
+   20.7459
+  ],
+  "approx": 1,
+  "src": [
+   "https://en.wikipedia.org/wiki/Barr_al-Hikman",
+   "https://experienceoman.om/destinations/al-wusta/bar-al-hikman",
+   "https://duqm.gov.om/upload/files/tourism-guide-en.pdf"
+  ]
+ },
+ {
+  "id": "al-baleed",
+  "ko": "알 발리드 유적공원·유향의 땅 박물관",
+  "en": "Al Baleed Archaeological Park & Museum of the Frankincense Land",
+  "cat": "fort",
+  "region": "도파르",
+  "desc": "중세 항구도시 자파르의 유적이 남아 있는 곳으로, 유네스코 세계유산 '유향의 땅'에 속해요. 마르코 폴로와 이븐 바투타도 들렀던 유향 무역항이었고, 공원 안 박물관의 역사관과 해양관에서 오만의 역사와 전통 선박을 볼 수 있어요.",
+  "tips": "박물관은 구글 지도 표기(2025년 확인) 기준 일~목 9:00–19:00, 금·토 15:00–19:00이에요(라마단·공휴일엔 바뀔 수 있어요). 입장료는 현장에서 확인하세요. 유적 구역은 그늘이 적어 늦은 오후에 모자와 물을 챙겨 가는 게 좋아요.",
+  "visitMin": 120,
+  "family": "실내 박물관과 넓은 산책로가 있어 아이와 둘러보기 좋아요",
+  "q": "Museum of the Frankincense Land Salalah",
+  "ll": [
+   54.13609,
+   17.0094
+  ],
+  "src": [
+   "https://en.wikipedia.org/wiki/Al-Baleed_Archaeological_Park",
+   "https://wanderlog.com/place/details/296071/museum-of-the-frankincense-land",
+   "https://aroundus.com/p/9136048-museum-of-the-land-of-frankincense"
+  ]
+ },
+ {
+  "id": "sumhuram",
+  "ko": "수무후람 유적지(코르 로리)",
+  "en": "Sumhuram Archaeological Park (Khor Rori)",
+  "cat": "fort",
+  "region": "도파르",
+  "desc": "기원전 3세기 무렵 하드라마우트 왕국이 세운 요새 항구도시 유적으로, 유향을 배로 실어 나르던 곳이에요. 코르 로리 석호 동쪽 언덕에 있어 석호와 바다가 함께 내려다보이고, 2000년부터 유네스코 세계유산 '유향의 땅'에 포함돼 있어요.",
+  "tips": "운영시간·입장료는 현장에서 확인하세요. 언덕 위라 그늘이 적으니 오전이나 해 질 무렵이 좋고, 석호의 물새를 아이와 함께 관찰해 보세요. 2026년 3월 공원 개발 협약이 체결돼 공사 구역이 생길 수 있어요.",
+  "visitMin": 75,
+  "family": "유적이 아담하고 동선이 짧아 아이와 걷기 무난해요",
+  "q": "Sumhuram Archaeological Park",
+  "ll": [
+   54.43393,
+   17.03991
+  ],
+  "src": [
+   "https://en.wikipedia.org/wiki/Khor_Rori",
+   "https://mapcarta.com/N314204469",
+   "https://mapcarta.com/N4403247174"
+  ]
+ },
+ {
+  "id": "wadi-darbat",
+  "ko": "와디 다르바트",
+  "en": "Wadi Darbat",
+  "cat": "nature",
+  "region": "도파르",
+  "desc": "타카 북쪽 산지에 작은 호수들이 이어진 계곡으로, 피크닉 공간과 카페가 있어요. 카리프(6~9월) 때는 석회암 절벽 아래로 폭포가 쏟아지지만, 10월에는 폭포가 멈췄거나 물줄기가 약할 가능성이 커요. 그래도 남아 있는 호수와 방목하는 가축이 어우러진 계곡 풍경을 즐길 수 있어요.",
+  "tips": "계곡 물에서는 수영이 금지돼 있어요. 호수 보트(카약·페달보트) 대여는 시기에 따라 다르니 현장에서 확인하세요. 10월엔 초록빛이 점차 옅어지고, 폭포 쪽 주차장에서 폭포까지는 걸어서 20분쯤 걸린다는 안내가 있어요.",
+  "visitMin": 90,
+  "family": "호숫가 피크닉과 보트를 아이들이 좋아해요(물놀이는 금지)",
+  "q": "Wadi Darbat",
+  "ll": [
+   54.45304,
+   17.10527
+  ],
+  "src": [
+   "https://experienceoman.om/destinations/dhofar/wadi-darbat",
+   "https://mapcarta.com/N700605250",
+   "https://mapcarta.com/N10015250023"
+  ]
+ },
+ {
+  "id": "mughsail-marneef",
+  "ko": "알 무그사일 해변·마르니프 동굴(분수공)",
+  "en": "Al Mughsail Beach & Marneef Cave Blowholes",
+  "cat": "sea",
+  "region": "도파르",
+  "desc": "살랄라 서쪽에 약 6km 이어진 하얀 모래 해변이에요. 서쪽 끝 마르니프 동굴 아래 바위에는 파도가 칠 때 바닷물이 하늘로 솟구치는 분수공(블로홀)이 있고, 동굴 그늘에서 바다를 보며 쉬기 좋아요.",
+  "tips": "분수공은 파도가 높을 때 잘 보이고 주변 바위가 젖어 미끄러우니 펜스 안쪽에서만 구경하세요(2022년 사고 뒤 몇 달간 폐쇄된 적이 있어요). showcaves.com(2024년 기준)에는 무료·상시 개방으로 나와 있어요. 바다에 들어갈 땐 파도와 조류를 꼭 확인하세요.",
+  "visitMin": 75,
+  "family": "모래사장과 분수공 구경이 재미있지만 바위 쪽은 미끄러워요",
+  "q": "Marneef Cave",
+  "ll": [
+   53.76661,
+   16.87636
+  ],
+  "src": [
+   "https://experienceoman.om/destinations/dhofar/al-mughsail-beach",
+   "https://showcaves.com/english/om/caves/Marneef.html",
+   "https://mapcarta.com/Marneef_Cave"
+  ]
+ },
+ {
+  "id": "taqah-castle",
+  "ko": "타카 성",
+  "en": "Taqah Castle",
+  "cat": "fort",
+  "region": "도파르",
+  "desc": "지역 유력자 셰이크 알리 빈 팀만 알마샤니의 거처로 지어진 성으로, 이후 왈리(지방관)의 관저로 쓰였어요. 1994년부터 박물관으로 운영되며 무기와 생활 도구로 옛 오만 생활을 보여 주고, 2023년 복원을 마치고 다시 문을 열었어요.",
+  "tips": "운영시간·입장료는 현장에서 확인하세요. 수무후람·와디 다르바트와 가까워 동부 일정에 함께 묶기 좋아요.",
+  "visitMin": 45,
+  "family": "규모가 아담해 짧게 둘러보기 좋아요",
+  "q": "Taqah Castle",
+  "ll": [
+   54.39497,
+   17.04022
+  ],
+  "src": [
+   "https://mapcarta.com/Taqah_Castle",
+   "https://wanderlog.com/place/details/38297/taqah-castle",
+   "https://next.archnet.org/sites/22155"
+  ]
+ },
+ {
+  "id": "mirbat-castle",
+  "ko": "미르바트 성",
+  "en": "Mirbat Castle",
+  "cat": "fort",
+  "region": "도파르",
+  "desc": "미르바트 옛 항구와 전통 시장을 내려다보는 해안의 성으로, 술탄 사이드 빈 타이무르 시대에 다시 지어졌어요. 2층 구조 안에 병사 숙소, 무기고, 감옥과 왈리 가족의 생활 공간이 남아 있어요. 미르바트는 1972년 '미르바트 전투'가 벌어진 곳이기도 해요.",
+  "tips": "공식 관광 사이트(experienceoman.om) 기준 매일 8:00–19:00 운영이고, 표는 현장 안내데스크에서 사요. 성 주변 옛 항구와 무함마드 빈 알리 묘도 함께 둘러볼 수 있어요.",
+  "visitMin": 60,
+  "family": "성이 작고 바다 전망이 좋아 아이와 둘러보기 편해요",
+  "q": "Mirbat Castle",
+  "ll": [
+   54.69171,
+   16.99239
+  ],
+  "src": [
+   "https://experienceoman.om/destinations/dhofar/mirbat-castle",
+   "https://mapcarta.com/Mirbat_Castle",
+   "https://en.wikipedia.org/wiki/Mirbat"
+  ]
+ },
+ {
+  "id": "jebel-samhan-viewpoint",
+  "ko": "자발 삼한 전망대",
+  "en": "Jebel Samhan Viewpoint",
+  "cat": "mountain",
+  "region": "도파르",
+  "desc": "아라비아표범의 마지막 서식지 가운데 하나인 자발 삼한 자연보호구역 가장자리의 전망대예요. 석회암 절벽과 깊은 협곡 너머로 미르바트 쪽 해안 평야가 내려다보여요.",
+  "tips": "구불구불한 산길이니 천천히 운전하고, 전망대까지의 도로 상태는 현장에서 확인하세요. 정상(약 1,800m)은 전망대와 다른 곳이며 4x4 비포장길이에요. 절벽 가장자리에서는 아이 손을 꼭 잡으세요.",
+  "visitMin": 40,
+  "family": "경치는 훌륭하지만 절벽 근처에선 아이를 꼭 붙잡아야 해요",
+  "q": "Jabal Samhan viewpoint",
+  "ll": [
+   54.71198,
+   17.11193
+  ],
+  "src": [
+   "https://mapcarta.com/N7412090872",
+   "https://mapcarta.com/36164772",
+   "https://en.wikipedia.org/wiki/Jabal_Samhan"
+  ]
+ },
+ {
+  "id": "job-tomb",
+  "ko": "나비 아유브(욥) 묘",
+  "en": "Prophet Ayoub (Job) Tomb",
+  "cat": "culture",
+  "region": "도파르",
+  "desc": "예언자 욥(아유브)의 무덤으로 여겨지는 성지로, 살랄라 북서쪽 산 위 하야우트 마을에 있어요. 약 4m 길이의 무덤과 예언자의 것으로 전해지는 발자국이 있고, 맑은 날에는 살랄라 평야가 내려다보여요.",
+  "tips": "신발을 벗고 들어가며, 여성은 머리 스카프와 긴 옷, 남성도 단정한 긴 옷을 입어야 해요. 살랄라에서 이틴 로드를 따라 약 30km 가서 표지판을 보고 들어가요. 아래쪽 작은 식당에서 전망을 보며 쉬어 갈 수 있어요.",
+  "visitMin": 40,
+  "family": "짧게 조용히 둘러보는 곳이라 차분한 관람이 필요해요",
+  "q": "Prophet Ayoub Tomb Salalah",
+  "ll": [
+   53.99392,
+   17.11177
+  ],
+  "src": [
+   "https://en.wikipedia.org/wiki/Tomb_of_Job",
+   "https://www.atlasobscura.com/places/tomb-of-job",
+   "https://www.lonelyplanet.com/points-of-interest/jobs-tomb/1307681"
+  ]
+ },
+ {
+  "id": "al-haffa-souq",
+  "ko": "알 하파 수크",
+  "en": "Al Haffa Souq",
+  "cat": "culture",
+  "region": "도파르",
+  "desc": "살랄라 해안가 알 후슨 궁전 근처의 전통 시장으로, 도파르 특산품인 유향을 원석·오일·향 등 여러 형태로 팔아요. 향수와 우드(침향)도 구경할 수 있어요.",
+  "tips": "흥정이 일반적이에요. 가게마다 영업시간이 달라 현장 확인이 필요해요. 바로 옆 알 하파 해변 산책로와 함께 둘러보세요.",
+  "visitMin": 60,
+  "family": "유향 냄새를 맡아 보며 고르는 재미가 있어요",
+  "q": "Souq Al Hafa Salalah",
+  "ll": [
+   54.10135,
+   17.00185
+  ],
+  "src": [
+   "https://wanderlog.com/place/details/6961165/souq-al-hafa",
+   "https://wanderlog.com/explore/85970/salalah",
+   "https://www.omanobserver.om/ampArticle/28085"
+  ]
+ },
+ {
+  "id": "sultan-qaboos-mosque-salalah",
+  "ko": "술탄 카부스 모스크(살랄라)",
+  "en": "Sultan Qaboos Mosque, Salalah",
+  "cat": "culture",
+  "region": "도파르",
+  "desc": "살랄라 도심 안나흐다 거리에 있는 도시의 대표 모스크예요. 비무슬림도 넓은 바깥 안뜰을 둘러볼 수 있어요.",
+  "tips": "여성은 머리 스카프와 손목·발목까지 가리는 옷, 남성은 긴 바지를 입어야 해요. 금요일 정오 예배와 기도 시간은 피하고, 비무슬림 관람 가능 시간은 현장에서 확인하세요. 입장료는 없어요.",
+  "visitMin": 30,
+  "family": "조용히 관람해야 해서 짧게 들르는 게 좋아요",
+  "q": "Sultan Qaboos Mosque Salalah",
+  "ll": [
+   54.09378,
+   17.01706
+  ],
+  "src": [
+   "https://wanderlog.com/place/details/296072/sultan-qaboos-mosque-salalah"
+  ]
+ },
+ {
+  "id": "wadi-dawkah",
+  "ko": "와디 다우카 유향나무 공원",
+  "en": "Wadi Dawkah Frankincense Park",
+  "cat": "nature",
+  "region": "도파르",
+  "desc": "유향나무 약 5,000그루가 자라는 것으로 알려진 자연공원으로, 2000년부터 유네스코 세계유산 '유향의 땅'의 일부예요. 수지를 채취하는 유향나무를 가까이서 볼 수 있어요.",
+  "tips": "살랄라에서 31번 도로로 북쪽 약 40km(차로 약 45분)라 우바르·사막 일정과 묶기 좋아요. 주차장·안내판·화장실이 있다는 후기가 있어요(2018년). 그늘이 적으니 서늘한 오전에 가세요.",
+  "visitMin": 30,
+  "family": "평지라 걷기 쉽고 짧게 보기 좋아요",
+  "q": "Wadi Dawkah Frankincense Trees",
+  "ll": [
+   54.07639,
+   17.33846
+  ],
+  "src": [
+   "https://www.atlasobscura.com/places/wadi-dawkah-frankincense-trees",
+   "https://mapcarta.com/N7247315209",
+   "https://mapcarta.com/Wadi_Dawkah_Frankincense_Trees"
+  ]
+ },
+ {
+  "id": "ubar-shisr",
+  "ko": "우바르(시스르) 유적",
+  "en": "Ubar / Archaeological Site of Shisr",
+  "cat": "fort",
+  "region": "도파르",
+  "desc": "전설 속 사막 도시 '우바르'로 알려진 시스르 오아시스의 유적으로, 1992년 발굴 발표로 유명해졌어요. 무너진 석회암 싱크홀 가장자리에 요새 성벽 일부가 남아 있고, 유네스코 세계유산 '유향의 땅'에 포함돼 있어요. 다만 이곳이 정말 우바르인지는 학계에서 의견이 갈려요.",
+  "tips": "살랄라에서 북쪽으로 약 150~170km 떨어진 사막 가장자리라 아침 일찍 출발하세요. 유적은 작아서 30~45분이면 충분하고, 작은 안내소가 있어요. 낮 기온이 높으니 물을 넉넉히 챙기세요.",
+  "visitMin": 45,
+  "family": "유적은 작아 보기 쉽지만 오가는 이동 시간이 길어요",
+  "q": "Ubar archaeological site Shisr",
+  "ll": [
+   53.64866,
+   18.25518
+  ],
+  "src": [
+   "https://en.wikipedia.org/wiki/Archaeological_site_of_Shisr",
+   "https://en.wikipedia.org/wiki/Atlantis_of_the_Sands",
+   "https://www.atlasobscura.com/places/ubar"
+  ]
+ },
+ {
+  "id": "ain-razat",
+  "ko": "아인 라자트",
+  "en": "Ain Razat",
+  "cat": "nature",
+  "region": "도파르",
+  "desc": "1년 내내 물이 흐르는 샘 주변에 정원과 연못을 꾸민 공원이에요. 라자트 동굴도 있어 산책하며 둘러보기 좋고, 공식 관광 사이트에서 휠체어로 접근할 수 있는 곳으로 소개돼요.",
+  "tips": "연중 방문할 수 있고 무료로 안내돼 있어요. 물가라 모기가 있을 수 있으니 기피제를 챙기세요. 그늘에서 피크닉하기 좋아요.",
+  "visitMin": 60,
+  "family": "평탄한 길과 그늘이 있어 유모차·어린아이도 편해요",
+  "q": "Ain Razat",
+  "ll": [
+   54.23807,
+   17.12994
+  ],
+  "src": [
+   "https://experienceoman.om/destinations/dhofar/ain-razat",
+   "https://wanderlog.com/place/details/34801/ain-razat",
+   "https://mapcarta.com/Ayn_Razat"
+  ]
+ },
+ {
+  "id": "fazayah-beach",
+  "ko": "파자야 해변",
+  "en": "Fazayah Beach",
+  "cat": "sea",
+  "region": "도파르",
+  "desc": "무그사일 서쪽 절벽 아래 숨은 해변으로, 맑은 청록색 바다와 하얀 모래가 아름다워요. 편의시설이 없어 자연 그대로의 조용한 해변을 즐길 수 있어요.",
+  "tips": "마지막 구간이 비포장길이라 4x4가 편하고, 일반 차량은 천천히 가야 해요. 매점·화장실이 없으니 물, 간식, 그늘막을 챙기세요. 외진 해변이라 아이들은 얕은 곳에서만 놀게 하세요.",
+  "visitMin": 120,
+  "family": "물놀이엔 좋지만 외진 곳이라 준비물을 꼭 챙겨야 해요",
+  "q": "Fazayah Beach",
+  "ll": [
+   53.72136,
+   16.84051
+  ],
+  "src": [
+   "https://wanderlog.com/place/details/296069/fazayah-beach"
+  ]
+ },
+ {
+  "id": "nabi-imran-tomb",
+  "ko": "나비 임란 묘",
+  "en": "Nabi Imran Tomb",
+  "cat": "culture",
+  "region": "도파르",
+  "desc": "성모 마리아(마리암)의 아버지로 전해지는 임란의 무덤으로 알려진 곳이에요. 길이가 약 30m나 되는 매우 긴 무덤으로 유명하고, 살랄라 시내에 있어 잠깐 들르기 좋아요.",
+  "tips": "입장료는 없는 것으로 안내돼요. 종교 시설이라 어깨와 무릎을 가리는 옷을 입고, 여성은 스카프를 챙기세요. 기도 시간에는 출입이 제한될 수 있어요.",
+  "visitMin": 20,
+  "family": "시내에 있어 짧게 들르기 좋아요",
+  "q": "Nabi Imran Tomb Salalah",
+  "ll": [
+   54.11134,
+   17.02149
+  ],
+  "src": [
+   "https://wanderlog.com/place/details/296075/nabi-imran-tomb"
+  ]
+ },
+ {
+  "id": "ain-athum",
+  "ko": "아인 아툼",
+  "en": "Ain Athum",
+  "cat": "nature",
+  "region": "도파르",
+  "desc": "살랄라에서 약 33km 떨어진 산속 샘으로, 와디 쿠샤임 위쪽에 높이 약 15m의 폭포가 있어요. 카리프 시즌에 폭포가 가장 볼만하고, 주차 후 몇 분 걸어 들어가요.",
+  "tips": "10월엔 카리프가 끝나 폭포 수량이 줄었거나 멈췄을 수 있어요. 바위가 미끄럽고 물살이 셀 수 있어 수영은 피하세요. 타카 쪽 동부 일정과 묶어 가면 좋아요.",
+  "visitMin": 60,
+  "family": "짧은 걷기 코스지만 바위가 미끄러워 아이 손을 잡아야 해요",
+  "q": "Ain Athum",
+  "ll": [
+   54.36786,
+   17.11832
+  ],
+  "approx": 1,
+  "src": [
+   "https://mapcarta.com/Ayn_Athum",
+   "https://timesofoman.com/article/119281-khareef-special-soak-up-in-the-magnificence-of-ayn-khor-and-ayn-athum",
+   "https://kuwaittimes.com/article/17895/lifestyle/art-fashion/ain-athum-a-must-visit-tourist-destination"
+  ]
+ },
+ {
+  "id": "rub-al-khali-dunes",
+  "ko": "룹알할리 사막(엠티 쿼터) 사구",
+  "en": "Rub' al Khali (Empty Quarter) dunes north-east of Shisr",
+  "cat": "desert",
+  "region": "도파르",
+  "desc": "세계에서 가장 큰 모래사막 룹알할리의 오만 쪽 가장자리로, 우바르(시스르) 너머로 높은 사구가 펼쳐져요. 사구 드라이브, 낙타 타기, 샌드보딩, 별 보기 같은 체험을 할 수 있어요.",
+  "tips": "사구 운전은 4x4와 경험이 꼭 필요해 살랄라 출발 4x4 전문 투어를 이용하는 게 안전해요. 공식 관광 사이트는 9~4월을 적기로 안내하지만 10월 한낮은 더우니 해 질 무렵을 노리세요. 휴대전화가 안 터질 수 있으니 물과 연료를 넉넉히 챙기세요.",
+  "visitMin": 180,
+  "family": "모래 언덕 놀이를 좋아하지만 반드시 가이드 투어로 가세요",
+  "q": "Empty Quarter dunes Shisr",
+  "ll": [
+   53.78312,
+   18.42922
+  ],
+  "approx": 1,
+  "src": [
+   "https://experienceoman.om/destinations/dhofar/the-rub-al-khali-desert",
+   "https://mapcarta.com/N6030499086",
+   "https://www.omanobserver.om/article/19644/Features/rub-al-khali-exquisite-in-silence-and-enormity"
+  ]
+ },
+ {
+  "id": "salalah-fruit-stalls",
+  "ko": "살랄라 코코넛·과일 노점 거리",
+  "en": "Salalah fruit & coconut stalls (Sultan Qaboos St, Ad Dahariz)",
+  "cat": "culture",
+  "region": "도파르",
+  "desc": "살랄라 동쪽 술탄 카부스 거리를 따라 바나나·코코넛 같은 과일을 파는 노점이 늘어선 곳이에요. 신선한 코코넛 워터를 맛보며 쉬어 가기 좋아요.",
+  "tips": "알 발리드 유적공원에서 차로 몇 분 거리라 함께 들르기 좋아요. 사기 전에 신선도를 확인하세요.",
+  "visitMin": 20,
+  "family": "아이들이 코코넛 워터를 마시며 쉬기 좋아요",
+  "q": "Fruits street Salalah",
+  "ll": [
+   54.15479,
+   17.01677
+  ],
+  "src": [
+   "https://wanderlog.com/place/details/13091886/fruits-street",
+   "https://wanderlog.com/place/details/13091885/fresh-fruite-dahariz"
+  ]
+ },
+ {
+  "id": "anti-gravity-point",
+  "ko": "안티그래비티 포인트",
+  "en": "Anti-Gravity Point (Gravity Hill)",
+  "cat": "mountain",
+  "region": "도파르",
+  "desc": "살랄라–미르바트 도로에서 타위 아타이르 방향으로 꺾어 조금 들어가면 나오는 착시 언덕이에요. 기어를 중립에 두면 차가 오르막을 거슬러 올라가는 것처럼 보이는데, 실제로는 주변 지형 때문에 생기는 착시예요.",
+  "tips": "표지판이 없어 지나치기 쉬워요. 차가 다니는 도로이니 뒤차를 확인하고, 아이들은 차에서 내리지 않게 하세요. 구글 지도에는 '폐업'으로 표시될 수 있어요.",
+  "visitMin": 15,
+  "family": "차 안에서 신기한 착시를 체험할 수 있어 아이들이 재미있어해요",
+  "q": "Anti Gravity Point Salalah",
+  "ll": [
+   54.61272,
+   17.04279
+  ],
+  "approx": 1,
+  "src": [
+   "https://wanderlog.com/place/details/15486581/gravity-hill",
+   "https://holidify.com/places/salalah/anti-gravity-point-sightseeing-121360.html"
+  ]
+ }
+]

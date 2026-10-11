@@ -1,0 +1,380 @@
+[
+ {
+  "id": "al-baleed",
+  "ko": "알 발리드 유적공원·유향의 땅 박물관",
+  "en": "Al Baleed Archaeological Park & Museum of the Frankincense Land",
+  "cat": "fort",
+  "region": "도파르",
+  "lat": 17.00940, "lng": 54.13609,
+  "coordNote": "Museum building / main visitor area: Google Maps place via Wanderlog (17.009401, 54.136088), same point on aroundus. The ruins of Zafar stretch ~0.5 km south-west to the shore (Wikipedia 17.00639, 54.13056; Komoot 17.00403, 54.13205).",
+  "desc": "중세 항구도시 자파르의 유적이 남아 있는 곳으로, 유네스코 세계유산 '유향의 땅'에 속해요. 마르코 폴로와 이븐 바투타도 들렀던 유향 무역항이었고, 공원 안 박물관의 역사관과 해양관에서 오만의 역사와 전통 선박을 볼 수 있어요.",
+  "tips": "박물관은 구글 지도 표기(2025년 확인) 기준 일~목 9:00–19:00, 금·토 15:00–19:00이에요(라마단·공휴일엔 바뀔 수 있어요). 입장료는 현장에서 확인하세요. 유적 구역은 그늘이 적어 늦은 오후에 모자와 물을 챙겨 가는 게 좋아요.",
+  "visitMin": 120,
+  "family": "실내 박물관과 넓은 산책로가 있어 아이와 둘러보기 좋아요",
+  "q": "Museum of the Frankincense Land Salalah",
+  "sources": [
+   "https://en.wikipedia.org/wiki/Al-Baleed_Archaeological_Park",
+   "https://wanderlog.com/place/details/296071/museum-of-the-frankincense-land",
+   "https://aroundus.com/p/9136048-museum-of-the-land-of-frankincense",
+   "https://www.omanobserver.om/article/70994/Local/frankincense-land-museum---a-prominent-cultural-landmark-in-dhofar",
+   "https://www.komoot.com/highlight/635196"
+  ]
+ },
+ {
+  "id": "sumhuram",
+  "ko": "수무후람 유적지(코르 로리)",
+  "en": "Sumhuram Archaeological Park (Khor Rori)",
+  "cat": "fort",
+  "region": "도파르",
+  "lat": 17.03991, "lng": 54.43393,
+  "coordNote": "Car park next to the ruins: OSM node 314204469 (mapcarta). Ruins ~100 m south (OSM 17.03900, 54.43419; aroundus 17.03869, 54.43425). Khor Rori lagoon per Wikipedia 17.03934, 54.43048.",
+  "desc": "기원전 3세기 무렵 하드라마우트 왕국이 세운 요새 항구도시 유적으로, 유향을 배로 실어 나르던 곳이에요. 코르 로리 석호 동쪽 언덕에 있어 석호와 바다가 함께 내려다보이고, 2000년부터 유네스코 세계유산 '유향의 땅'에 포함돼 있어요.",
+  "tips": "운영시간·입장료는 현장에서 확인하세요. 언덕 위라 그늘이 적으니 오전이나 해 질 무렵이 좋고, 석호의 물새를 아이와 함께 관찰해 보세요. 2026년 3월 공원 개발 협약이 체결돼 공사 구역이 생길 수 있어요.",
+  "visitMin": 75,
+  "family": "유적이 아담하고 동선이 짧아 아이와 걷기 무난해요",
+  "q": "Sumhuram Archaeological Park",
+  "sources": [
+   "https://en.wikipedia.org/wiki/Khor_Rori",
+   "https://mapcarta.com/N314204469",
+   "https://mapcarta.com/N4403247174",
+   "https://aroundus.com/p/9135537-khor-rori",
+   "https://www.worldheritagesite.org/list/Land+of+Frankincense",
+   "https://www.gccbusinessnews.com/oman-sumharam-archaeological-park-dhofar/"
+  ]
+ },
+ {
+  "id": "wadi-darbat",
+  "ko": "와디 다르바트",
+  "en": "Wadi Darbat",
+  "cat": "nature",
+  "region": "도파르",
+  "lat": 17.10527, "lng": 54.45304,
+  "coordNote": "Picnic site / lake area: OSM node 700605250 (mapcarta); birdingplaces.eu gives 17.10493, 54.45272 (~50 m). The main waterfall drop is ~3 km south-west at OSM 17.08161, 54.43684, with Cafe Darbat 470 m south of it (17.07738, 54.43703).",
+  "desc": "타카 북쪽 산지에 작은 호수들이 이어진 계곡으로, 피크닉 공간과 카페가 있어요. 카리프(6~9월) 때는 석회암 절벽 아래로 폭포가 쏟아지지만, 10월에는 폭포가 멈췄거나 물줄기가 약할 가능성이 커요. 그래도 남아 있는 호수와 방목하는 가축이 어우러진 계곡 풍경을 즐길 수 있어요.",
+  "tips": "계곡 물에서는 수영이 금지돼 있어요. 호수 보트(카약·페달보트) 대여는 시기에 따라 다르니 현장에서 확인하세요. 10월엔 초록빛이 점차 옅어지고, 폭포 쪽 주차장에서 폭포까지는 걸어서 20분쯤 걸린다는 안내가 있어요.",
+  "visitMin": 90,
+  "family": "호숫가 피크닉과 보트를 아이들이 좋아해요(물놀이는 금지)",
+  "q": "Wadi Darbat",
+  "sources": [
+   "https://experienceoman.om/destinations/dhofar/wadi-darbat",
+   "https://mapcarta.com/N700605250",
+   "https://mapcarta.com/N10015250023",
+   "https://www.birdingplaces.eu/en/birdingplaces/oman/wadi-darbat",
+   "https://www.flyedelweiss.com/ch/de/destinations/salalah/tips-wadi-darbat.html",
+   "https://www.omanobserver.om/ampArticle/1195264"
+  ]
+ },
+ {
+  "id": "mughsail-marneef",
+  "ko": "알 무그사일 해변·마르니프 동굴(분수공)",
+  "en": "Al Mughsail Beach & Marneef Cave Blowholes",
+  "cat": "sea",
+  "region": "도파르",
+  "lat": 16.87636, "lng": 53.76661,
+  "coordNote": "Marneef Cave entrance at the west end of the beach: OSM node 3597099841 (mapcarta); showcaves.com 16.875849, 53.766651 (~55 m). Blowholes ~180 m south (OSM 16.87480, 53.76609). Google's 'Mughsail Beach' pin is ~1 km NE at 16.87944, 53.77658.",
+  "desc": "살랄라 서쪽에 약 6km 이어진 하얀 모래 해변이에요. 서쪽 끝 마르니프 동굴 아래 바위에는 파도가 칠 때 바닷물이 하늘로 솟구치는 분수공(블로홀)이 있고, 동굴 그늘에서 바다를 보며 쉬기 좋아요.",
+  "tips": "분수공은 파도가 높을 때 잘 보이고 주변 바위가 젖어 미끄러우니 펜스 안쪽에서만 구경하세요(2022년 사고 뒤 몇 달간 폐쇄된 적이 있어요). showcaves.com(2024년 기준)에는 무료·상시 개방으로 나와 있어요. 바다에 들어갈 땐 파도와 조류를 꼭 확인하세요.",
+  "visitMin": 75,
+  "family": "모래사장과 분수공 구경이 재미있지만 바위 쪽은 미끄러워요",
+  "q": "Marneef Cave",
+  "sources": [
+   "https://experienceoman.om/destinations/dhofar/al-mughsail-beach",
+   "https://showcaves.com/english/om/caves/Marneef.html",
+   "https://mapcarta.com/Marneef_Cave",
+   "https://mapcarta.com/N306117287",
+   "https://wanderlog.com/place/details/34796/mughsail-beach"
+  ]
+ },
+ {
+  "id": "taqah-castle",
+  "ko": "타카 성",
+  "en": "Taqah Castle",
+  "cat": "fort",
+  "region": "도파르",
+  "lat": 17.04022, "lng": 54.39497,
+  "coordNote": "Castle building: OSM historic=castle (mapcarta), same point on aroundus. Google Maps pin (Wanderlog, plus code 29QW+J44) is ~130 m south at 17.03901, 54.39532, probably the street/parking side.",
+  "desc": "지역 유력자 셰이크 알리 빈 팀만 알마샤니의 거처로 지어진 성으로, 이후 왈리(지방관)의 관저로 쓰였어요. 1994년부터 박물관으로 운영되며 무기와 생활 도구로 옛 오만 생활을 보여 주고, 2023년 복원을 마치고 다시 문을 열었어요.",
+  "tips": "운영시간·입장료는 현장에서 확인하세요. 수무후람·와디 다르바트와 가까워 동부 일정에 함께 묶기 좋아요.",
+  "visitMin": 45,
+  "family": "규모가 아담해 짧게 둘러보기 좋아요",
+  "q": "Taqah Castle",
+  "sources": [
+   "https://mapcarta.com/Taqah_Castle",
+   "https://wanderlog.com/place/details/38297/taqah-castle",
+   "https://next.archnet.org/sites/22155",
+   "https://www.omanobserver.om/article/1140032/oman/governorates/taqah-castle-a-historical-gem-reveals-its-splendour-to-the-public",
+   "https://omantripper.com/taqah-castle-dhofar/"
+  ]
+ },
+ {
+  "id": "mirbat-castle",
+  "ko": "미르바트 성",
+  "en": "Mirbat Castle",
+  "cat": "fort",
+  "region": "도파르",
+  "lat": 16.99239, "lng": 54.69171,
+  "coordNote": "Castle building: OSM way 450283120 (mapcarta); matches the Google place behind experienceoman's map link (16.99252, 54.69165). The OSM embed on the experienceoman page is centred ~400 m east and should be ignored.",
+  "desc": "미르바트 옛 항구와 전통 시장을 내려다보는 해안의 성으로, 술탄 사이드 빈 타이무르 시대에 다시 지어졌어요. 2층 구조 안에 병사 숙소, 무기고, 감옥과 왈리 가족의 생활 공간이 남아 있어요. 미르바트는 1972년 '미르바트 전투'가 벌어진 곳이기도 해요.",
+  "tips": "공식 관광 사이트(experienceoman.om) 기준 매일 8:00–19:00 운영이고, 표는 현장 안내데스크에서 사요. 성 주변 옛 항구와 무함마드 빈 알리 묘도 함께 둘러볼 수 있어요.",
+  "visitMin": 60,
+  "family": "성이 작고 바다 전망이 좋아 아이와 둘러보기 편해요",
+  "q": "Mirbat Castle",
+  "sources": [
+   "https://experienceoman.om/destinations/dhofar/mirbat-castle",
+   "https://mapcarta.com/Mirbat_Castle",
+   "https://en.wikipedia.org/wiki/Mirbat",
+   "https://www.timesofoman.com/article/137904/Oman/Tourism/Explore-the-castle-and-the-fishermens-port-in-Mirbat"
+  ]
+ },
+ {
+  "id": "jebel-samhan-viewpoint",
+  "ko": "자발 삼한 전망대",
+  "en": "Jebel Samhan Viewpoint",
+  "cat": "mountain",
+  "region": "도파르",
+  "lat": 17.11193, "lng": 54.71198,
+  "coordNote": "OSM tourism=viewpoint node 7412090872 (mapcarta); a second 'Jabal Samhan' viewpoint node lies 110 m SW. This is not the summit (Google peak pin 17.13554, 54.79157, reached only by ~12 km of 4x4 track).",
+  "desc": "아라비아표범의 마지막 서식지 가운데 하나인 자발 삼한 자연보호구역 가장자리의 전망대예요. 석회암 절벽과 깊은 협곡 너머로 미르바트 쪽 해안 평야가 내려다보여요.",
+  "tips": "구불구불한 산길이니 천천히 운전하고, 전망대까지의 도로 상태는 현장에서 확인하세요. 정상(약 1,800m)은 전망대와 다른 곳이며 4x4 비포장길이에요. 절벽 가장자리에서는 아이 손을 꼭 잡으세요.",
+  "visitMin": 40,
+  "family": "경치는 훌륭하지만 절벽 근처에선 아이를 꼭 붙잡아야 해요",
+  "q": "Jabal Samhan viewpoint",
+  "sources": [
+   "https://mapcarta.com/N7412090872",
+   "https://mapcarta.com/36164772",
+   "https://en.wikipedia.org/wiki/Jabal_Samhan",
+   "https://aroundus.com/p/9135467-jabal-samhan-nature-reserve",
+   "https://wanderlog.com/place/details/2116861/جبل-سمحان"
+  ]
+ },
+ {
+  "id": "job-tomb",
+  "ko": "나비 아유브(욥) 묘",
+  "en": "Prophet Ayoub (Job) Tomb",
+  "cat": "culture",
+  "region": "도파르",
+  "lat": 17.11177, "lng": 53.99392,
+  "coordNote": "Shrine building: Wikipedia 17.1117668, 53.9939249; Atlas Obscura 17.111593, 53.994026 (within ~20 m).",
+  "desc": "예언자 욥(아유브)의 무덤으로 여겨지는 성지로, 살랄라 북서쪽 산 위 하야우트 마을에 있어요. 약 4m 길이의 무덤과 예언자의 것으로 전해지는 발자국이 있고, 맑은 날에는 살랄라 평야가 내려다보여요.",
+  "tips": "신발을 벗고 들어가며, 여성은 머리 스카프와 긴 옷, 남성도 단정한 긴 옷을 입어야 해요. 살랄라에서 이틴 로드를 따라 약 30km 가서 표지판을 보고 들어가요. 아래쪽 작은 식당에서 전망을 보며 쉬어 갈 수 있어요.",
+  "visitMin": 40,
+  "family": "짧게 조용히 둘러보는 곳이라 차분한 관람이 필요해요",
+  "q": "Prophet Ayoub Tomb Salalah",
+  "sources": [
+   "https://en.wikipedia.org/wiki/Tomb_of_Job",
+   "https://www.atlasobscura.com/places/tomb-of-job",
+   "https://www.lonelyplanet.com/points-of-interest/jobs-tomb/1307681",
+   "https://www.omanobserver.om/ampArticle/28085"
+  ]
+ },
+ {
+  "id": "al-haffa-souq",
+  "ko": "알 하파 수크",
+  "en": "Al Haffa Souq",
+  "cat": "culture",
+  "region": "도파르",
+  "lat": 17.00185, "lng": 54.10135,
+  "coordNote": "Google Maps place 'Souq Al hafa' (Wanderlog 17.001845, 54.101345; plus code 2422+PGQ decodes to the same point). Al Hafa waterfront is ~250 m south-east.",
+  "desc": "살랄라 해안가 알 후슨 궁전 근처의 전통 시장으로, 도파르 특산품인 유향을 원석·오일·향 등 여러 형태로 팔아요. 향수와 우드(침향)도 구경할 수 있어요.",
+  "tips": "흥정이 일반적이에요. 가게마다 영업시간이 달라 현장 확인이 필요해요. 바로 옆 알 하파 해변 산책로와 함께 둘러보세요.",
+  "visitMin": 60,
+  "family": "유향 냄새를 맡아 보며 고르는 재미가 있어요",
+  "q": "Souq Al Hafa Salalah",
+  "sources": [
+   "https://wanderlog.com/place/details/6961165/souq-al-hafa",
+   "https://wanderlog.com/explore/85970/salalah",
+   "https://www.omanobserver.om/ampArticle/28085"
+  ]
+ },
+ {
+  "id": "sultan-qaboos-mosque-salalah",
+  "ko": "술탄 카부스 모스크(살랄라)",
+  "en": "Sultan Qaboos Mosque, Salalah",
+  "cat": "culture",
+  "region": "도파르",
+  "lat": 17.01706, "lng": 54.09378,
+  "coordNote": "Google Maps place (Wanderlog 17.017059, 54.093783; plus code 238V+RGF, An Nahdah St).",
+  "desc": "살랄라 도심 안나흐다 거리에 있는 도시의 대표 모스크예요. 비무슬림도 넓은 바깥 안뜰을 둘러볼 수 있어요.",
+  "tips": "여성은 머리 스카프와 손목·발목까지 가리는 옷, 남성은 긴 바지를 입어야 해요. 금요일 정오 예배와 기도 시간은 피하고, 비무슬림 관람 가능 시간은 현장에서 확인하세요. 입장료는 없어요.",
+  "visitMin": 30,
+  "family": "조용히 관람해야 해서 짧게 들르는 게 좋아요",
+  "q": "Sultan Qaboos Mosque Salalah",
+  "sources": [
+   "https://wanderlog.com/place/details/296072/sultan-qaboos-mosque-salalah"
+  ]
+ },
+ {
+  "id": "wadi-dawkah",
+  "ko": "와디 다우카 유향나무 공원",
+  "en": "Wadi Dawkah Frankincense Park",
+  "cat": "nature",
+  "region": "도파르",
+  "lat": 17.33846, "lng": 54.07639,
+  "coordNote": "OSM tourism=attraction node 7247315209 (mapcarta); Atlas Obscura 17.338929, 54.076495 (~50 m). Off Route 31, ~40 km north of Salalah. Wikipedia's 18°40'N refers to Dawkah village far to the north and is wrong for the park.",
+  "desc": "유향나무 약 5,000그루가 자라는 것으로 알려진 자연공원으로, 2000년부터 유네스코 세계유산 '유향의 땅'의 일부예요. 수지를 채취하는 유향나무를 가까이서 볼 수 있어요.",
+  "tips": "살랄라에서 31번 도로로 북쪽 약 40km(차로 약 45분)라 우바르·사막 일정과 묶기 좋아요. 주차장·안내판·화장실이 있다는 후기가 있어요(2018년). 그늘이 적으니 서늘한 오전에 가세요.",
+  "visitMin": 30,
+  "family": "평지라 걷기 쉽고 짧게 보기 좋아요",
+  "q": "Wadi Dawkah Frankincense Trees",
+  "sources": [
+   "https://www.atlasobscura.com/places/wadi-dawkah-frankincense-trees",
+   "https://mapcarta.com/N7247315209",
+   "https://mapcarta.com/Wadi_Dawkah_Frankincense_Trees",
+   "https://www.worldheritagesite.org/list/Land+of+Frankincense",
+   "https://www.amusingplanet.com/2017/01/the-frankincense-trees-of-wadi-dawkah.html"
+  ]
+ },
+ {
+  "id": "ubar-shisr",
+  "ko": "우바르(시스르) 유적",
+  "en": "Ubar / Archaeological Site of Shisr",
+  "cat": "fort",
+  "region": "도파르",
+  "lat": 18.25518, "lng": 53.64866,
+  "coordNote": "Site: OSM way 321033913 (mapcarta); Wikipedia 18.25500, 53.64889; Atlas Obscura 18.25508, 53.64893 (all within ~25 m).",
+  "desc": "전설 속 사막 도시 '우바르'로 알려진 시스르 오아시스의 유적으로, 1992년 발굴 발표로 유명해졌어요. 무너진 석회암 싱크홀 가장자리에 요새 성벽 일부가 남아 있고, 유네스코 세계유산 '유향의 땅'에 포함돼 있어요. 다만 이곳이 정말 우바르인지는 학계에서 의견이 갈려요.",
+  "tips": "살랄라에서 북쪽으로 약 150~170km 떨어진 사막 가장자리라 아침 일찍 출발하세요. 유적은 작아서 30~45분이면 충분하고, 작은 안내소가 있어요. 낮 기온이 높으니 물을 넉넉히 챙기세요.",
+  "visitMin": 45,
+  "family": "유적은 작아 보기 쉽지만 오가는 이동 시간이 길어요",
+  "q": "Ubar archaeological site Shisr",
+  "sources": [
+   "https://en.wikipedia.org/wiki/Archaeological_site_of_Shisr",
+   "https://en.wikipedia.org/wiki/Atlantis_of_the_Sands",
+   "https://www.atlasobscura.com/places/ubar",
+   "https://mapcarta.com/W321033913",
+   "https://www.bradtguides.com/?p=19130",
+   "https://www.worldheritagesite.org/list/Land+of+Frankincense"
+  ]
+ },
+ {
+  "id": "ain-razat",
+  "ko": "아인 라자트",
+  "en": "Ain Razat",
+  "cat": "nature",
+  "region": "도파르",
+  "lat": 17.12994, "lng": 54.23807,
+  "coordNote": "Google Maps place (Wanderlog; same point behind experienceoman's Google link, 17.1299371, 54.238073). experienceoman's OSM embed is centred ~130 m west (17.12959, 54.23686).",
+  "desc": "1년 내내 물이 흐르는 샘 주변에 정원과 연못을 꾸민 공원이에요. 라자트 동굴도 있어 산책하며 둘러보기 좋고, 공식 관광 사이트에서 휠체어로 접근할 수 있는 곳으로 소개돼요.",
+  "tips": "연중 방문할 수 있고 무료로 안내돼 있어요. 물가라 모기가 있을 수 있으니 기피제를 챙기세요. 그늘에서 피크닉하기 좋아요.",
+  "visitMin": 60,
+  "family": "평탄한 길과 그늘이 있어 유모차·어린아이도 편해요",
+  "q": "Ain Razat",
+  "sources": [
+   "https://experienceoman.om/destinations/dhofar/ain-razat",
+   "https://wanderlog.com/place/details/34801/ain-razat",
+   "https://mapcarta.com/Ayn_Razat"
+  ]
+ },
+ {
+  "id": "fazayah-beach",
+  "ko": "파자야 해변",
+  "en": "Fazayah Beach",
+  "cat": "sea",
+  "region": "도파르",
+  "lat": 16.84051, "lng": 53.72136,
+  "coordNote": "Google Maps place pin (Wanderlog 16.840507, 53.721364); single source, not cross-checked. About 6 km (straight line) south-west of Marneef Cave; the last stretch is a dirt track.",
+  "desc": "무그사일 서쪽 절벽 아래 숨은 해변으로, 맑은 청록색 바다와 하얀 모래가 아름다워요. 편의시설이 없어 자연 그대로의 조용한 해변을 즐길 수 있어요.",
+  "tips": "마지막 구간이 비포장길이라 4x4가 편하고, 일반 차량은 천천히 가야 해요. 매점·화장실이 없으니 물, 간식, 그늘막을 챙기세요. 외진 해변이라 아이들은 얕은 곳에서만 놀게 하세요.",
+  "visitMin": 120,
+  "family": "물놀이엔 좋지만 외진 곳이라 준비물을 꼭 챙겨야 해요",
+  "q": "Fazayah Beach",
+  "sources": [
+   "https://wanderlog.com/place/details/296069/fazayah-beach"
+  ]
+ },
+ {
+  "id": "nabi-imran-tomb",
+  "ko": "나비 임란 묘",
+  "en": "Nabi Imran Tomb",
+  "cat": "culture",
+  "region": "도파르",
+  "lat": 17.02149, "lng": 54.11134,
+  "coordNote": "Google Maps place pin (Wanderlog 17.021494, 54.111337; 23rd July St, Salalah); single source.",
+  "desc": "성모 마리아(마리암)의 아버지로 전해지는 임란의 무덤으로 알려진 곳이에요. 길이가 약 30m나 되는 매우 긴 무덤으로 유명하고, 살랄라 시내에 있어 잠깐 들르기 좋아요.",
+  "tips": "입장료는 없는 것으로 안내돼요. 종교 시설이라 어깨와 무릎을 가리는 옷을 입고, 여성은 스카프를 챙기세요. 기도 시간에는 출입이 제한될 수 있어요.",
+  "visitMin": 20,
+  "family": "시내에 있어 짧게 들르기 좋아요",
+  "q": "Nabi Imran Tomb Salalah",
+  "sources": [
+   "https://wanderlog.com/place/details/296075/nabi-imran-tomb"
+  ]
+ },
+ {
+  "id": "ain-athum",
+  "ko": "아인 아툼",
+  "en": "Ain Athum",
+  "cat": "nature",
+  "region": "도파르",
+  "lat": 17.11832, "lng": 54.36786,
+  "coordNote": "APPROXIMATE: GeoNames spring point 415339 (via mapcarta); consistent with an 'Eyn athom' POI ~11 km from Khor Rori on aroundus. Car park/trailhead not verified; may be off by ~200–300 m.",
+  "desc": "살랄라에서 약 33km 떨어진 산속 샘으로, 와디 쿠샤임 위쪽에 높이 약 15m의 폭포가 있어요. 카리프 시즌에 폭포가 가장 볼만하고, 주차 후 몇 분 걸어 들어가요.",
+  "tips": "10월엔 카리프가 끝나 폭포 수량이 줄었거나 멈췄을 수 있어요. 바위가 미끄럽고 물살이 셀 수 있어 수영은 피하세요. 타카 쪽 동부 일정과 묶어 가면 좋아요.",
+  "visitMin": 60,
+  "family": "짧은 걷기 코스지만 바위가 미끄러워 아이 손을 잡아야 해요",
+  "q": "Ain Athum",
+  "sources": [
+   "https://mapcarta.com/Ayn_Athum",
+   "https://timesofoman.com/article/119281-khareef-special-soak-up-in-the-magnificence-of-ayn-khor-and-ayn-athum",
+   "https://kuwaittimes.com/article/17895/lifestyle/art-fashion/ain-athum-a-must-visit-tourist-destination",
+   "https://www.omanobserver.om/ampArticle/28085",
+   "https://aroundus.com/p/9135537-khor-rori"
+  ]
+ },
+ {
+  "id": "rub-al-khali-dunes",
+  "ko": "룹알할리 사막(엠티 쿼터) 사구",
+  "en": "Rub' al Khali (Empty Quarter) dunes north-east of Shisr",
+  "cat": "desert",
+  "region": "도파르",
+  "lat": 18.42922, "lng": 53.78312,
+  "coordNote": "APPROXIMATE, not a verified visitor point: user-mapped OSM viewpoint node 6030499086 on the Dawkah–Al Hadhf desert road, ~24 km NE of Shisr (mapcarta). Day tours from Salalah drive into dunes beyond Ubar but publish no exact spot; the official site names Al Hashman (much further, ~5 h from Salalah) as the main camping gateway.",
+  "desc": "세계에서 가장 큰 모래사막 룹알할리의 오만 쪽 가장자리로, 우바르(시스르) 너머로 높은 사구가 펼쳐져요. 사구 드라이브, 낙타 타기, 샌드보딩, 별 보기 같은 체험을 할 수 있어요.",
+  "tips": "사구 운전은 4x4와 경험이 꼭 필요해 살랄라 출발 4x4 전문 투어를 이용하는 게 안전해요. 공식 관광 사이트는 9~4월을 적기로 안내하지만 10월 한낮은 더우니 해 질 무렵을 노리세요. 휴대전화가 안 터질 수 있으니 물과 연료를 넉넉히 챙기세요.",
+  "visitMin": 180,
+  "family": "모래 언덕 놀이를 좋아하지만 반드시 가이드 투어로 가세요",
+  "q": "Empty Quarter dunes Shisr",
+  "sources": [
+   "https://experienceoman.om/destinations/dhofar/the-rub-al-khali-desert",
+   "https://mapcarta.com/N6030499086",
+   "https://www.omanobserver.om/article/19644/Features/rub-al-khali-exquisite-in-silence-and-enormity",
+   "https://www.roughguides.com/destinations/middle-east/oman/dhofar/north-salalah/quarter",
+   "https://www.toursbylocals.com/tours/oman/salalah/tour-details/sunset-dunes-serenity-embrace-the-empty-quarter---private-half-day-trip-from-salalah-664d23b417832fdc0db37497"
+  ]
+ },
+ {
+  "id": "salalah-fruit-stalls",
+  "ko": "살랄라 코코넛·과일 노점 거리",
+  "en": "Salalah fruit & coconut stalls (Sultan Qaboos St, Ad Dahariz)",
+  "cat": "culture",
+  "region": "도파르",
+  "lat": 17.01677, "lng": 54.15479,
+  "coordNote": "Google Maps place 'Fruits street' on As Sultan Qaboos St (Wanderlog 17.016773, 54.154788; plus code 2583+PW3). A second stall listing 'Fresh fruit Dahariz' is ~200 m SW (17.01567, 54.15309).",
+  "desc": "살랄라 동쪽 술탄 카부스 거리를 따라 바나나·코코넛 같은 과일을 파는 노점이 늘어선 곳이에요. 신선한 코코넛 워터를 맛보며 쉬어 가기 좋아요.",
+  "tips": "알 발리드 유적공원에서 차로 몇 분 거리라 함께 들르기 좋아요. 사기 전에 신선도를 확인하세요.",
+  "visitMin": 20,
+  "family": "아이들이 코코넛 워터를 마시며 쉬기 좋아요",
+  "q": "Fruits street Salalah",
+  "sources": [
+   "https://wanderlog.com/place/details/13091886/fruits-street",
+   "https://wanderlog.com/place/details/13091885/fresh-fruite-dahariz"
+  ]
+ },
+ {
+  "id": "anti-gravity-point",
+  "ko": "안티그래비티 포인트",
+  "en": "Anti-Gravity Point (Gravity Hill)",
+  "cat": "mountain",
+  "region": "도파르",
+  "lat": 17.04279, "lng": 54.61272,
+  "coordNote": "APPROXIMATE (±200 m): Google Maps listing 'Gravity Hill' via Wanderlog (17.042791, 54.612722; listed as 'permanently closed'), consistent with Holidify's directions (~0.5 km up the Tawi Atayr turn-off from the Salalah–Mirbat road). The same listing's plus code points elsewhere, so treat as approximate; the spot is unsigned.",
+  "desc": "살랄라–미르바트 도로에서 타위 아타이르 방향으로 꺾어 조금 들어가면 나오는 착시 언덕이에요. 기어를 중립에 두면 차가 오르막을 거슬러 올라가는 것처럼 보이는데, 실제로는 주변 지형 때문에 생기는 착시예요.",
+  "tips": "표지판이 없어 지나치기 쉬워요. 차가 다니는 도로이니 뒤차를 확인하고, 아이들은 차에서 내리지 않게 하세요. 구글 지도에는 '폐업'으로 표시될 수 있어요.",
+  "visitMin": 15,
+  "family": "차 안에서 신기한 착시를 체험할 수 있어 아이들이 재미있어해요",
+  "q": "Anti Gravity Point Salalah",
+  "sources": [
+   "https://wanderlog.com/place/details/15486581/gravity-hill",
+   "https://holidify.com/places/salalah/anti-gravity-point-sightseeing-121360.html"
+  ]
+ }
+]
