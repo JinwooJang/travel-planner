@@ -54,6 +54,13 @@ button, input, select { font: inherit; color: inherit; }
 .stay .t24, .startctl .t24 { padding: 0 3px; }
 .stay .t24 select { font-size: 12.5px; }
 .keybtn { border: 1px solid var(--rule); background: var(--panel); border-radius: 8px; padding: 5px 10px; font-size: 12.5px; font-weight: 600; cursor: pointer; }
+/* view / edit switch: view mode hides edit-only controls (.eo) and locks the value pickers */
+.modesw { display: inline-flex; border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; background: var(--panel); }
+.modesw button { border: 0; background: none; padding: 5px 11px; font-size: 12.5px; font-weight: 600; color: var(--muted); cursor: pointer; }
+.modesw button + button { border-left: 1px solid var(--rule); }
+.modesw button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+body.viewonly .eo, body:not(.viewonly) .vo { display: none !important; }
+body.viewonly select:disabled { appearance: none; -webkit-appearance: none; color: var(--ink); opacity: 1; cursor: default; }
 .days { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding: 4px 16px 10px; border-bottom: 1px solid var(--rule); }
 .days::-webkit-scrollbar { display: none; }
 .chip { flex: none; display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--rule); background: var(--panel); color: var(--ink); border-radius: 999px; padding: 5px 12px; font: 600 13px/1.3 var(--f-body); cursor: pointer; }
@@ -99,7 +106,13 @@ body.resizing #map { pointer-events: none; }
 .gm.pp .dot { background: var(--m-plan); color: #10181d; }
 .gm.pp.first .dot { background: #fff; }
 .gm.pp .lab { display: block; }
-#map.planning .gm:not(.pp):not(.chip):not(.legchip):not(.tick):not(.poi) { opacity: .7; }
+#map.planning .gm:not(.pp):not(.chip):not(.legchip):not(.tick):not(.poi):not(.me) { opacity: .7; }
+/* my location: blue dot + a fading cone toward the heading while moving; grey when the fix is old */
+.gm.me .dot { position: absolute; left: -10px; top: -10px; width: 20px; height: 20px; border-radius: 50%; background: #1a73e8; border: 3px solid #fff; box-shadow: 0 0 0 1px rgba(0,0,0,.25), 0 1px 5px rgba(0,0,0,.55); }
+.gm.me .hd { position: absolute; left: -17px; top: -38px; width: 34px; height: 38px; display: none; transform-origin: 50% 100%; transform: rotate(var(--hd, 0deg));
+  background: linear-gradient(to top, rgba(26,115,232,.65), rgba(26,115,232,0)); clip-path: polygon(50% 100%, 0 0, 100% 0); pointer-events: none; }
+.gm.me.moving .hd { display: block; }
+.gm.me.stale .dot { background: #8a96a0; }
 .gm.poi { opacity: var(--poi-a, 1); transition: opacity .15s; }
 .gm.poi:hover { opacity: 1; }
 .gm.legchip { z-index: 1; }
@@ -120,6 +133,16 @@ body.resizing #map { pointer-events: none; }
 .vis-btn.poi-on[aria-pressed="true"] { background: #0f766e; color: #fff; border-color: #0f766e; }
 #poiCount { font: 600 11px var(--f-mono); opacity: .8; margin-left: 2px; }
 .mapctl .vis-pop { position: absolute; left: 0; top: 100%; }
+.locctl { position: relative; }
+.loc-btns { display: flex; }
+.loc-btns.on #locBtn { border-radius: 8px 0 0 8px; }
+#locBtn svg { width: 14px; height: 14px; vertical-align: -2px; margin-right: 5px; }
+#locBtn[aria-pressed="true"] { background: #1a73e8; color: #fff; border-color: #1a73e8; }
+#locBtn.busy svg { animation: locblink 1s ease-in-out infinite; }
+@keyframes locblink { 50% { opacity: .25; } }
+#locOff { border-radius: 0 8px 8px 0; border-left: 0; padding: 6px 9px; }
+#locOff[hidden] { display: none; }
+.mapctl .locmsg { left: auto; right: 0; width: 270px; font-size: 12.5px; line-height: 1.5; }
 .poi-pop { width: 250px; }
 .poi-pop .pc { display: flex; align-items: center; gap: 8px; font-weight: 600; cursor: pointer; }
 .poi-pop .pc input { margin: 0; accent-color: #0f766e; }
@@ -148,6 +171,7 @@ body.resizing #map { pointer-events: none; }
 .ctxmenu .cx-i.danger { color: var(--bad); }
 .ctxmenu .cx-i.cx-cancel, .ctxmenu a.cx-i { font-weight: 500; color: var(--muted); }
 .ctxmenu .cx-sep { height: 1px; background: var(--rule); margin: 3px 4px; }
+.ctxmenu .cx-note { margin: 2px 9px 4px; font-size: 12px; line-height: 1.45; color: var(--muted); }
 .maphint { position: absolute; z-index: 19; pointer-events: none; transform: translate(12px, -50%); white-space: nowrap; background: rgba(10,16,20,.9); color: #fff;
   font-size: 12.5px; font-weight: 600; padding: 5px 9px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,.4); transition: opacity .3s; }
 /* attraction card */
@@ -363,6 +387,10 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
   .split { display: none; }
   .top h1 { font-size: 21px; }
 }
+@media (max-width: 480px) {
+  #locBtn .lt { display: none; }
+  #locBtn svg { margin-right: 0; }
+}
 </style>
 </head>
 <body>
@@ -376,6 +404,7 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
     <input type="hidden" id="dDate"><input type="hidden" id="dTime" value="07:00">
     <span id="whenUI" class="whenui"></span>
     <button class="keybtn" id="keyBtn" type="button">API 키</button>
+    <span class="modesw" role="group" aria-label="보기·편집 전환"><button type="button" id="viewBtn" aria-pressed="false" title="지도를 보다가 잘못 눌러도 플랜과 시간이 바뀌지 않게 잠가요">보기</button><button type="button" id="editBtn" aria-pressed="true" title="플랜과 출발 시간을 고칠 수 있어요">편집</button></span>
   </div>
 </header>
 <nav class="days" id="days" aria-label="일정 선택"></nav>
@@ -396,6 +425,10 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
         <label>관광지 핀 투명도 <output id="poiTo"></output><input type="range" id="poiT" min="0" max="85" step="5" aria-label="관광지 핀 투명도"></label>
         <button type="button" class="mini" id="visReset">기본값으로</button>
       </div>
+    </div>
+    <div class="locctl">
+      <div class="loc-btns" id="locBtns"><button type="button" class="vis-btn" id="locBtn" aria-pressed="false" aria-label="내 위치" title="이 기기의 현재 위치를 지도에 보여요. 켜져 있을 때 누르면 내 위치로 옮겨요"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="4.6" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="8" cy="8" r="2" fill="currentColor"/><path d="M8 .8v2.4M8 12.8v2.4M.8 8h2.4M12.8 8h2.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span class="lt">내 위치</span></button><button type="button" class="vis-btn" id="locOff" aria-label="내 위치 끄기" title="내 위치 끄기" hidden>✕</button></div>
+      <div class="vis-pop locmsg" id="locMsg" role="status" hidden></div>
     </div>
     </div>
   </section>
@@ -483,6 +516,7 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
       $("dDate").value = `${y}-${String(m).padStart(2, "0")}-${String(dd).padStart(2, "0")}`; renderWhen(); onTimeChange(); };
     ["wY", "wM", "wD"].forEach(id => $(id).addEventListener("change", setDate));
     onT24($("whenUI"), "head", v2 => { $("dTime").value = v2; onTimeChange(); });
+    if (viewOnly()) $("whenUI").querySelectorAll("select").forEach(el => { el.disabled = true; });
   }
 
   // ---------- storage ----------
@@ -491,6 +525,7 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
   let saved = {}; try { saved = JSON.parse(ls.get(STORE) || "{}") || {}; } catch (e) { saved = {}; }
   saved.dayStart = saved.dayStart || {};
   const save = () => ls.set(STORE, JSON.stringify(saved));
+  const viewOnly = () => !!(saved.ui && saved.ui.view);     // view mode: nothing on the map or in the sheet can change the plan or times
   $("dDate").value = saved.date || isoToday();
   let routeCache = {}; try { routeCache = JSON.parse(ls.get(ROUTE_STORE) || "{}") || {}; } catch (e) { routeCache = {}; }
   let cacheTimer = null;
@@ -910,6 +945,21 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
   ["labT", "lineT", "poiT"].forEach(k => $(k).addEventListener("input", e => { saved.ui[k] = +e.target.value; applyVis(k === "lineT"); }));
   ["labT", "lineT", "poiT"].forEach(k => $(k).addEventListener("change", () => save()));
   $("visReset").addEventListener("click", () => { delete saved.ui.labT; delete saved.ui.lineT; delete saved.ui.poiT; save(); applyVis(true); });
+  // ---------- view / edit switch (saved in this browser): view hides .eo controls, locks pins and time pickers ----------
+  function paintViewBtns() {
+    const v = viewOnly();
+    document.body.classList.toggle("viewonly", v);
+    $("viewBtn").setAttribute("aria-pressed", String(v)); $("editBtn").setAttribute("aria-pressed", String(!v));
+  }
+  function setView(v) {
+    if (viewOnly() === v) return;
+    saved.ui.view = v; save(); paintViewBtns();
+    insertAt = null; planUI.edit = null; planUI.del = false; closeCtx(); if (IW) IW.close();
+    renderWhen(); paint(); renderSheet(true);
+  }
+  $("viewBtn").addEventListener("click", () => setView(true));
+  $("editBtn").addEventListener("click", () => setView(false));
+  paintViewBtns();
   applyVis(false);
   function flashLegRow(key) {
     const el = sheet.querySelector(`[data-leg="${key}"]`); if (!el) return;
@@ -1090,6 +1140,7 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
       box.querySelector("[data-goto]").addEventListener("click", () => { IW.close(); if (mode !== "plan") setMode("plan"); setTimeout(() => focusRow(nd.id), 60); });
       return;
     }
+    if (viewOnly()) { box.innerHTML = `<b class="pn">플랜 「${esc(plan.name)}」</b><p style="margin:0">보기 모드예요. 플랜에 넣으려면 위쪽에서 <b>편집</b>을 누르세요.</p>`; return; }
     const items = addChoices(ll);
     box.innerHTML = `<b class="pn">플랜 「${esc(plan.name)}」에 넣기${note ? " · " + esc(note) : ""}</b>` + items.map((it, i) => `<button type="button"${it.primary ? ' class="primary"' : ""} data-ci="${i}">${esc(it.label)}${it.sub ? `<small>${esc(it.sub)}</small>` : ""}</button>`).join("");
     box.querySelectorAll("[data-ci]").forEach(btn => btn.addEventListener("click", () => doAdd(items[+btn.dataset.ci].at, nodeOpts)));
@@ -1132,10 +1183,12 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
   function openCtx(pt, ll, o) {
     closeCtx(); lastCtx = Date.now();
     const box = document.querySelector(".mapbox"), r = box.getBoundingClientRect();
-    const items = o.noAdd ? [] : addChoices(ll, o.legI), extra = o.extra || [];
+    const lock = viewOnly(), all = o.extra || [];
+    const items = o.noAdd || lock ? [] : addChoices(ll, o.legI), extra = lock ? all.filter(x => x.view) : all;   // view mode: only entries marked view
     const el = document.createElement("div"); el.className = "ctxmenu"; el.setAttribute("role", "menu");
     const ttl = o.title || placeName(ll);
     el.innerHTML = `<div class="cx-h">${esc(ttl === "지점" ? "지도 위 이 위치" : ttl)}<small>${ll[1].toFixed(4)}, ${ll[0].toFixed(4)}</small></div>`
+      + (lock && (!o.noAdd || extra.length < all.length) ? `<p class="cx-note">보기 모드라 플랜을 고칠 수 없어요. 위쪽에서 <b>편집</b>을 누르면 돼요.</p>` : "")
       + items.map((it, i) => `<button type="button" role="menuitem" class="cx-i${it.primary ? " primary" : ""}" data-ci="${i}">${esc(it.label)}${it.sub ? `<small>${esc(it.sub)}</small>` : ""}</button>`).join("")
       + extra.map((x, i) => `<button type="button" role="menuitem" class="cx-i${x.danger ? " danger" : ""}" data-x="${i}">${esc(x.label)}</button>`).join("")
       + `<div class="cx-sep"></div><a class="cx-i" role="menuitem" href="https://www.google.com/maps/search/?api=1&query=${ll[1]},${ll[0]}" target="_blank" rel="noopener">구글 지도에서 이 위치 보기 ↗</a>`
@@ -1163,6 +1216,78 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
     hintEl.style.left = ((pt ? pt.x : r.left + r.width / 2) - r.left) + "px"; hintEl.style.top = ((pt ? pt.y : r.top + r.height / 2) - r.top) + "px";
     clearTimeout(hintTimer); hintTimer = setTimeout(() => { if (hintEl) hintEl.style.opacity = "0"; }, 1600);
   }
+
+  // ---------- my location: starts only from the button, moves the map once, never stored ----------
+  // on: the user turned it on · watch: the browser's watch id (paused while the page is hidden, to save battery)
+  const loc = { on: false, watch: null, ll: null, acc: 0, pan: false, mk: null, el: null, circle: null, msgT: null, menuAt: 0 };
+  function locMsg(text) {
+    const el = $("locMsg"); el.textContent = text || ""; el.hidden = !text;
+    clearTimeout(loc.msgT); if (text) loc.msgT = setTimeout(() => { el.hidden = true; }, 8000);
+  }
+  function locBtns() {
+    $("locBtn").setAttribute("aria-pressed", String(loc.on));
+    $("locBtn").classList.toggle("busy", loc.on && !loc.ll);
+    $("locOff").hidden = !loc.on; $("locBtns").classList.toggle("on", loc.on);
+  }
+  const locPan = () => { map.panTo(LL(loc.ll)); map.setZoom(Math.max(map.getZoom(), 13)); };
+  function locWatch() {
+    if (loc.watch == null) loc.watch = navigator.geolocation.watchPosition(locFix, locErr, { enableHighAccuracy: true, maximumAge: 10000, timeout: 30000 });
+  }
+  function locUnwatch() { if (loc.watch != null) navigator.geolocation.clearWatch(loc.watch); loc.watch = null; }
+  function locStart() {
+    if (!navigator.geolocation) { locMsg("이 브라우저는 위치를 알려 주지 않아요."); return; }
+    if (!window.isSecureContext) { locMsg("위치는 https 주소에서만 쓸 수 있어요. GitHub Pages 주소로 열어 주세요."); return; }
+    loc.on = true; loc.pan = true; locWatch(); locBtns(); locMsg("");
+  }
+  function locStop() {
+    loc.on = false; loc.pan = false; locUnwatch(); loc.ll = null;
+    if (loc.mk) loc.mk.map = null; if (loc.circle) loc.circle.setMap(null);
+    loc.mk = loc.el = loc.circle = null;
+    closeCtx(); locBtns(); locMsg("");
+  }
+  function locFix(pos) {
+    if (!loc.on || !map) return;
+    const c = pos.coords, ll = [c.longitude, c.latitude];
+    loc.ll = ll; loc.acc = Math.round(c.accuracy || 0);
+    if (!loc.mk) {
+      const el = document.createElement("div"); el.className = "gm me";
+      el.innerHTML = `<span class="hd"></span><span class="dot"></span>`;
+      loc.el = el; loc.mk = makeMarker(ll, el, "내 위치", 20);
+      el.addEventListener("click", ev => { ev.stopPropagation(); lastMarkerClick = Date.now(); if (IW) IW.close(); locMenu(ev); });
+      el.addEventListener("contextmenu", ev => { ev.preventDefault(); ev.stopPropagation(); locMenu(ev); });
+      loc.circle = new google.maps.Circle({ map, center: LL(ll), radius: loc.acc, clickable: false, zIndex: 1,
+        strokeColor: "#1a73e8", strokeOpacity: 0.5, strokeWeight: 1, fillColor: "#1a73e8", fillOpacity: 0.12 });
+    } else { loc.mk.position = LL(ll); loc.circle.setCenter(LL(ll)); loc.circle.setRadius(loc.acc); }
+    const moving = c.heading != null && isFinite(c.heading) && !(c.speed != null && c.speed < 1);   // heading is only meaningful while moving
+    loc.el.classList.toggle("moving", moving); loc.el.classList.remove("stale");
+    if (moving) loc.el.style.setProperty("--hd", Math.round(c.heading) + "deg");
+    if (loc.pan) { loc.pan = false; locPan(); }
+    locBtns();
+  }
+  function locErr(err) {
+    if (err && err.code === 1) {
+      locStop();
+      locMsg("위치 권한이 꺼져 있어요. 브라우저 주소창의 사이트 설정에서 위치를 허용해 주세요. 아이폰은 설정 → 개인정보 보호 및 보안 → 위치 서비스 → Safari 웹사이트도 켜져 있어야 해요.");
+      return;
+    }
+    if (!loc.ll) locMsg("아직 위치를 못 찾았어요. 폰의 위치(GPS)가 켜져 있는지, 하늘이 트인 곳인지 확인해 주세요. 계속 찾고 있어요.");
+  }
+  function locMenu(ev) {
+    if (!loc.ll) return;
+    loc.menuAt = Date.now();
+    openCtx(evPt(ev), loc.ll, { title: `내 위치 · 오차 약 ${loc.acc >= 1000 ? (loc.acc / 1000).toFixed(1) + "km" : loc.acc + "m"}`,
+      nodeOpts: x => ({ ll: x, lookup: true, zoom: 16 }), extra: [{ label: "내 위치 끄기", view: true, fn: locStop }] });
+  }
+  $("locBtn").addEventListener("click", () => {
+    if (!map) { locMsg("지도가 뜬 다음에 눌러 주세요."); return; }
+    if (!loc.on) locStart(); else if (loc.ll) locPan(); else loc.pan = true;
+  });
+  $("locOff").addEventListener("click", locStop);
+  document.addEventListener("visibilitychange", () => {
+    if (!loc.on) return;
+    if (document.hidden) { locUnwatch(); if (loc.el) loc.el.classList.add("stale"); }
+    else locWatch();
+  });
 
   // ---------- planner: a free list of nodes; start / destination are just the first / last node ----------
   // node: { id, k (stop key or null), ll, name, stay: { mode: "pass" | "dur" | "at", min, nights, at }, fly (next leg by plane) }
@@ -1338,17 +1463,18 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
         : n.overnight ? `${dtMap(n.arr)} 도착 · ${Math.floor(n.dep / 1440) - Math.floor(n.arr / 1440)}박 · ${dtMap(n.dep)} 출발`
         : `${dtMap(n.arr)} 도착 · ${clock(n.dep)} 출발`;
       setLab(el.querySelector(".lab"), n.p.name, tail, n.warn ? n.warn.lvl : n.conflict ? "bad" : null);
-      const mk = new AME({ map, position: LL(n.p.ll), content: el, title: `${n.i + 1}. ${n.p.name} · 끌어서 옮길 수 있어요`, zIndex: 10, gmpClickable: true, gmpDraggable: true });
+      const lock = viewOnly();
+      const mk = new AME({ map, position: LL(n.p.ll), content: el, title: `${n.i + 1}. ${n.p.name}${lock ? "" : " · 끌어서 옮길 수 있어요"}`, zIndex: 10, gmpClickable: true, gmpDraggable: !lock });
       el.addEventListener("click", ev => { ev.stopPropagation(); lastMarkerClick = Date.now(); if (IW) IW.close(); focusRow(n.p.id); });
       el.addEventListener("contextmenu", ev => { ev.preventDefault(); ev.stopPropagation(); const idx = plan.pts.indexOf(n.p);
         openCtx(evPt(ev), n.p.ll, { title: `${idx + 1}번 ${n.p.name}`, noAdd: true, extra: [
-          { label: "플랜 목록에서 보기", fn: () => focusRow(n.p.id) },
+          { label: "플랜 목록에서 보기", view: true, fn: () => focusRow(n.p.id) },
           { label: `이 지점 다음(${idx + 1}번 뒤)에 넣을 곳 고르기`, fn: () => { insertAt = idx + 1; paint(); renderSheet(true); } },
           { label: "이 지점 삭제", danger: true, fn: () => { const i = plan.pts.indexOf(n.p); if (i < 0) return; if (i > 0) plan.pts[i - 1].fly = false; plan.pts.splice(i, 1); afterPlanChange(); } },
         ] }); });
       try {
         mk.addListener("dragend", () => {
-          const pos = mk.position; if (!pos) return;
+          const pos = mk.position; if (!pos || viewOnly()) return;
           const lat = typeof pos.lat === "function" ? pos.lat() : pos.lat, lng = typeof pos.lng === "function" ? pos.lng() : pos.lng;
           n.p.ll = [Math.round(lng * 1e5) / 1e5, Math.round(lat * 1e5) / 1e5]; n.p.k = null; delete n.p.placeId; delete n.p.poi; n.p.name = placeName(n.p.ll);
           afterPlanChange();
@@ -1361,9 +1487,9 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
     const ins = insertAt != null ? `<span class="hint">${where}에 넣을 곳을 지도에서 누르세요 (오른쪽 클릭 메뉴도 돼요)</span><button type="button" data-cancel>취소</button>` : "";
     if (flashMsg) pb.innerHTML = `<span class="hint" style="color:var(--bad)">${esc(flashMsg)}</span>`;
     else if (ins) pb.innerHTML = ins;
-    else if (!plan.pts.length) pb.innerHTML = `<span class="hint">지도에서 <b>오른쪽 클릭</b> → "여기서 출발"을 고르세요.</span><button type="button" data-pick>지도에서 고르기</button>`;
-    else if (plan.pts.length === 1) pb.innerHTML = `<span class="hint"><b>${esc(plan.pts[0].name)}</b>에서 출발 · 다음 지점은 <b>오른쪽 클릭</b>으로 넣어요</span><button type="button" data-undo>되돌리기</button>`;
-    else pb.innerHTML = `<span><b>${plan.pts.length}곳</b> · <b>${fmtN(Math.round(ps.km))}km</b> · 운전 <b>${dur(ps.drive)}</b> · 도착 <b>${relClock(ps.end)}</b>${pending ? " · 구글 계산 중…" : ""}</span><button type="button" data-undo>되돌리기</button>`;
+    else if (!plan.pts.length) pb.innerHTML = `<span class="hint eo">지도에서 <b>오른쪽 클릭</b> → "여기서 출발"을 고르세요.</span><span class="hint vo">빈 플랜이에요. 지점을 넣으려면 위쪽에서 <b>편집</b>을 누르세요.</span><button type="button" class="eo" data-pick>지도에서 고르기</button>`;
+    else if (plan.pts.length === 1) pb.innerHTML = `<span class="hint"><b>${esc(plan.pts[0].name)}</b>에서 출발<span class="eo"> · 다음 지점은 <b>오른쪽 클릭</b>으로 넣어요</span></span><button type="button" class="eo" data-undo>되돌리기</button>`;
+    else pb.innerHTML = `<span><b>${plan.pts.length}곳</b> · <b>${fmtN(Math.round(ps.km))}km</b> · 운전 <b>${dur(ps.drive)}</b> · 도착 <b>${relClock(ps.end)}</b>${pending ? " · 구글 계산 중…" : ""}</span><button type="button" class="eo" data-undo>되돌리기</button>`;
     const u = pb.querySelector("[data-undo]"); if (u) u.addEventListener("click", () => { plan.pts.pop(); afterPlanChange(); });
     const cx = pb.querySelector("[data-cancel]"); if (cx) cx.addEventListener("click", () => { insertAt = null; paint(); renderSheet(true); });
     const pk = pb.querySelector("[data-pick]"); if (pk) pk.addEventListener("click", () => { insertAt = 0; paint(); renderSheet(true); });
@@ -1378,15 +1504,16 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
   // left click never adds by itself: it adds only after "+ 이 사이에 넣기" / "지도에서 고르기" was pressed;
   // otherwise a Google place shows a card, and empty map shows a hint to use the right-click menu
   function onMapClick(e) {
+    if (Date.now() - loc.menuAt < 300) return;   // the same tap that just opened the my-location menu
     closeCtx();
     if (IW && Date.now() - lastMarkerClick >= 300) IW.close();   // a click on the map outside the card closes it
     if (mode !== "plan") return;                 // course mode: Google shows its own card for places
     if (e.placeId && e.stop) e.stop();
     if (Date.now() - lastMarkerClick < 300) return;
     const zoom = map.getZoom(), ll = llOf(e);
-    if (insertAt != null) { addPoint({ ll, placeId: e.placeId || null, lookup: !e.placeId && zoom >= 13, zoom }); return; }
+    if (insertAt != null && !viewOnly()) { addPoint({ ll, placeId: e.placeId || null, lookup: !e.placeId && zoom >= 13, zoom }); return; }
     if (e.placeId) { showPlaceCard(e.placeId, ll); return; }
-    mapHint("지점을 넣으려면 오른쪽 클릭하세요");
+    if (!viewOnly()) mapHint("지점을 넣으려면 오른쪽 클릭하세요");
   }
   function onMapCtx(e) {
     if (!e || !e.latLng || Date.now() - lastCtx < 250) return;
@@ -1531,7 +1658,7 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
       <dl class="facts"><div><dt>총 운전</dt><dd>약 ${fmtN(Math.round(km / 100) * 100)}km</dd></div><div><dt>방문지</dt><dd>${visits.size}곳</dd></div><div><dt>국경</dt><dd>${esc(c.border)}</dd></div>${(c.extra || []).map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>
       ${srcLine(est, total)}
       <p class="tip">${esc(c.lead)}</p>${c.alt ? `<p class="alt">${esc(c.alt)}</p>` : ""}
-      <div class="btnrow"><button class="mini" type="button" data-load>이 코스를 새 플랜으로 불러와 고치기</button></div>
+      <div class="btnrow eo"><button class="mini" type="button" data-load>이 코스를 새 플랜으로 불러와 고치기</button></div>
       <p class="sec">일차를 누르면 그날 경로와 시간표로 바뀌어요</p><ol class="daylist">${rows}</ol>
       <div class="note"><p>위쪽 <b>출발</b> 칸의 날짜와 시간이 1일차에 적용돼요. 날짜를 넣으면 금·토 운영시간도 반영돼요.</p><p>운전 시간은 구글 경로(교통 상황 제외) 기준이고, 휴게·주유는 점심 표시가 있는 곳 말고는 빠져 있어요.</p></div>`;
     sheet.querySelectorAll(".dayrow").forEach(b => b.addEventListener("click", () => select(course.id, +b.dataset.i)));
@@ -1570,7 +1697,7 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
       ${srcLine(s.est, s.legs.filter(l => !l.fly).length)}${nightPill(s.night)}
       <p class="tip">${esc(d.tip)}</p><div class="navs">${navs}</div>
       <p class="sec">시간표</p><ol class="tl">${timeline(s.rows, d.grp, last ? "도착" : "도착 · 숙소", i)}${opts}</ol>
-      <div class="btnrow"><button class="mini" type="button" data-load>이날 일정을 새 플랜으로 불러와 고치기</button></div>
+      <div class="btnrow eo"><button class="mini" type="button" data-load>이날 일정을 새 플랜으로 불러와 고치기</button></div>
       <div class="pager"><button type="button" id="prev" ${i === 0 ? "hidden" : ""}>← ${i}일차</button><button type="button" id="all">코스 개요</button><button type="button" id="next" ${last ? "hidden" : ""}>${i + 2}일차 →</button></div>`;
     onT24(sheet, "day", v => { if (i === 0) saved.time = v; else saved.dayStart[course.id + ":" + i] = v; save(); syncTime(); paint(); renderSheet(true); });
     sheet.querySelectorAll(".tl .stop[data-k] .body").forEach(el => el.addEventListener("click", e => { if (e.target.closest("a") || !map) return; const k = el.closest("li").dataset.k; map.panTo(LL(S[k].ll)); map.setZoom(Math.max(map.getZoom(), 13)); showInfo(k); }));
@@ -1754,8 +1881,8 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
       if (nd.leg) {
         const L = nd.leg;
         const long = !L.fly && L.min > 180 ? ` <span class="pill warn">3시간 넘게 연속 운전 · 중간에 쉬기 좋아요</span>` : "";
-        rows.push(`<li class="leg${L.fly ? " fly" : ""}"${L.fly ? "" : ` data-leg="p${i - 1}" style="--lc:${legColor(i - 1)}"`}><span class="t"></span><span class="rail"></span><span class="body">${L.fly ? "✈ " : `<span class="lchip">${i}→${i + 1}</span>`}<b class="lt">${clock(L.dep)}~${Math.floor((L.dep + L.min) / 1440) > Math.floor(L.dep / 1440) ? dt(L.dep + L.min) : clock(L.dep + L.min)}</b> · ${L.fly ? `비행 ${dur(L.min)}` : `운전 ${dur(L.min)}${L.pad ? `<span class="padnote"> (구글 ${dur(r5(L.base))} +${L.pad}%)</span>` : ""} · ${fmtN(Math.round(L.km))}km${srcTag(L.src)} · <select class="padsel${p.pad != null ? " own" : ""}" data-legpad="${p.id}" title="이 구간만 운전 시간 여유를 따로 정해요" aria-label="${i}→${i + 1} 구간 운전 시간 여유"><option value=""${p.pad == null ? " selected" : ""}>여유 일괄(+${planPad()}%)</option>${PADS.map(v => `<option value="${v}"${p.pad != null && +p.pad === v ? " selected" : ""}>여유 +${v}%</option>`).join("")}</select>`}${long}
-          <button class="ins" type="button" data-ins="${i}">+ 이 사이에 넣기</button></span></li>`);
+        rows.push(`<li class="leg${L.fly ? " fly" : ""}"${L.fly ? "" : ` data-leg="p${i - 1}" style="--lc:${legColor(i - 1)}"`}><span class="t"></span><span class="rail"></span><span class="body">${L.fly ? "✈ " : `<span class="lchip">${i}→${i + 1}</span>`}<b class="lt">${clock(L.dep)}~${Math.floor((L.dep + L.min) / 1440) > Math.floor(L.dep / 1440) ? dt(L.dep + L.min) : clock(L.dep + L.min)}</b> · ${L.fly ? `비행 ${dur(L.min)}` : `운전 ${dur(L.min)}${L.pad ? `<span class="padnote"> (구글 ${dur(r5(L.base))} +${L.pad}%)</span>` : ""} · ${fmtN(Math.round(L.km))}km${srcTag(L.src)}<span class="eo"> · <select class="padsel${p.pad != null ? " own" : ""}" data-legpad="${p.id}" title="이 구간만 운전 시간 여유를 따로 정해요" aria-label="${i}→${i + 1} 구간 운전 시간 여유"><option value=""${p.pad == null ? " selected" : ""}>여유 일괄(+${planPad()}%)</option>${PADS.map(v => `<option value="${v}"${p.pad != null && +p.pad === v ? " selected" : ""}>여유 +${v}%</option>`).join("")}</select></span>`}${long}
+          <button class="ins eo" type="button" data-ins="${i}">+ 이 사이에 넣기</button></span></li>`);
       }
       const arrDay = Math.floor(nd.arr / 1440);
       while (curDay < arrDay) { curDay++; rows.push(dayRow(curDay)); }
@@ -1764,14 +1891,14 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
       rows.push(`<li class="stop" data-pid="${p.id}"><span class="t">${tcol}</span><span class="rail"><span class="badge plan${i === 0 ? " first" : ""}">${i + 1}</span></span>
         <span class="body"><b>${esc(p.name)}</b> <span class="en">${s ? esc(s.en) : P ? esc(P.en) : p.placeId ? "구글 장소" : `${p.ll[1].toFixed(4)}, ${p.ll[0].toFixed(4)}`}</span>
         <p>${stayText(nd, last)}</p>${s && s.note ? `<p class="en">${esc(s.note)}</p>` : ""}${P ? `<p class="en">${esc(P.desc)}</p>` : ""}${pill(nd.warn)}
-        <span class="pctl">${i === 0 ? `<span>출발 시간은 위쪽 출발 칸에서 바꿔요</span>` : stayCtl(nd)}</span>
-        <span class="pctl">${!last ? `<label><input type="checkbox" data-fly="${p.id}"${p.fly ? " checked" : ""}> 다음 구간 비행기</label>` : ""}
-          <button class="ic" type="button" data-up="${p.id}" aria-label="위로" ${i === 0 ? "disabled" : ""}>↑</button><button class="ic" type="button" data-down="${p.id}" aria-label="아래로" ${last ? "disabled" : ""}>↓</button><button class="ic" type="button" data-del="${p.id}" aria-label="삭제">×</button>
+        <span class="pctl eo">${i === 0 ? `<span>출발 시간은 위쪽 출발 칸에서 바꿔요</span>` : stayCtl(nd)}</span>
+        <span class="pctl">${!last ? `<label class="eo"><input type="checkbox" data-fly="${p.id}"${p.fly ? " checked" : ""}> 다음 구간 비행기</label>` : ""}
+          <button class="ic eo" type="button" data-up="${p.id}" aria-label="위로" ${i === 0 ? "disabled" : ""}>↑</button><button class="ic eo" type="button" data-down="${p.id}" aria-label="아래로" ${last ? "disabled" : ""}>↓</button><button class="ic eo" type="button" data-del="${p.id}" aria-label="삭제">×</button>
           ${P ? `<button class="ic" type="button" data-poiinfo="${P.id}" title="관광지 설명 카드 보기">ⓘ</button><a class="lnk" href="${poiSearch(P)}" target="_blank" rel="noopener">구글 지도 ↗</a>` : s ? `<a class="lnk" href="${gmSearch(p.k)}" target="_blank" rel="noopener">구글 지도 ↗</a>` : p.placeId ? `<a class="lnk" href="https://www.google.com/maps/search/?${new URLSearchParams({ api: "1", query: p.name, query_place_id: p.placeId })}" target="_blank" rel="noopener">구글 지도 ↗</a>` : ""}</span></span></li>`);
       const depDay = Math.floor(nd.dep / 1440);
       if (!last) while (curDay < depDay) { curDay++; rows.push(dayRow(curDay)); }
     });
-    rows.push(`<li class="leg"><span class="t"></span><span class="rail"></span><span class="body"><button class="ins" type="button" data-ins="${n}">+ 맨 뒤에 이어서 추가</button></span></li>`);
+    rows.push(`<li class="leg eo"><span class="t"></span><span class="rail"></span><span class="body"><button class="ins" type="button" data-ins="${n}">+ 맨 뒤에 이어서 추가</button></span></li>`);
     const daysTable = ps.days.length && n >= 2 ? `<table class="days-t"><thead><tr><th>일차</th><th>운전</th><th>출발 → 마지막 도착</th><th>숙박</th></tr></thead><tbody>${ps.days.map(D => `<tr><td>${dateLabel(dayDate(D.d))}<small>${D.d + 1}일차</small></td><td class="${D.drive > DAY_BAD ? "bad" : D.drive > DAY_WARN ? "warn" : ""}">${dur(D.drive)}</td><td>${D.first != null ? clock(D.first) : "–"} → ${D.last != null ? clock(D.last) : "–"}</td><td>${D.sleep ? esc(D.sleep.p.name) : "–"}</td></tr>`).join("")}</tbody></table>` : "";
     const plist = Object.entries(saved.plans).sort((a, b) => (b[1].updated || 0) - (a[1].updated || 0));
     const stamp = t => { if (!t) return ""; const d = new Date(t); return `${d.getMonth() + 1}/${d.getDate()} ${clock(d.getHours() * 60 + d.getMinutes())}`; };
@@ -1779,8 +1906,8 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
     const edDefault = ed === "rename" ? plan.name : ed === "saveas" ? uniqName(plan.name + " 사본") : uniqName("새 플랜");
     const planBar = `<div class="planbar">
         <label class="pl-lab" for="planSel">저장된 플랜 ${plist.length}개</label>
-        <select id="planSel">${plist.map(([id, pl]) => `<option value="${id}"${id === saved.planId ? " selected" : ""}>${esc(pl.name)} · ${pl.pts.length}곳${pl.updated ? " · " + stamp(pl.updated) : pl.from ? " · 기본 코스" : ""}</option>`).join("")}<option value="__new">+ 새 빈 플랜 만들기</option></select>
-        <div class="pl-btns"><button class="mini" type="button" data-saveas>다른 이름으로 저장</button><button class="mini" type="button" data-rename>이름 바꾸기</button><button class="mini${planUI.del ? " danger" : ""}" type="button" data-delplan>${planUI.del ? "한 번 더 누르면 삭제" : "삭제"}</button></div>
+        <select id="planSel">${plist.map(([id, pl]) => `<option value="${id}"${id === saved.planId ? " selected" : ""}>${esc(pl.name)} · ${pl.pts.length}곳${pl.updated ? " · " + stamp(pl.updated) : pl.from ? " · 기본 코스" : ""}</option>`).join("")}${viewOnly() ? "" : `<option value="__new">+ 새 빈 플랜 만들기</option>`}</select>
+        <div class="pl-btns eo"><button class="mini" type="button" data-saveas>다른 이름으로 저장</button><button class="mini" type="button" data-rename>이름 바꾸기</button><button class="mini${planUI.del ? " danger" : ""}" type="button" data-delplan>${planUI.del ? "한 번 더 누르면 삭제" : "삭제"}</button></div>
         ${ed ? `<form class="pl-name" id="plName"><label for="plNameIn">${ed === "rename" ? "새 이름" : ed === "saveas" ? "다른 이름으로 저장 · 지금 플랜을 복사해요" : "새 빈 플랜 이름"}</label><div><input id="plNameIn" maxlength="40" value="${esc(edDefault)}" autocomplete="off"><button class="mini" type="submit">${ed === "rename" ? "바꾸기" : "저장"}</button><button class="mini" type="button" data-plcancel>취소</button></div></form>` : ""}
       </div>`;
     const shareBox = `<details class="share" id="shareBox"${planUI.share ? " open" : ""}><summary>내보내기 · 불러오기</summary><div class="sh-body">
@@ -1791,17 +1918,17 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
     sheet.innerHTML = `<p class="eyebrow">직접 짜기</p>${planBar}${shareBox}<h2>${esc(plan.name)}</h2>
       ${n >= 2 ? (() => { const own = plan.pts.filter((q, qi) => qi > 0 && q.pad != null).length;
         return `<div class="padctl"><label for="planPad">운전 시간 여유</label><select id="planPad">${PADS.map(v => `<option value="${v}"${v === planPad() ? " selected" : ""}>+${v}%</option>`).join("")}</select>
-          <span class="out">모든 구간의 구글 예상 운전 시간에 더해요${own ? ` · 구간별로 따로 정한 곳 ${own}개` : " · 구간마다 따로 정할 수도 있어요"}</span>${own ? `<button class="mini" type="button" data-padreset>모두 일괄로 되돌리기</button>` : ""}</div>`; })() : ""}
+          <span class="out">모든 구간의 구글 예상 운전 시간에 더해요${own ? ` · 구간별로 따로 정한 곳 ${own}개` : " · 구간마다 따로 정할 수도 있어요"}</span>${own ? `<button class="mini eo" type="button" data-padreset>모두 일괄로 되돌리기</button>` : ""}</div>`; })() : ""}
       ${n >= 2 ? `<dl class="facts"><div><dt>지점</dt><dd>${n}곳</dd></div><div><dt>운전</dt><dd>약 ${fmtN(Math.round(ps.km))}km · ${dur(ps.drive)}</dd></div><div><dt>출발</dt><dd>${dt(ps.nodes[0].dep)}</dd></div><div><dt>마지막 도착</dt><dd>${dt(ps.end)}${ps.days.length > 1 ? ` (${ps.days.length}일)` : ""}</dd></div></dl>` : ""}
       ${daysTable}${srcLine(est, total)}${placesError ? `<p class="src err">장소 이름을 가져오지 못해 가까운 지명으로 표시했어요: ${esc(placesError)}. 구글 콘솔에서 Places API (New)를 켜고 키의 API 제한에도 추가하세요.</p>` : ""}
       <form class="psearch" id="psearch"><input id="pq" type="search" value="${esc(searchQ)}" placeholder="장소 이름으로 찾기 (예: Anantara Jabal Akhdar)" aria-label="장소 검색"><button type="submit">찾기</button></form>
       ${searchMsg ? `<p class="src">${esc(searchMsg)}</p>` : ""}
-      ${searchRes && searchRes.length ? `<ul class="presults">${searchRes.map((r, x) => `<li><button type="button" class="pr-go" data-go="${x}"><b>${esc(r.name)}</b><small>${esc(r.addr)}</small></button><button type="button" class="mini" data-addr="${x}">${insertAt != null ? `${insertAt}번 뒤에 넣기` : "플랜에 추가"}</button></li>`).join("")}</ul>` : ""}
+      ${searchRes && searchRes.length ? `<ul class="presults">${searchRes.map((r, x) => `<li><button type="button" class="pr-go" data-go="${x}"><b>${esc(r.name)}</b><small>${esc(r.addr)}</small></button><button type="button" class="mini eo" data-addr="${x}">${insertAt != null ? `${insertAt}번 뒤에 넣기` : "플랜에 추가"}</button></li>`).join("")}</ul>` : ""}
       <label class="poitoggle"><input type="checkbox" data-pois${saved.showPois ? " checked" : ""}> 코스 추천 장소 핀도 지도에 보기</label>
-      <div class="btnrow"><button class="mini" type="button" data-loadc>${esc(course.label)} 코스를 새 플랜으로 불러오기</button>${n ? `<button class="mini" type="button" data-undo>마지막 지점 지우기</button><button class="mini" type="button" data-clear>모두 지우기</button>` : ""}</div>
-      ${n ? "" : `<div class="empty"><b>지도에서 오른쪽 클릭하면 "여기서 출발 / 맨 뒤에 추가" 메뉴가 나와요.</b> 실수로 들어가지 않게 왼쪽 클릭만으로는 추가되지 않아요. 지도를 충분히 확대해서 리조트·식당 위를 오른쪽 클릭하면 구글에 등록된 이름으로 들어가요(왼쪽 클릭은 이름 카드만 보여줘요). 관광지 핀이나 위 검색창으로도 넣을 수 있어요. 그다음엔 이렇게 고쳐요.<br>· 경로 선이나 1시간 표시를 오른쪽 클릭하면 그 구간에 경유지를 넣는 메뉴가 나와요.<br>· 목록의 <b>+ 이 사이에 넣기</b>를 누른 뒤에는 지도를 왼쪽 클릭해도 그 자리에 들어가요.<br>· 번호 핀을 오른쪽 클릭하면 삭제할 수 있고, 끌어서 옮길 수도 있어요. 머무는 시간이나 출발 시각을 바꾸면 뒤쪽 시간이 모두 다시 계산돼요.</div>`}
+      <div class="btnrow eo"><button class="mini" type="button" data-loadc>${esc(course.label)} 코스를 새 플랜으로 불러오기</button>${n ? `<button class="mini" type="button" data-undo>마지막 지점 지우기</button><button class="mini" type="button" data-clear>모두 지우기</button>` : ""}</div>
+      ${n ? "" : `<div class="empty vo">빈 플랜이에요. 지점을 넣으려면 위쪽에서 <b>편집</b>을 누르세요.</div><div class="empty eo"><b>지도에서 오른쪽 클릭하면 "여기서 출발 / 맨 뒤에 추가" 메뉴가 나와요.</b> 실수로 들어가지 않게 왼쪽 클릭만으로는 추가되지 않아요. 지도를 충분히 확대해서 리조트·식당 위를 오른쪽 클릭하면 구글에 등록된 이름으로 들어가요(왼쪽 클릭은 이름 카드만 보여줘요). 관광지 핀이나 위 검색창으로도 넣을 수 있어요. 그다음엔 이렇게 고쳐요.<br>· 경로 선이나 1시간 표시를 오른쪽 클릭하면 그 구간에 경유지를 넣는 메뉴가 나와요.<br>· 목록의 <b>+ 이 사이에 넣기</b>를 누른 뒤에는 지도를 왼쪽 클릭해도 그 자리에 들어가요.<br>· 번호 핀을 오른쪽 클릭하면 삭제할 수 있고, 끌어서 옮길 수도 있어요. 머무는 시간이나 출발 시각을 바꾸면 뒤쪽 시간이 모두 다시 계산돼요.</div>`}
       ${links.length ? `<div class="navs">${links.map((l, x) => `<a class="navbtn" href="${l.href}" target="_blank" rel="noopener"><span>${links.length > 1 ? `길찾기 ${x + 1}/${links.length}` : "구글 지도 길찾기"}<small>${esc(l.label)}</small></span>${navIcon}</a>`).join("")}</div>` : ""}
-      ${n ? `<p class="sec">시간표 · 구간마다 선 색이 달라요 · 지도의 점은 1시간마다 지나는 곳 (시각 · 그 구간 출발 후 km) · 추가는 지도에서 오른쪽 클릭</p><ol class="tl">${rows.join("")}</ol>` : ""}
+      ${n ? `<p class="sec">시간표 · 구간마다 선 색이 달라요 · 지도의 점은 1시간마다 지나는 곳 (시각 · 그 구간 출발 후 km)<span class="eo"> · 추가는 지도에서 오른쪽 클릭</span></p><ol class="tl">${rows.join("")}</ol>` : ""}
       <div class="note"><p>확대한 지도에서 누르거나 검색하면 구글 장소 정보를 한 번 받아 와요(Places API, 종류별 월 5,000회 무료). 많이 축소한 상태에서 누른 곳은 장소를 찾지 않고 가까운 지명으로 표시해요.</p><p>하루 운전이 8시간을 넘으면 노랑, 10시간을 넘으면 빨강으로 표시해요. 1시간 표시의 위치와 km는 구간 평균 속도로 나눈 대략적인 값이에요. km는 직전 지점에서 출발한 뒤 달린 거리예요.</p><p>플랜과 계산한 경로는 이 브라우저에 저장돼서, 같은 구간은 다시 계산(과금)하지 않아요.</p></div>`;
     const idx = id => plan.pts.findIndex(p => p.id === +id);
     const nodeOf = el => plan.pts[idx(el.dataset[Object.keys(el.dataset)[0]])];
@@ -1873,6 +2000,7 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
   function renderSheet(keep) {
     const top = sheet.scrollTop;
     if (mode === "plan") renderPlan(); else if (dayIdx == null) renderOverview(); else renderDay(dayIdx);
+    if (viewOnly()) sheet.querySelectorAll("[data-t24h],[data-t24m],#coursePad,#planPad").forEach(el => { el.disabled = true; });   // keep the values visible, locked
     hiKey = null;
     sheet.querySelectorAll("[data-leg]").forEach(el => { el.addEventListener("mouseenter", () => hiLeg(el.dataset.leg, true)); el.addEventListener("mouseleave", () => hiLeg(el.dataset.leg, false)); });
     sheet.scrollTop = keep ? top : 0;
