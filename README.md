@@ -34,13 +34,64 @@
 - **보기 / 편집 모드**: 위쪽 **보기**를 누르면 지도를 보다가 잘못 눌러도 플랜과 시간이 바뀌지 않아요. 번호 핀 끌기, 추가 메뉴, 삭제·되돌리기, 머무는 시간과 출발 시각 고르기가 모두 잠겨요. 고칠 때는 **편집**을 눌러요. 고른 모드는 그 브라우저에 기억돼요.
 - **내 위치**: 지도 위 **내 위치** 버튼을 누르면 폰 GPS로 파란 점과 오차 범위를 보여 주고, 움직이는 중이면 가는 방향도 표시해요. 켜진 상태에서 다시 누르면 내 위치로 지도를 옮기고, ✕로 꺼요. 파란 점을 누르면 그 자리를 플랜에 넣을 수 있어요(편집 모드). https 주소(GitHub Pages)에서만 되고, 위치는 어디에도 저장하지 않아요. 화면이 꺼지거나 다른 앱으로 가면 위치 갱신이 멈춰요.
 - **내보내기·불러오기**: AI에 붙여 넣을 텍스트(.txt 저장 또는 복사), 다시 불러올 수 있는 플랜 파일(.json, 계산한 경로 포함). 받은 파일은 "파일 불러오기"나 끌어다 놓기로 추가해요.
+- **실시간 공유**: 플랜을 링크로 보내면 받은 사람이 구글 키 없이 경로·일정과 내 현재 위치(지나온 길, 몇 분 전 위치인지)를 봐요. 보기 전용이라 고칠 수 없어요. Vercel + Supabase 설정이 필요해요 → 아래 "실시간 공유".
 - **지도 표시 고르기**: 지도 위 **표시** 버튼에서 지도에 보일 글자를 하나하나 켜고 꺼요. 지점 글자(이름, 시각, 날짜), 1시간마다 지나는 곳(시각, km, 근처 지명), 구간 번호, 관광지 이름. 시각을 끄고 날짜만 켜면 지점마다 날짜만(1박 이상이면 `10/15(목)~10/16(금)`) 보여요. 1시간 표시의 글자를 다 끄면 점도 사라져요. "글자 모두 끄기", "모두 기본값으로"도 있고, 고른 상태는 그 브라우저에 기억돼요. 같은 곳에서 투명도(글자 배경, 경로 선, 관광지 핀)도 조절해요.
 - **촘촘한 확대·축소**: 지도 오른쪽 아래 +/− 버튼과 마우스 휠은 기본 ½단계씩 움직이고, 휠은 마우스가 있는 곳을 중심으로 확대해요. 간격은 **표시** 패널에서 1 / ½ / ¼단계 중에 골라요. 폰에서 두 손가락으로 맞춘 크기는 정수 단계로 튕기지 않고 그대로 남아요.
 - 24시간제, 날짜 표시, 지도와 패널 사이 경계 조절.
 
+## 실시간 공유 (Vercel + Supabase)
+
+플랜을 링크(`https://<프로젝트>.vercel.app/s/<공유 ID>`)로 보여 주고, 내 현재 위치를 실시간으로 함께 보여 줘요. 링크를 받은 사람은 구글 키도 로그인도 필요 없어요.
+
+- **Vercel**: 사이트(`index.html`)와 서버 함수(`api/`)를 올려요. 비밀값은 Vercel 환경변수에만 있고, 저장소·링크·브라우저에는 들어가지 않아요.
+- **Supabase**: 공유한 플랜과 위치를 저장해요. 서버 함수만 읽고 써요.
+- **OwnTracks**(폰 앱, 아이폰·안드로이드): 화면이 꺼져 있어도 위치를 보내요. 플래너 페이지에서도 보낼 수 있지만, 페이지가 화면에 켜져 있을 때만 돼요.
+
+### 처음 한 번 설정
+
+1. **Supabase**
+   1. [supabase.com](https://supabase.com)에서 New project를 만들어요. 지역은 가까운 곳(예: Mumbai)으로 골라요.
+   2. SQL Editor에 `supabase/schema.sql` 내용을 붙여 넣고 Run 해요.
+   3. Project Settings → API에서 **Project URL**과 **service_role** 키를 복사해요. service_role 키는 어디에도 공개하지 말고 Vercel 환경변수에만 넣어요.
+2. **구글 보기 전용 키** (링크를 받은 사람의 지도용)
+   1. 구글 클라우드 콘솔 → 사용자 인증 정보 → API 키를 하나 더 만들어요.
+   2. 애플리케이션 제한: 웹사이트 → `https://<프로젝트>.vercel.app/*`
+   3. API 제한: **Maps JavaScript API**만. 경로는 공유한 플랜에 들어 있어서 보는 쪽에서는 경로 계산을 하지 않아요.
+   4. 하루 할당량이나 예산 알림도 걸어 두세요.
+   5. 내 플래너용 키에 웹사이트 제한을 걸어 두었다면, 그 키에도 Vercel 주소를 추가해요.
+3. **Vercel**
+   1. [vercel.com](https://vercel.com)에 GitHub 계정으로 가입하고 Add New → Project에서 이 저장소를 Import 해요. Framework Preset은 Other로 두면 돼요(빌드 설정은 `vercel.json`이 정해요).
+   2. Environment Variables에 넣어요.
+
+      | 이름 | 값 |
+      |---|---|
+      | `SUPABASE_URL` | Supabase Project URL (`https://….supabase.co`) |
+      | `SUPABASE_SERVICE_KEY` | Supabase service_role 키 |
+      | `OWNER_TOKEN` | 공유 비밀번호. 길고 무작위로(20자 이상 권장) |
+      | `GMAPS_VIEW_KEY` | 구글 보기 전용 키 |
+   3. Deploy 해요. 그다음부터는 `main`에 올라갈 때마다 자동으로 배포돼요.
+4. 플래너를 `https://<프로젝트>.vercel.app/`에서 열어요. 브라우저 저장소는 주소마다 따로라서, GitHub Pages나 파일로 쓰던 플랜은 플랜 파일(.json)로 내보낸 뒤 여기서 불러와요.
+
+### 공유하기
+
+1. **직접 짜기**에서 플랜을 고르고 **실시간 공유 · 링크로 보여 주기**를 열어요.
+2. 처음 한 번 공유 비밀번호(`OWNER_TOKEN`)를 넣어요. 그 브라우저에만 저장돼요.
+3. **이 플랜 공유 시작** → **링크 복사**로 링크를 보내요. 플랜을 고치면 몇 초 뒤 링크에도 반영돼요.
+4. 위치 보내기는 둘 중 하나예요.
+   - 플래너의 **이 기기 위치 보내기**: 페이지가 화면에 켜져 있을 때 1분마다(또는 150m 움직이면) 보내요.
+   - **OwnTracks**: 모드(Mode)를 HTTP로, URL(Host)은 공유 칸에 나오는 `https://<프로젝트>.vercel.app/api/loc?trip=<공유 ID>`, 사용자 이름은 아무거나, 비밀번호는 공유 비밀번호로 넣어요. 추적 방식은 Move(자주) 또는 Significant(배터리 절약)로 골라요.
+5. 여행이 끝나면 **공유 끝내기**를 두 번 눌러요. 링크가 닫히고 공유한 플랜과 보낸 위치가 서버에서 모두 지워져요.
+
+### 알아 둘 점
+
+- 받은 사람 화면은 15초마다, 그리고 다시 화면에 돌아올 때마다 새 위치를 받아요. 20분 넘게 새 위치가 없으면 회색 점으로 바뀌어요.
+- 링크를 아는 사람은 누구나 볼 수 있어요. 공유 ID는 추측할 수 없게 무작위 16자예요.
+- Vercel Hobby(개인·비상업용)와 Supabase Free로 충분해요. Supabase 무료 프로젝트는 1주일 동안 쓰지 않으면 잠들어요(데이터는 남아요). 여행 직전에 대시보드에서 깨어 있는지 확인하세요.
+- 받은 사람이 지도를 열 때마다 보기 전용 키로 지도 열기 1회(Dynamic Maps)가 쓰여요. 월 10,000회까지 무료예요.
+
 ## 데이터가 저장되는 곳
 
-플랜과 설정, 계산한 경로는 브라우저 저장소(`localStorage`의 `omanGmaps.*`)에 있어요. 같은 브라우저에서 같은 위치의 파일을 열어야 보여요. 다른 PC나 브라우저로 옮길 때는 플랜 파일(.json)로 내보내서 불러오세요.
+플랜과 설정, 계산한 경로는 브라우저 저장소(`localStorage`의 `omanGmaps.*`)에 있어요. 같은 브라우저에서 같은 위치의 파일을 열어야 보여요. 다른 PC나 브라우저로 옮길 때는 플랜 파일(.json)로 내보내서 불러오세요. 공유 비밀번호와 플랜별 공유 ID는 `omanGmaps.share`에 있어요. 실시간 공유를 켠 플랜과 보낸 위치만 Supabase에 올라가고, 공유를 끝내면 지워져요.
 
 ## 구글 API 비용 (2026년 10월 기준, 바뀔 수 있음)
 
@@ -57,14 +108,17 @@
 ## 개발
 
 ```
-index.html                 빌드 결과물 (직접 고치지 말고 src를 고친 뒤 빌드) · GitHub Pages로 배포돼요
+index.html                 빌드 결과물 (직접 고치지 말고 src를 고친 뒤 빌드) · Vercel과 GitHub Pages로 배포돼요
 .github/workflows/pages.yml  index.html만 Pages에 올리는 워크플로
+vercel.json                Vercel 설정: index.html만 public/으로, /s/:id → index.html
+api/                       Vercel 함수: trip.js(공유 플랜), loc.js(위치), _lib.js(인증·Supabase) — 의존성 없음
+supabase/schema.sql        Supabase 표 만들기
 src/template.html          화면·로직 전체 (__DATA__ 자리에 데이터가 들어가요)
 src/data/gdata.json        지점, 일차, 코스, 지명, 내장 도로망 (tools/build*.mjs로 생성)
 src/data/pois.json         관광지 93곳 (tools/build_pois.py로 생성)
 src/data/pois-research/    지역별 관광지 조사 원본
 tools/                     데이터·빌드 스크립트, roads_box.json(도로 원본 일부)
-tests/                     가짜 구글 지도(gmock.js)로 도는 브라우저 테스트
+tests/                     가짜 구글 지도(gmock.js)와 가짜 Supabase(fakebase.mjs)로 도는 테스트
 ```
 
 ```bash
@@ -72,7 +126,7 @@ npm install          # d3-geo, topojson, world-atlas, playwright
 npm run data         # 지점·코스·도로망 → src/data/gdata.json
 npm run pois         # 관광지 조사 원본 → src/data/pois.json
 npm run build        # src → index.html
-npm test             # 브라우저 테스트 (CHROMIUM_PATH로 크로미움 경로 지정 가능)
+npm test             # api 테스트 + 브라우저 테스트 (CHROMIUM_PATH로 크로미움 경로 지정 가능)
 ```
 
 ## 데이터 출처

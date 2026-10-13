@@ -7,7 +7,7 @@
     "data": "node tools/build.mjs && node tools/build_g.mjs",
     "pois": "python3 tools/build_pois.py",
     "build": "python3 tools/assemble.py",
-    "test": "node tests/test_plan.mjs && node tests/test_share.mjs && node tests/test_pad.mjs && node tests/test_view.mjs"
+    "test": "node tests/test_api.mjs && node tests/test_plan.mjs && node tests/test_share.mjs && node tests/test_pad.mjs && node tests/test_view.mjs && node tests/test_live.mjs"
   },
   "dependencies": {
     "d3-geo": "^3.1.1",

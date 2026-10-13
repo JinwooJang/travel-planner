@@ -225,6 +225,33 @@ body.resizing #map { pointer-events: none; }
 .share .sh-group > div { display: flex; flex-wrap: wrap; gap: 6px; }
 .share .sh-msg { font-size: 12.5px; margin: 0; color: var(--ink); background: var(--hover); border-radius: 8px; padding: 6px 8px; }
 .share .sh-msg.err { color: var(--bad); background: var(--bad-bg); }
+/* live sharing: the owner's box in the plan sheet */
+.share .lv-on { margin-left: 4px; font-size: 11.5px; font-weight: 700; color: #fff; background: #e5372c; border-radius: 999px; padding: 1px 8px; }
+.share .lv-note { font-size: 12px; color: var(--muted); line-height: 1.45; }
+.share .lv-url, .share input[type="password"] { flex: 1 1 200px; min-width: 0; width: 100%; font: 12.5px var(--f-mono); padding: 6px 8px; border: 1px solid var(--rule); border-radius: 8px; background: var(--panel); color: var(--ink); }
+.share .mini.primary, .share .mini.on { background: #0f766e; border-color: #0f766e; color: #fff; }
+.share .mini.danger { background: var(--bad); border-color: var(--bad); color: #fff; }
+.share .lv-forget { justify-self: start; }
+.share .lv-ot { font-size: 12.5px; }
+.share .lv-ot summary { cursor: pointer; font-weight: 600; }
+.share .lv-ot ol { margin: 6px 0 0; padding-left: 18px; display: grid; gap: 4px; }
+.share code { font: 12px var(--f-mono); word-break: break-all; background: var(--hover); padding: 0 4px; border-radius: 4px; }
+/* a shared trip (/s/<id>): read-only, planner tools hidden */
+body.sharing .ns { display: none !important; }
+.livehead { display: flex; align-items: center; gap: 10px; margin: 2px 0 14px; padding: 10px 12px; border: 1px solid var(--rule); border-radius: 12px; background: var(--paper); }
+.livehead > div { flex: 1; min-width: 0; display: grid; gap: 2px; }
+.livehead small { color: var(--muted); font-size: 12px; }
+.livehead .lv-dot { flex: none; width: 12px; height: 12px; border-radius: 50%; background: #ff3b30; box-shadow: 0 0 0 4px rgba(255,59,48,.22); }
+.livehead.stale .lv-dot, .livehead .lv-dot.off { background: #8a96a0; box-shadow: none; }
+/* the traveller on a shared map: red dot with a pulse, grey when the last position is old */
+.gm.tv .dot { position: absolute; left: -11px; top: -11px; width: 22px; height: 22px; border-radius: 50%; background: #ff3b30; border: 3px solid #fff; box-shadow: 0 0 0 1px rgba(0,0,0,.3), 0 1px 6px rgba(0,0,0,.6); }
+.gm.tv .ring { position: absolute; left: -22px; top: -22px; width: 44px; height: 44px; border-radius: 50%; background: rgba(255,59,48,.35); animation: tvpulse 2s ease-out infinite; pointer-events: none; }
+@keyframes tvpulse { 0% { transform: scale(.4); opacity: 1; } 100% { transform: scale(1.4); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .gm.tv .ring { animation: none; opacity: .5; } }
+.gm.tv .lab { display: block; left: 16px; top: -12px; }
+.gm.tv.stale .dot { background: #8a96a0; }
+.gm.tv.stale .ring { display: none; }
+.mapbox.no-tvl .gm.tv .lab { display: none; }
 body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"; position: fixed; inset: 12px; border: 3px dashed #0f766e; border-radius: 16px; background: rgba(15,118,110,.12);
   display: grid; place-items: center; font: 600 20px var(--f-body); color: #0f766e; z-index: 50; pointer-events: none; }
 .vis-btn { background: var(--panel); color: var(--ink); border: 1px solid var(--rule); border-radius: 8px; padding: 6px 10px; font: inherit; font-weight: 600; cursor: pointer; box-shadow: 0 1px 4px rgba(0,0,0,.3); }
@@ -428,11 +455,11 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
     <span class="wlab">출발</span>
     <input type="hidden" id="dDate"><input type="hidden" id="dTime" value="07:00">
     <span id="whenUI" class="whenui"></span>
-    <button class="keybtn" id="keyBtn" type="button">API 키</button>
-    <span class="modesw" role="group" aria-label="보기·편집 전환"><button type="button" id="viewBtn" aria-pressed="false" title="지도를 보다가 잘못 눌러도 플랜과 시간이 바뀌지 않게 잠가요">보기</button><button type="button" id="editBtn" aria-pressed="true" title="플랜과 출발 시간을 고칠 수 있어요">편집</button></span>
+    <button class="keybtn ns" id="keyBtn" type="button">API 키</button>
+    <span class="modesw ns" role="group" aria-label="보기·편집 전환"><button type="button" id="viewBtn" aria-pressed="false" title="지도를 보다가 잘못 눌러도 플랜과 시간이 바뀌지 않게 잠가요">보기</button><button type="button" id="editBtn" aria-pressed="true" title="플랜과 출발 시간을 고칠 수 있어요">편집</button></span>
   </div>
 </header>
-<nav class="days" id="days" aria-label="일정 선택"></nav>
+<nav class="days ns" id="days" aria-label="일정 선택"></nav>
 <main class="app">
   <section class="mapbox" aria-label="지도">
     <div id="map"></div>
@@ -553,14 +580,17 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
   let saved = {}; try { saved = JSON.parse(ls.get(STORE) || "{}") || {}; } catch (e) { saved = {}; }
   saved.dayStart = saved.dayStart || {};
   const save = () => ls.set(STORE, JSON.stringify(saved));
-  const viewOnly = () => !!(saved.ui && saved.ui.view);
+  // a shared trip, opened from a share link (/s/<id>): someone else's plan and live position, read-only; nothing of it is saved here
+  const SHARE_ID = (() => { const m = /^\/s\/([A-Za-z0-9_-]{8,40})\/?$/.exec(location.pathname) || /[?&]s=([A-Za-z0-9_-]{8,40})(&|$)/.exec(location.search); return m ? m[1] : null; })();
+  const API_OK = /^https?:$/.test(location.protocol);       // the /api functions exist only where the site is deployed on Vercel
+  const viewOnly = () => !!SHARE_ID || !!(saved.ui && saved.ui.view);     // view mode: nothing on the map or in the sheet can change the plan or times
   const TOUCH = !!(window.matchMedia && matchMedia("(hover: none)").matches);     // phone / tablet: long press = right click
   const W = TOUCH ? { rc: "길게 누르기", rcV: "길게 누르면", rcN: "길게 눌러서", rcDo: "길게 누르세요", lc: "짧게 누르기", lcV: "짧게 누르면", lcN: "짧게 눌러도" }
-    : { rc: "오른쪽 클릭", rcV: "오른쪽 클릭하면", rcN: "오른쪽 클릭으로", rcDo: "오른쪽 클릭하세요", lc: "왼쪽 클릭", lcV: "왼쪽 클릭하면", lcN: "왼쪽 클릭해도" };     // view mode: nothing on the map or in the sheet can change the plan or times
+    : { rc: "오른쪽 클릭", rcV: "오른쪽 클릭하면", rcN: "오른쪽 클릭으로", rcDo: "오른쪽 클릭하세요", lc: "왼쪽 클릭", lcV: "왼쪽 클릭하면", lcN: "왼쪽 클릭해도" };
   $("dDate").value = saved.date || isoToday();
   let routeCache = {}; try { routeCache = JSON.parse(ls.get(ROUTE_STORE) || "{}") || {}; } catch (e) { routeCache = {}; }
   let cacheTimer = null;
-  const persistRoutes = () => { clearTimeout(cacheTimer); cacheTimer = setTimeout(() => ls.set(ROUTE_STORE, JSON.stringify(routeCache)), 400); };
+  const persistRoutes = () => { if (SHARE_ID) return; clearTimeout(cacheTimer); cacheTimer = setTimeout(() => ls.set(ROUTE_STORE, JSON.stringify(routeCache)), 400); livePushSoon(); };
 
   // ---------- built-in road network (fallback when a Google route call fails) ----------
   const NN = NET.ll.length / 2;
@@ -990,6 +1020,7 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
     { g: "1시간마다 지나는 곳", items: [["ttm", "시각"], ["tkm", "km"], ["ttn", "근처 지명"]] },
     { g: "그 밖", items: [["leg", "구간 번호"], ["pnm", "관광지 이름"]] },
   ];
+  if (SHARE_ID) DISP.push({ g: "여행자 실시간 위치", items: [["tvl", "글자"], ["trk", "지나온 길"]] });
   const DISP_KEYS = DISP.flatMap(x => x.items.map(it => it[0]));
   if (saved.ui.noTm || saved.ui.noKm) {   // earlier time / km switches for the hourly marks; both off meant no marks at all
     const h = new Set(Array.isArray(saved.ui.hide) ? saved.ui.hide : []);
@@ -1001,6 +1032,7 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
     const box = document.querySelector(".mapbox");
     DISP_KEYS.forEach(k => box.classList.toggle("no-" + k, !dispOn(k)));
     $("dispTogs").querySelectorAll("[data-disp]").forEach(b => b.setAttribute("aria-pressed", String(dispOn(b.dataset.disp))));
+    if (map) liveTrackVis();
   }
   $("dispTogs").innerHTML = DISP.map(x => `<div class="dsec"><b>${x.g}</b><div class="dtogs">${x.items.map(([k, t]) => `<button type="button" class="dtog" data-disp="${k}" aria-pressed="true" aria-label="${x.g} · ${t}">${t}</button>`).join("")}</div></div>`).join("");
   $("dispTogs").querySelectorAll("[data-disp]").forEach(b => b.addEventListener("click", () => {
@@ -1241,6 +1273,7 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
       box.querySelector("[data-goto]").addEventListener("click", () => { IW.close(); if (mode !== "plan") setMode("plan"); setTimeout(() => focusRow(nd.id), 60); });
       return;
     }
+    if (SHARE_ID) { box.innerHTML = ""; return; }
     if (viewOnly()) { box.innerHTML = `<b class="pn">플랜 「${esc(plan.name)}」</b><p style="margin:0">보기 모드예요. 플랜에 넣으려면 위쪽에서 <b>편집</b>을 누르세요.</p>`; return; }
     const items = addChoices(ll);
     box.innerHTML = `<b class="pn">플랜 「${esc(plan.name)}」에 넣기${note ? " · " + esc(note) : ""}</b>` + items.map((it, i) => `<button type="button"${it.primary ? ' class="primary"' : ""} data-ci="${i}">${esc(it.label)}${it.sub ? `<small>${esc(it.sub)}</small>` : ""}</button>`).join("");
@@ -1289,7 +1322,7 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
     const el = document.createElement("div"); el.className = "ctxmenu"; el.setAttribute("role", "menu");
     const ttl = o.title || placeName(ll);
     el.innerHTML = `<div class="cx-h">${esc(ttl === "지점" ? "지도 위 이 위치" : ttl)}<small>${ll[1].toFixed(4)}, ${ll[0].toFixed(4)}</small></div>`
-      + (lock && (!o.noAdd || extra.length < all.length) ? `<p class="cx-note">보기 모드라 플랜을 고칠 수 없어요. 위쪽에서 <b>편집</b>을 누르면 돼요.</p>` : "")
+      + (lock && !SHARE_ID && (!o.noAdd || extra.length < all.length) ? `<p class="cx-note">보기 모드라 플랜을 고칠 수 없어요. 위쪽에서 <b>편집</b>을 누르면 돼요.</p>` : "")
       + items.map((it, i) => `<button type="button" role="menuitem" class="cx-i${it.primary ? " primary" : ""}" data-ci="${i}">${esc(it.label)}${it.sub ? `<small>${esc(it.sub)}</small>` : ""}</button>`).join("")
       + extra.map((x, i) => `<button type="button" role="menuitem" class="cx-i${x.danger ? " danger" : ""}" data-x="${i}">${esc(x.label)}</button>`).join("")
       + `<div class="cx-sep"></div><a class="cx-i" role="menuitem" href="https://www.google.com/maps/search/?api=1&query=${ll[1]},${ll[0]}" target="_blank" rel="noopener">구글 지도에서 이 위치 보기 ↗</a>`
@@ -1517,7 +1550,7 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
     }
     return { nodes, legs, km, drive, end: nodes[nodes.length - 1].arr, days };
   }
-  function afterPlanChange() { plan.updated = Date.now(); save(); paint(); renderSheet(true); }
+  function afterPlanChange() { plan.updated = Date.now(); save(); paint(); renderSheet(true); livePushSoon(); }
   const uniqName = (base, except) => {
     const names = new Set(Object.entries(saved.plans).filter(([id]) => id !== except).map(([, pl]) => pl.name));
     if (!names.has(base)) return base;
@@ -1648,7 +1681,7 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
     if (Date.now() - loc.menuAt < 300 || Date.now() - lp.upAt < 600) return;   // the tap that just opened a menu (my-location dot, long press)
     closeCtx();
     if (IW && Date.now() - lastMarkerClick >= 300) IW.close();   // a click on the map outside the card closes it
-    if (mode !== "plan") return;                 // course mode: Google shows its own card for places
+    if (mode !== "plan" || SHARE_ID) return;     // course mode and shared trips: Google shows its own card for places
     if (e.placeId && e.stop) e.stop();
     if (Date.now() - lastMarkerClick < 300) return;
     const zoom = map.getZoom(), ll = llOf(e);
@@ -1972,26 +2005,34 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
     if (typeof p.placeId === "string" && /^[\w-]{10,300}$/.test(p.placeId)) o.placeId = p.placeId;
     return o;
   }
-  function importPlans(text) {
-    let d; try { d = JSON.parse(text); } catch (e) { shareMsg("파일을 읽지 못했어요. 이 플래너에서 저장한 .json 파일인지 확인하세요.", true); return; }
-    if (!d || d.format !== PLAN_FORMAT || !Array.isArray(d.plans)) { shareMsg("오만 로드트립 플래너의 플랜 파일이 아니에요.", true); return; }
-    let first = null, count = 0;
+  function cleanPlanFile(d) {      // a plan file (or a shared trip's data) → { plans, routes }, every value checked and rebuilt
+    if (!d || d.format !== PLAN_FORMAT || !Array.isArray(d.plans)) return null;
+    const plans = [];
     d.plans.slice(0, 50).forEach(pl => {
       if (!pl || !Array.isArray(pl.pts)) return;
       const pts = pl.pts.slice(0, 200).map(cleanPt).filter(Boolean);
       if (!pts.length) return;
-      const id = newPlanId();
-      saved.plans[id] = { name: uniqName(String(pl.name || "가져온 플랜").slice(0, 60)), pts, start: cleanHM(pl.start) || undefined, pad: isNum(pl.pad, 0, 50) ? Math.round(pl.pad) : 0,
-        date: typeof pl.date === "string" && /^\d{4}-\d{2}-\d{2}$/.test(pl.date) ? pl.date : undefined, updated: Date.now() };
-      first = first || id; count++;
+      plans.push({ name: String(pl.name || "가져온 플랜").slice(0, 60), pts, start: cleanHM(pl.start) || undefined, pad: isNum(pl.pad, 0, 50) ? Math.round(pl.pad) : 0,
+        date: typeof pl.date === "string" && /^\d{4}-\d{2}-\d{2}$/.test(pl.date) ? pl.date : undefined });
     });
-    if (!count) { shareMsg("파일 안에 불러올 플랜이 없어요.", true); return; }
+    const routes = {};
     if (d.routes && typeof d.routes === "object") Object.entries(d.routes).slice(0, 2000).forEach(([k, r]) => {
-      if (routeCache[k] || !/^-?\d+\.\d{4},-?\d+\.\d{4}>-?\d+\.\d{4},-?\d+\.\d{4}$/.test(k) || !r || !isNum(r.km, 0, 5000) || !isNum(r.min, 0, 10000) || !Array.isArray(r.path)) return;
+      if (!/^-?\d+\.\d{4},-?\d+\.\d{4}>-?\d+\.\d{4},-?\d+\.\d{4}$/.test(k) || !r || !isNum(r.km, 0, 5000) || !isNum(r.min, 0, 10000) || !Array.isArray(r.path)) return;
       const path = r.path.filter(q => Array.isArray(q) && isNum(q[0], 40, 75) && isNum(q[1], 5, 35)).map(q => [+q[0], +q[1]]);
-      if (path.length >= 2) routeCache[k] = { km: r.km, min: r.min, path };
+      if (path.length >= 2) routes[k] = { km: r.km, min: r.min, path };
     });
-    persistRoutes(); legState.clear();
+    return { plans, routes };
+  }
+  const mergeRoutes = routes => Object.entries(routes).forEach(([k, r]) => { if (!routeCache[k]) routeCache[k] = r; });
+  function importPlans(text) {
+    let d; try { d = JSON.parse(text); } catch (e) { shareMsg("파일을 읽지 못했어요. 이 플래너에서 저장한 .json 파일인지 확인하세요.", true); return; }
+    const f = cleanPlanFile(d);
+    if (!f) { shareMsg("오만 로드트립 플래너의 플랜 파일이 아니에요.", true); return; }
+    if (!f.plans.length) { shareMsg("파일 안에 불러올 플랜이 없어요.", true); return; }
+    let first = null;
+    f.plans.forEach(pl => { const id = newPlanId(); saved.plans[id] = { ...pl, name: uniqName(pl.name), updated: Date.now() }; first = first || id; });
+    const count = f.plans.length;
+    mergeRoutes(f.routes); persistRoutes(); legState.clear();
     switchPlan(first); save();
     if (mode !== "plan") setMode("plan"); else { syncTime(); paint(); renderSheet(); }
     if (plan.pts.length) fitView();
@@ -2009,6 +2050,185 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
     const f = [...e.dataTransfer.files].find(x => /\.json$/i.test(x.name) || x.type === "application/json");
     if (f) f.text().then(importPlans); else shareMsg("플랜 파일(.json)만 불러올 수 있어요.", true);
   });
+
+  // ---------- live sharing (Vercel api/ + Supabase): the owner shares a plan as a link and sends positions ----------
+  const LIVE_STORE = "omanGmaps.share";   // { token, trips: { planId: tripId } } — the sharing password stays in this browser only
+  const liveCfg = (() => { let c = {}; try { c = JSON.parse(ls.get(LIVE_STORE) || "{}") || {}; } catch (e) { c = {}; } if (!c.trips || typeof c.trips !== "object") c.trips = {}; return c; })();
+  const saveLive = () => ls.set(LIVE_STORE, JSON.stringify(liveCfg));
+  const liveUI = { open: false, msg: null, err: false, endArm: false };
+  const tripOf = () => (SHARE_ID ? null : liveCfg.trips[saved.planId] || null);
+  async function api(method, path, body, auth = true) {
+    let r;
+    try { r = await fetch(path, { method, cache: "no-store", headers: { "Content-Type": "application/json", ...(auth && liveCfg.token ? { Authorization: "Bearer " + liveCfg.token } : {}) }, body: body ? JSON.stringify(body) : undefined }); }
+    catch (e) { throw Object.assign(new Error("인터넷 연결을 확인해 주세요"), { status: 0 }); }
+    let j = null; try { j = await r.json(); } catch (e) { j = null; }
+    if (!r.ok) throw Object.assign(new Error(j && j.error ? j.error : r.status === 404 || r.status === 405 ? "이 주소에는 공유 서버(api)가 없어요. Vercel에 올린 주소에서 열어 주세요." : `서버 오류 (${r.status})`), { status: r.status });
+    return j;
+  }
+  function liveMsg(msg, err) { liveUI.msg = msg; liveUI.err = !!err; liveUI.open = true; if (mode === "plan") renderSheet(true); }
+  const planData = () => {     // the shared copy carries the date and start time in effect (built-in course plans follow the page's own)
+    const d = JSON.parse(planFile([saved.planId])); delete d.exported;
+    if (d.plans[0]) { d.plans[0].date = plan.date || saved.date || isoToday(); d.plans[0].start = planTime(); }
+    return d;
+  };
+  let lastSig = "", pushTimer = null;
+  async function livePush(force) {
+    const id = tripOf(); if (!id || !liveCfg.token) return;
+    const d = planData(), sig = JSON.stringify(d);
+    if (!force && sig === lastSig) return;
+    await api("POST", "/api/trip", { id, name: plan.name, data: d }); lastSig = sig;
+  }
+  // a shared plan follows its edits (and routes Google answers later) a few seconds after they happen
+  function livePushSoon() {
+    if (SHARE_ID || !API_OK || !tripOf() || !liveCfg.token) return;
+    clearTimeout(pushTimer); pushTimer = setTimeout(() => livePush(false).catch(e => liveMsg("플랜을 공유 링크에 올리지 못했어요: " + e.message, true)), 3000);
+  }
+  // this device's position, while the page is on screen: at most once a minute unless it moved 150 m
+  const lsend = { on: false, watch: null, last: null, lastT: 0, sentAt: 0, err: null };
+  function lsendStatus() { const el = $("lvSent"); if (el) el.textContent = lsend.err ? "보내지 못했어요: " + lsend.err : lsend.sentAt ? `마지막 전송 ${whenTxt(lsend.sentAt)}` : lsend.on ? "위치를 찾는 중…" : ""; }
+  function lsendWatch() {
+    if (lsend.watch != null) return;
+    lsend.watch = navigator.geolocation.watchPosition(lsendFix, e => { if (e && e.code === 1) { lsendStop(); liveMsg("위치 권한이 꺼져 있어요. 브라우저 사이트 설정에서 위치를 허용해 주세요.", true); } },
+      { enableHighAccuracy: true, maximumAge: 10000, timeout: 30000 });
+  }
+  function lsendUnwatch() { if (lsend.watch != null) navigator.geolocation.clearWatch(lsend.watch); lsend.watch = null; }
+  function lsendStart() {
+    if (!navigator.geolocation || !window.isSecureContext) { liveMsg("이 브라우저에서는 위치를 쓸 수 없어요. https 주소에서 열어 주세요.", true); return; }
+    lsend.on = true; lsend.last = null; lsend.err = null; lsendWatch(); if (mode === "plan") renderSheet(true);
+  }
+  function lsendStop() { lsend.on = false; lsendUnwatch(); if (mode === "plan") renderSheet(true); }
+  async function lsendFix(pos) {
+    const id = tripOf(); if (!lsend.on || !id) return;
+    const c = pos.coords, ll = [c.longitude, c.latitude], now = Date.now();
+    if (lsend.last && now - lsend.lastT < 60000 && hav(lsend.last, ll) < 0.15) return;
+    lsend.last = ll; lsend.lastT = now;
+    try {
+      await api("POST", "/api/loc?trip=" + encodeURIComponent(id), { lat: c.latitude, lng: c.longitude, t: pos.timestamp || now, acc: c.accuracy,
+        spd: c.speed != null && isFinite(c.speed) ? c.speed * 3.6 : null, hdg: c.heading != null && isFinite(c.heading) ? c.heading : null });
+      lsend.sentAt = now; lsend.err = null;
+    } catch (e) { lsend.err = e.message; lsend.last = null; }
+    lsendStatus();
+  }
+  document.addEventListener("visibilitychange", () => { if (!lsend.on) return; if (document.hidden) lsendUnwatch(); else lsendWatch(); });
+  function liveBoxHtml() {
+    const id = tripOf();
+    let body;
+    if (!API_OK) body = `<p class="sh-msg">실시간 공유는 Vercel에 올린 주소(https://….vercel.app)에서 열었을 때만 돼요. 설정은 README의 "실시간 공유"를 보세요.</p>`;
+    else if (!liveCfg.token) body = `<form class="sh-group" id="lvTokForm"><b>공유 비밀번호</b><span class="lv-note">Vercel에 넣은 OWNER_TOKEN이에요. 이 브라우저에만 저장돼요.</span><div><input type="password" id="lvTok" autocomplete="off" aria-label="공유 비밀번호"><button class="mini" type="submit">확인</button></div></form>`;
+    else if (!id) body = `<div class="sh-group"><b>이 플랜을 링크로 보여 주기</b><span class="lv-note">링크를 받은 사람은 구글 키 없이 경로·일정과 내 현재 위치를 볼 수 있어요. 고칠 수는 없어요.</span><div><button class="mini primary" type="button" data-lvstart>이 플랜 공유 시작</button></div></div>`;
+    else body = `<div class="sh-group"><b>공유 링크</b><input class="lv-url" id="lvUrl" readonly value="${esc(location.origin + "/s/" + id)}" aria-label="공유 링크">
+        <div><button class="mini" type="button" data-lvcopy>링크 복사</button><button class="mini" type="button" data-lvpush>지금 다시 올리기</button><button class="mini${liveUI.endArm ? " danger" : ""}" type="button" data-lvend>${liveUI.endArm ? "한 번 더 누르면 공유 끝내기" : "공유 끝내기"}</button></div>
+        <span class="lv-note">플랜을 고치면 몇 초 뒤 링크에도 반영돼요. 공유를 끝내면 링크가 닫히고 보낸 위치도 모두 지워져요.</span></div>
+      <div class="sh-group"><b>이 기기 위치 보내기</b><div><button class="mini${lsend.on ? " on" : ""}" type="button" data-lvsend aria-pressed="${lsend.on}">${lsend.on ? "보내는 중 · 끄기" : "켜기"}</button><span class="lv-note" id="lvSent"></span></div>
+        <span class="lv-note">이 페이지가 화면에 켜져 있을 때만 보내요(1분마다, 또는 150m 움직이면). 운전 중에는 아래 OwnTracks 앱을 쓰세요.</span></div>
+      <details class="lv-ot"><summary>OwnTracks 앱으로 보내기 (화면이 꺼져도 계속)</summary><ol>
+        <li>폰에 OwnTracks를 설치해요(아이폰·안드로이드).</li>
+        <li>설정에서 모드(Mode)를 <b>HTTP</b>로 바꿔요.</li>
+        <li>URL(Host): <code>${esc(location.origin)}/api/loc?trip=${esc(id)}</code></li>
+        <li>사용자 이름(User ID): 아무거나(예: me) · 비밀번호(Password): 공유 비밀번호</li>
+        <li>지도 화면에서 추적 방식을 <b>Move</b>(자주 보냄) 또는 <b>Significant</b>(배터리 절약)로 골라요.</li></ol></details>`;
+    return `<details class="share ns" id="liveBox"${liveUI.open ? " open" : ""}><summary>실시간 공유 · 링크로 보여 주기${id ? `<span class="lv-on">공유 중</span>` : ""}</summary><div class="sh-body">${body}
+      ${liveUI.msg ? `<p class="sh-msg${liveUI.err ? " err" : ""}">${esc(liveUI.msg)}</p>` : ""}
+      ${API_OK && liveCfg.token ? `<button class="mini lv-forget" type="button" data-lvforget>이 브라우저에서 비밀번호 지우기</button>` : ""}</div></details>`;
+  }
+  function bindLiveBox() {
+    const box = $("liveBox"); if (!box) return;
+    box.addEventListener("toggle", () => { liveUI.open = box.open; });
+    const on = (sel, fn) => { const el = box.querySelector(sel); if (el) el.addEventListener("click", fn); };
+    const f = $("lvTokForm");
+    if (f) f.addEventListener("submit", async e => {
+      e.preventDefault(); const t = $("lvTok").value.trim(); if (!t) return;
+      liveCfg.token = t;
+      try { await api("GET", "/api/trip"); saveLive(); liveMsg("비밀번호가 맞아요. 이제 이 플랜을 공유할 수 있어요."); }
+      catch (err) { delete liveCfg.token; liveMsg(err.message, true); }
+    });
+    on("[data-lvstart]", async () => {
+      try { const d = planData(), j = await api("POST", "/api/trip", { name: plan.name, data: d }); liveCfg.trips[saved.planId] = j.id; saveLive(); lastSig = JSON.stringify(d); liveMsg("공유를 시작했어요. 링크를 복사해서 보내 주세요."); }
+      catch (err) { liveMsg("공유를 시작하지 못했어요: " + err.message, true); }
+    });
+    on("[data-lvcopy]", async () => { const ok = await copyText($("lvUrl").value); liveMsg(ok ? "링크를 복사했어요." : "복사가 안 됐어요. 링크 칸을 길게 눌러 복사해 주세요.", !ok); });
+    on("[data-lvpush]", async () => { try { await livePush(true); liveMsg("지금 플랜을 링크에 올렸어요."); } catch (err) { liveMsg("올리지 못했어요: " + err.message, true); } });
+    on("[data-lvend]", async () => {
+      if (!liveUI.endArm) { liveUI.endArm = true; renderSheet(true); setTimeout(() => { if (liveUI.endArm) { liveUI.endArm = false; if (mode === "plan") renderSheet(true); } }, 4000); return; }
+      liveUI.endArm = false;
+      try { await api("DELETE", "/api/trip?id=" + encodeURIComponent(tripOf())); } catch (err) { if (err.status !== 404) { liveMsg("공유를 끝내지 못했어요: " + err.message, true); return; } }
+      delete liveCfg.trips[saved.planId]; saveLive(); lsend.on = false; lsendUnwatch();
+      liveMsg("공유를 끝냈어요. 링크가 닫히고 보낸 위치도 모두 지워졌어요.");
+    });
+    on("[data-lvsend]", () => { if (lsend.on) lsendStop(); else lsendStart(); });
+    on("[data-lvforget]", () => { delete liveCfg.token; saveLive(); lsend.on = false; lsendUnwatch(); liveMsg("이 브라우저에서 공유 비밀번호를 지웠어요."); });
+    lsendStatus();
+  }
+
+  // ---------- live sharing: someone opening the link (/s/<id>) ----------
+  const live = { v: null, since: null, track: [], line: null, mk: null, el: null, timer: null, ended: false, err: null, busy: false };
+  const agoTxt = ms => { const m = Math.max(0, Math.floor((Date.now() - ms) / 60000)); return m < 1 ? "방금" : m < 60 ? `${m}분 전` : m < 1440 ? `${Math.floor(m / 60)}시간${m % 60 ? ` ${m % 60}분` : ""} 전` : `${Math.floor(m / 1440)}일 전`; };
+  function whenTxt(ms) { const d = new Date(ms), hm = clock(d.getHours() * 60 + d.getMinutes()); return new Date().toDateString() === d.toDateString() ? hm : `${md(d)} ${hm}`; }
+  const liveLast = () => live.track.length ? live.track[live.track.length - 1] : null;
+  const liveFetch = () => { const q = new URLSearchParams({ id: SHARE_ID }); if (live.v) q.set("v", live.v); if (live.since) q.set("since", live.since); return api("GET", "/api/trip?" + q, null, false); };
+  function liveApply(j) {       // → true when the plan itself came along (first load, or the owner changed it)
+    let planIn = false;
+    if (j.data) {
+      const f = cleanPlanFile(j.data);
+      if (f && f.plans.length) {
+        mergeRoutes(f.routes); legState.clear();
+        plan = { ...f.plans[0], name: String(j.name || f.plans[0].name).slice(0, 80), updated: Date.now() };
+        live.v = j.updated; planIn = true;
+        document.title = `${plan.name} · 실시간 공유`; $("sub").textContent = `공유된 여행 · ${plan.name}`;
+      }
+    }
+    const pts = (Array.isArray(j.track) ? j.track : []).filter(q => q && isNum(q.lat, -90, 90) && isNum(q.lng, -180, 180) && typeof q.t === "string" && !isNaN(Date.parse(q.t)));
+    if (pts.length) { live.track.push(...pts.map(q => ({ t: Date.parse(q.t), lat: q.lat, lng: q.lng, spd: q.spd }))); live.since = pts[pts.length - 1].t; }
+    return planIn;
+  }
+  function liveDraw() {
+    const p = liveLast(); if (!map || !p) return;
+    if (!live.mk) {
+      const el = document.createElement("div"); el.className = "gm tv";
+      el.innerHTML = `<span class="ring"></span><span class="dot"></span><span class="lab"><span class="nm">여행자</span><span class="tm"></span></span>`;
+      live.el = el; live.mk = makeMarker([p.lng, p.lat], el, "여행자의 현재 위치", 30);
+      el.addEventListener("click", ev => { ev.stopPropagation(); lastMarkerClick = Date.now(); liveFocus(); });
+    } else live.mk.position = LL([p.lng, p.lat]);
+    live.el.classList.toggle("stale", Date.now() - p.t > 20 * 60000);
+    live.el.querySelector(".tm").textContent = agoTxt(p.t);
+    const path = live.track.map(q => ({ lat: q.lat, lng: q.lng }));
+    if (!live.line) live.line = new google.maps.Polyline({ map: dispOn("trk") ? map : null, path, strokeOpacity: 0, zIndex: 60, clickable: false,
+      icons: [{ icon: { path: "M 0,-1 0,1", strokeColor: "#ffffff", strokeOpacity: 0.95, strokeWeight: 3, scale: 2 }, offset: "0", repeat: "10px" }] });
+    else live.line.setPath(path);
+  }
+  function liveTrackVis() { if (live.line) live.line.setMap(dispOn("trk") ? map : null); }
+  function liveFocus() { const p = liveLast(); if (!p || !map) return; map.panTo(LL([p.lng, p.lat])); if (map.getZoom() < 12) map.setZoom(12); }
+  function liveHeadHtml() {
+    if (live.ended) return `<div class="livehead"><span class="lv-dot off"></span><div><b>공유가 끝났어요</b><small>여행자가 공유를 끝냈거나 링크가 바뀌었어요.</small></div></div>`;
+    const p = liveLast();
+    if (!p) return `<div class="livehead"><span class="lv-dot off"></span><div><b>아직 받은 위치가 없어요</b><small>여행자가 위치 보내기를 켜면 여기와 지도에 나와요.${live.err ? " · " + esc(live.err) : ""}</small></div></div>`;
+    return `<div class="livehead${Date.now() - p.t > 20 * 60000 ? " stale" : ""}"><span class="lv-dot"></span><div><b>여행자 위치 · ${agoTxt(p.t)}</b><small>${whenTxt(p.t)}${isNum(p.spd, 3, 1000) ? ` · ${Math.round(p.spd)}km/h` : ""}${live.err ? " · " + esc(live.err) : ""}</small></div><button class="mini" type="button" data-lvgo>지도에서 보기</button></div>`;
+  }
+  function bindLiveHead() { const b = sheet.querySelector("[data-lvgo]"); if (b) b.addEventListener("click", liveFocus); }
+  function updateLiveHead() { const el = sheet.querySelector(".livehead"); if (!el) return; el.outerHTML = liveHeadHtml(); bindLiveHead(); }
+  async function liveRefresh() {
+    if (live.ended || live.busy) return; live.busy = true;
+    try {
+      const planIn = liveApply(await liveFetch()); live.err = null; liveDraw();
+      if (planIn) { syncTime(); paint(); renderSheet(true); } else updateLiveHead();
+    } catch (e) {
+      if (e.status === 404) { live.ended = true; clearInterval(live.timer); } else live.err = "연결이 끊겨서 다시 시도하고 있어요";
+      updateLiveHead();
+    } finally { live.busy = false; }
+  }
+  async function liveBoot() {
+    document.body.classList.add("sharing");
+    plan = { name: "", pts: [] };                       // never show this browser's own plans under a share link
+    const fail = msg => { sheet.innerHTML = `<p class="eyebrow">공유된 여행</p><h2>열 수 없어요</h2><p>${esc(msg)}</p>`; };
+    sheet.innerHTML = `<p class="eyebrow">공유된 여행</p><h2>불러오는 중…</h2>`;
+    let j; try { j = await liveFetch(); } catch (e) { fail(e.status === 404 ? "공유가 끝났거나 링크가 잘못됐어요." : e.message); return; }
+    if (!liveApply(j)) { fail("공유된 플랜을 읽지 못했어요."); return; }
+    mode = "plan"; syncTime(); renderSheet();
+    const key = j.gkey || ls.get(KEY_STORE);
+    if (key) loadGoogle(key); else showKeyPanel("공유한 사람이 지도 키를 설정하지 않았어요. 내 구글 지도 키가 있으면 넣어 주세요.");
+    live.timer = setInterval(liveRefresh, 15000);
+    document.addEventListener("visibilitychange", () => { if (!document.hidden) liveRefresh(); });
+  }
 
   function renderPlan() {
     const ps = planSchedule(), n = plan.pts.length, links = n >= 2 ? gmPlanLinks(ps) : [];
@@ -2045,32 +2265,32 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
     const stamp = t => { if (!t) return ""; const d = new Date(t); return `${d.getMonth() + 1}/${d.getDate()} ${clock(d.getHours() * 60 + d.getMinutes())}`; };
     const ed = planUI.edit;
     const edDefault = ed === "rename" ? plan.name : ed === "saveas" ? uniqName(plan.name + " 사본") : uniqName("새 플랜");
-    const planBar = `<div class="planbar">
+    const planBar = `<div class="planbar ns">
         <label class="pl-lab" for="planSel">저장된 플랜 ${plist.length}개</label>
         <select id="planSel">${plist.map(([id, pl]) => `<option value="${id}"${id === saved.planId ? " selected" : ""}>${esc(pl.name)} · ${pl.pts.length}곳${pl.updated ? " · " + stamp(pl.updated) : pl.from ? " · 기본 코스" : ""}</option>`).join("")}${viewOnly() ? "" : `<option value="__new">+ 새 빈 플랜 만들기</option>`}</select>
         <div class="pl-btns eo"><button class="mini" type="button" data-saveas>다른 이름으로 저장</button><button class="mini" type="button" data-rename>이름 바꾸기</button><button class="mini${planUI.del ? " danger" : ""}" type="button" data-delplan>${planUI.del ? "한 번 더 누르면 삭제" : "삭제"}</button></div>
         ${ed ? `<form class="pl-name" id="plName"><label for="plNameIn">${ed === "rename" ? "새 이름" : ed === "saveas" ? "다른 이름으로 저장 · 지금 플랜을 복사해요" : "새 빈 플랜 이름"}</label><div><input id="plNameIn" maxlength="40" value="${esc(edDefault)}" autocomplete="off"><button class="mini" type="submit">${ed === "rename" ? "바꾸기" : "저장"}</button><button class="mini" type="button" data-plcancel>취소</button></div></form>` : ""}
       </div>`;
-    const shareBox = `<details class="share" id="shareBox"${planUI.share ? " open" : ""}><summary>내보내기 · 불러오기</summary><div class="sh-body">
+    const shareBox = `<details class="share ns" id="shareBox"${planUI.share ? " open" : ""}><summary>내보내기 · 불러오기</summary><div class="sh-body">
         <div class="sh-group"><b>AI에 붙여 넣을 텍스트 · 지금 플랜</b><div><button class="mini" type="button" data-exptxt${n ? "" : " disabled"}>텍스트 파일로 저장</button><button class="mini" type="button" data-copytxt${n ? "" : " disabled"}>텍스트 복사</button></div></div>
         <div class="sh-group"><b>다시 불러올 수 있는 플랜 파일(.json) · 백업·공유용</b><div><button class="mini" type="button" data-expjson${n ? "" : " disabled"}>이 플랜 저장</button><button class="mini" type="button" data-expall>모든 플랜 저장 (${plist.length}개)</button><button class="mini" type="button" data-imp>파일 불러오기</button></div></div>
         ${planUI.msg ? `<p class="sh-msg${planUI.msgErr ? " err" : ""}">${esc(planUI.msg)}</p>` : `<p class="sh-msg" style="background:none;padding:0;color:var(--muted)">받은 플랜 파일은 "파일 불러오기"를 누르거나 이 창에 끌어다 놓으면 목록에 추가돼요. 지금 플랜은 바뀌지 않아요.</p>`}
       </div></details>`;
-    sheet.innerHTML = `<p class="eyebrow">직접 짜기</p>${planBar}${shareBox}<h2>${esc(plan.name)}</h2>
+    sheet.innerHTML = `<p class="eyebrow">${SHARE_ID ? "공유된 여행 · 보기 전용" : "직접 짜기"}</p>${SHARE_ID ? liveHeadHtml() : ""}${planBar}${shareBox}${liveBoxHtml()}<h2>${esc(plan.name)}</h2>
       ${n >= 2 ? (() => { const own = plan.pts.filter((q, qi) => qi > 0 && q.pad != null).length;
         return `<div class="padctl"><label for="planPad">운전 시간 여유</label><select id="planPad">${PADS.map(v => `<option value="${v}"${v === planPad() ? " selected" : ""}>+${v}%</option>`).join("")}</select>
           <span class="out">모든 구간의 구글 예상 운전 시간에 더해요${own ? ` · 구간별로 따로 정한 곳 ${own}개` : " · 구간마다 따로 정할 수도 있어요"}</span>${own ? `<button class="mini eo" type="button" data-padreset>모두 일괄로 되돌리기</button>` : ""}</div>`; })() : ""}
       ${n >= 2 ? `<dl class="facts"><div><dt>지점</dt><dd>${n}곳</dd></div><div><dt>운전</dt><dd>약 ${fmtN(Math.round(ps.km))}km · ${dur(ps.drive)}</dd></div><div><dt>출발</dt><dd>${dt(ps.nodes[0].dep)}</dd></div><div><dt>마지막 도착</dt><dd>${dt(ps.end)}${ps.days.length > 1 ? ` (${ps.days.length}일)` : ""}</dd></div></dl>` : ""}
       ${daysTable}${srcLine(est, total)}${placesError ? `<p class="src err">장소 이름을 가져오지 못해 가까운 지명으로 표시했어요: ${esc(placesError)}. 구글 콘솔에서 Places API (New)를 켜고 키의 API 제한에도 추가하세요.</p>` : ""}
-      <form class="psearch" id="psearch"><input id="pq" type="search" value="${esc(searchQ)}" placeholder="장소 이름으로 찾기 (예: Anantara Jabal Akhdar)" aria-label="장소 검색"><button type="submit">찾기</button></form>
-      ${searchMsg ? `<p class="src">${esc(searchMsg)}</p>` : ""}
-      ${searchRes && searchRes.length ? `<ul class="presults">${searchRes.map((r, x) => `<li><button type="button" class="pr-go" data-go="${x}"><b>${esc(r.name)}</b><small>${esc(r.addr)}</small></button><button type="button" class="mini eo" data-addr="${x}">${insertAt != null ? `${insertAt}번 뒤에 넣기` : "플랜에 추가"}</button></li>`).join("")}</ul>` : ""}
+      <form class="psearch ns" id="psearch"><input id="pq" type="search" value="${esc(searchQ)}" placeholder="장소 이름으로 찾기 (예: Anantara Jabal Akhdar)" aria-label="장소 검색"><button type="submit">찾기</button></form>
+      ${searchMsg ? `<p class="src ns">${esc(searchMsg)}</p>` : ""}
+      ${searchRes && searchRes.length ? `<ul class="presults ns">${searchRes.map((r, x) => `<li><button type="button" class="pr-go" data-go="${x}"><b>${esc(r.name)}</b><small>${esc(r.addr)}</small></button><button type="button" class="mini eo" data-addr="${x}">${insertAt != null ? `${insertAt}번 뒤에 넣기` : "플랜에 추가"}</button></li>`).join("")}</ul>` : ""}
       <label class="poitoggle"><input type="checkbox" data-pois${saved.showPois ? " checked" : ""}> 코스 추천 장소 핀도 지도에 보기</label>
       <div class="btnrow eo"><button class="mini" type="button" data-loadc>${esc(course.label)} 코스를 새 플랜으로 불러오기</button>${n ? `<button class="mini" type="button" data-undo>마지막 지점 지우기</button><button class="mini" type="button" data-clear>모두 지우기</button>` : ""}</div>
-      ${n ? "" : `<div class="empty vo">빈 플랜이에요. 지점을 넣으려면 위쪽에서 <b>편집</b>을 누르세요.</div><div class="empty eo"><b>지도에서 ${W.rcV} "여기서 출발 / 맨 뒤에 추가" 메뉴가 나와요.</b> 실수로 들어가지 않게 ${W.lc}만으로는 추가되지 않아요. 지도를 충분히 확대해서 리조트·식당 위를 ${W.rcV} 구글에 등록된 이름으로 들어가요(${W.lcV} 이름 카드만 보여줘요). 관광지 핀이나 위 검색창으로도 넣을 수 있어요. 그다음엔 이렇게 고쳐요.<br>· 경로 선이나 1시간 표시를 ${W.rcV} 그 구간에 경유지를 넣는 메뉴가 나와요.<br>· 목록의 <b>+ 이 사이에 넣기</b>를 누른 뒤에는 지도를 ${W.lcN} 그 자리에 들어가요.<br>· 번호 핀을 ${W.rcV} 삭제할 수 있고, 끌어서 옮길 수도 있어요. 머무는 시간이나 출발 시각을 바꾸면 뒤쪽 시간이 모두 다시 계산돼요.</div>`}
+      ${n ? "" : `<div class="empty vo ns">빈 플랜이에요. 지점을 넣으려면 위쪽에서 <b>편집</b>을 누르세요.</div><div class="empty eo"><b>지도에서 ${W.rcV} "여기서 출발 / 맨 뒤에 추가" 메뉴가 나와요.</b> 실수로 들어가지 않게 ${W.lc}만으로는 추가되지 않아요. 지도를 충분히 확대해서 리조트·식당 위를 ${W.rcV} 구글에 등록된 이름으로 들어가요(${W.lcV} 이름 카드만 보여줘요). 관광지 핀이나 위 검색창으로도 넣을 수 있어요. 그다음엔 이렇게 고쳐요.<br>· 경로 선이나 1시간 표시를 ${W.rcV} 그 구간에 경유지를 넣는 메뉴가 나와요.<br>· 목록의 <b>+ 이 사이에 넣기</b>를 누른 뒤에는 지도를 ${W.lcN} 그 자리에 들어가요.<br>· 번호 핀을 ${W.rcV} 삭제할 수 있고, 끌어서 옮길 수도 있어요. 머무는 시간이나 출발 시각을 바꾸면 뒤쪽 시간이 모두 다시 계산돼요.</div>`}
       ${links.length ? `<div class="navs">${links.map((l, x) => `<a class="navbtn" href="${l.href}" target="_blank" rel="noopener"><span>${links.length > 1 ? `길찾기 ${x + 1}/${links.length}` : "구글 지도 길찾기"}<small>${esc(l.label)}</small></span>${navIcon}</a>`).join("")}</div>` : ""}
       ${n ? `<p class="sec">시간표 · 구간마다 선 색이 달라요 · 지도의 점은 1시간마다 지나는 곳 (시각 · 그 구간 출발 후 km)<span class="eo"> · 추가는 지도에서 ${W.rc}</span></p><ol class="tl">${rows.join("")}</ol>` : ""}
-      <div class="note"><p>확대한 지도에서 누르거나 검색하면 구글 장소 정보를 한 번 받아 와요(Places API, 종류별 월 5,000회 무료). 많이 축소한 상태에서 누른 곳은 장소를 찾지 않고 가까운 지명으로 표시해요.</p><p>하루 운전이 8시간을 넘으면 노랑, 10시간을 넘으면 빨강으로 표시해요. 1시간 표시의 위치와 km는 구간 평균 속도로 나눈 대략적인 값이에요. km는 직전 지점에서 출발한 뒤 달린 거리예요.</p><p>플랜과 계산한 경로는 이 브라우저에 저장돼서, 같은 구간은 다시 계산(과금)하지 않아요.</p></div>`;
+      <div class="note ns"><p>확대한 지도에서 누르거나 검색하면 구글 장소 정보를 한 번 받아 와요(Places API, 종류별 월 5,000회 무료). 많이 축소한 상태에서 누른 곳은 장소를 찾지 않고 가까운 지명으로 표시해요.</p><p>하루 운전이 8시간을 넘으면 노랑, 10시간을 넘으면 빨강으로 표시해요. 1시간 표시의 위치와 km는 구간 평균 속도로 나눈 대략적인 값이에요. km는 직전 지점에서 출발한 뒤 달린 거리예요.</p><p>플랜과 계산한 경로는 이 브라우저에 저장돼서, 같은 구간은 다시 계산(과금)하지 않아요.</p></div>`;
     const idx = id => plan.pts.findIndex(p => p.id === +id);
     const nodeOf = el => plan.pts[idx(el.dataset[Object.keys(el.dataset)[0]])];
     sheet.querySelectorAll("[data-mode]").forEach(el => el.addEventListener("change", () => {
@@ -2137,6 +2357,7 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
     sheet.querySelectorAll("[data-go]").forEach(el => el.addEventListener("click", () => { const r = searchRes[+el.dataset.go]; if (r && map) { map.panTo(LL(r.ll)); map.setZoom(Math.max(map.getZoom(), 14)); } }));
     sheet.querySelectorAll("[data-addr]").forEach(el => el.addEventListener("click", () => { const r = searchRes[+el.dataset.addr]; if (!r) return; addPoint({ ll: r.ll, placeId: r.id, name: r.name }); if (map) map.panTo(LL(r.ll)); }));
     sheet.querySelectorAll(".tl .stop[data-pid] .body").forEach(el => el.addEventListener("click", e => { if (e.target.closest("a,button,select,input,label")) return; const p = plan.pts[idx(el.closest("li").dataset.pid)]; if (p && map) { map.panTo(LL(p.ll)); map.setZoom(Math.max(map.getZoom(), 11)); } }));
+    bindLiveBox(); if (SHARE_ID) bindLiveHead();
   }
   function renderSheet(keep) {
     const top = sheet.scrollTop;
@@ -2185,9 +2406,11 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
     let CtlPos = google.maps.ControlPosition || null;
     try { const core = await google.maps.importLibrary("core"); SymPath = (core && core.SymbolPath) || (google.maps.SymbolPath) || null; CtlPos = (core && core.ControlPosition) || CtlPos; } catch (e) { SymPath = google.maps.SymbolPath || null; }
     AME = marker.AdvancedMarkerElement;
-    try { RouteCls = (await google.maps.importLibrary("routes")).Route || null; } catch (e) { RouteCls = null; routeError = "routes 라이브러리를 불러오지 못했어요"; }
-    legState.clear();   // estimates made before Google loaded should now be re-asked
-    try { const pl = await google.maps.importLibrary("places"); PlaceCls = pl.Place || null; RankPref = pl.SearchNearbyRankPreference || null; } catch (e) { PlaceCls = null; }
+    if (!SHARE_ID) {      // a shared trip's map key is for the map only: routes come with the plan, nothing else is asked
+      try { RouteCls = (await google.maps.importLibrary("routes")).Route || null; } catch (e) { RouteCls = null; routeError = "routes 라이브러리를 불러오지 못했어요"; }
+      legState.clear();   // estimates made before Google loaded should now be re-asked
+      try { const pl = await google.maps.importLibrary("places"); PlaceCls = pl.Place || null; RankPref = pl.SearchNearbyRankPreference || null; } catch (e) { PlaceCls = null; }
+    }
     map = new maps.Map($("map"), {
       center: { lat: 21.6, lng: 56.6 }, zoom: 6, mapId: "DEMO_MAP_ID", mapTypeId: "hybrid",
       mapTypeControl: true, mapTypeControlOptions: { mapTypeIds: ["hybrid", "satellite", "roadmap", "terrain"] },
@@ -2204,6 +2427,7 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
     $("map").addEventListener("pointerdown", ev => { lastPointer = { x: ev.clientX, y: ev.clientY, t: Date.now() }; }, true);
     map.addListener("zoom_changed", () => { closeCtx(); $("map").classList.toggle("zin", map.getZoom() >= 10); $("map").classList.toggle("zin2", map.getZoom() >= 12); relayoutLegs(); });
     buildStopMarkers(); buildPoiMarkers();
+    if (SHARE_ID) { paint(); renderSheet(true); fitView(); liveDraw(); return; }
     const hash = (location.hash || "").slice(1), m = /^(c\d+[a-z]?)(?:d(\d))?$/.exec(hash);
     if (hash === "plan") { computeCourse(); select(course.id, null); setMode("plan"); }
     else select(m && courseById[m[1]] ? m[1] : course.id, m && m[2] ? +m[2] - 1 : null);
@@ -2229,8 +2453,8 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
 
   // ---------- start ----------
   computeCourse(); renderChips(); renderSheet();
-  const key = ls.get(KEY_STORE);
-  if (key) loadGoogle(key); else showKeyPanel(null);
+  if (SHARE_ID) liveBoot();
+  else { const key = ls.get(KEY_STORE); if (key) loadGoogle(key); else showKeyPanel(null); }
 })();
 </script>
 </body>
