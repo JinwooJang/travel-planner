@@ -125,7 +125,8 @@ body.resizing #map { pointer-events: none; }
 .pl-name label { font-size: 12px; color: var(--muted); }
 .pl-name div { display: flex; gap: 6px; }
 .pl-name input { flex: 1; min-width: 0; font: inherit; font-size: 14px; padding: 6px 8px; border-radius: 8px; border: 1px solid var(--accent); background: var(--panel); color: var(--ink); }
-.mapctl { position: absolute; left: 10px; top: 60px; z-index: 3; display: flex; gap: 6px; align-items: flex-start; font-size: 13px; }
+.mapctl { position: absolute; left: 10px; top: 60px; z-index: 3; display: flex; flex-wrap: wrap; gap: 6px; align-items: flex-start; font-size: 13px; pointer-events: none; }
+.mapctl > * { pointer-events: auto; }
 .vis, .poictl { position: relative; }
 .poi-btns { display: flex; }
 .poi-btns .poi-on { border-radius: 8px 0 0 8px; }
@@ -133,6 +134,16 @@ body.resizing #map { pointer-events: none; }
 .vis-btn.poi-on[aria-pressed="true"] { background: #0f766e; color: #fff; border-color: #0f766e; }
 #poiCount { font: 600 11px var(--f-mono); opacity: .8; margin-left: 2px; }
 .mapctl .vis-pop { position: absolute; left: 0; top: 100%; }
+#visBtn svg { vertical-align: -2px; margin-right: 5px; }
+/* hourly marks on the route: time and km each on/off; both off hides the marks */
+.tickbtns { display: flex; }
+.tickbtns .vis-btn { padding: 6px 9px; }
+#tickTm { border-radius: 8px 0 0 8px; }
+#tickKm { border-radius: 0 8px 8px 0; border-left: 0; }
+.tickbtns .vis-btn[aria-pressed="true"] { background: #0f766e; color: #fff; border-color: #0f766e; }
+.mapbox.no-tm .gm.tick .tm, .mapbox.no-km .gm.tick .km, .mapbox.no-km .gm.tick .kmx { display: none; }
+.mapbox.no-tm.no-km .gm.tick { display: none; }
+.mapbox.no-km .gm.tick .lab .tm { margin-right: 0; }
 .locctl { position: relative; }
 .loc-btns { display: flex; }
 .loc-btns.on #locBtn { border-radius: 8px 0 0 8px; }
@@ -388,8 +399,8 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
   .top h1 { font-size: 21px; }
 }
 @media (max-width: 480px) {
-  #locBtn .lt { display: none; }
-  #locBtn svg { margin-right: 0; }
+  #locBtn .lt, #visBtn .vt { display: none; }
+  #locBtn svg, #visBtn svg { margin-right: 0; }
 }
 </style>
 </head>
@@ -418,7 +429,7 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
       <div class="vis-pop poi-pop" id="poiPop" hidden></div>
     </div>
     <div class="vis" id="vis">
-      <button type="button" class="vis-btn" id="visBtn" aria-expanded="false" aria-controls="visPop"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" style="vertical-align:-2px;margin-right:5px"><circle cx="8" cy="8" r="6.3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 1.7a6.3 6.3 0 0 1 0 12.6z" fill="currentColor"/></svg>투명도</button>
+      <button type="button" class="vis-btn" id="visBtn" aria-expanded="false" aria-controls="visPop" aria-label="투명도"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><circle cx="8" cy="8" r="6.3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 1.7a6.3 6.3 0 0 1 0 12.6z" fill="currentColor"/></svg><span class="vt">투명도</span></button>
       <div class="vis-pop" id="visPop" hidden>
         <label>글자 배경 투명도 <output id="labTo"></output><input type="range" id="labT" min="0" max="100" step="5" aria-label="글자 배경 투명도"></label>
         <label>경로 선 투명도 <output id="lineTo"></output><input type="range" id="lineT" min="0" max="80" step="5" aria-label="경로 선 투명도"></label>
@@ -426,6 +437,7 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
         <button type="button" class="mini" id="visReset">기본값으로</button>
       </div>
     </div>
+    <span class="tickbtns" role="group" aria-label="경로 위 1시간 표시"><button type="button" class="vis-btn" id="tickTm" aria-pressed="true" title="경로 위 1시간마다 지나는 곳의 예상 시각을 켜고 꺼요">시각</button><button type="button" class="vis-btn" id="tickKm" aria-pressed="true" title="경로 위 1시간마다 지나는 곳의 km(그 구간 출발 후)를 켜고 꺼요">km</button></span>
     <div class="locctl">
       <div class="loc-btns" id="locBtns"><button type="button" class="vis-btn" id="locBtn" aria-pressed="false" aria-label="내 위치" title="이 기기의 현재 위치를 지도에 보여요. 켜져 있을 때 누르면 내 위치로 옮겨요"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="4.6" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="8" cy="8" r="2" fill="currentColor"/><path d="M8 .8v2.4M8 12.8v2.4M.8 8h2.4M12.8 8h2.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span class="lt">내 위치</span></button><button type="button" class="vis-btn" id="locOff" aria-label="내 위치 끄기" title="내 위치 끄기" hidden>✕</button></div>
       <div class="vis-pop locmsg" id="locMsg" role="status" hidden></div>
@@ -945,6 +957,15 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
   ["labT", "lineT", "poiT"].forEach(k => $(k).addEventListener("input", e => { saved.ui[k] = +e.target.value; applyVis(k === "lineT"); }));
   ["labT", "lineT", "poiT"].forEach(k => $(k).addEventListener("change", () => save()));
   $("visReset").addEventListener("click", () => { delete saved.ui.labT; delete saved.ui.lineT; delete saved.ui.poiT; save(); applyVis(true); });
+  // ---------- hourly marks on the route (saved in this browser): time and km each on/off, both off = no marks ----------
+  function applyTicks() {
+    const tm = !saved.ui.noTm, km = !saved.ui.noKm, box = document.querySelector(".mapbox");
+    box.classList.toggle("no-tm", !tm); box.classList.toggle("no-km", !km);
+    $("tickTm").setAttribute("aria-pressed", String(tm)); $("tickKm").setAttribute("aria-pressed", String(km));
+  }
+  $("tickTm").addEventListener("click", () => { saved.ui.noTm = !saved.ui.noTm; save(); applyTicks(); });
+  $("tickKm").addEventListener("click", () => { saved.ui.noKm = !saved.ui.noKm; save(); applyTicks(); });
+  applyTicks();
   // ---------- view / edit switch (saved in this browser): view hides .eo controls, locks pins and time pickers ----------
   function paintViewBtns() {
     const v = viewOnly();
@@ -1428,7 +1449,7 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
         const ll = pointAlong(L.path, h / L.min), town = nearTown(ll);
         const km = Math.round(L.km * h / L.min), rest = Math.max(0, Math.round(L.km) - km);   // same average-speed split as the dot's position
         const el = document.createElement("div"); el.className = "gm tick"; el.style.setProperty("--lc", legColor(j));
-        el.innerHTML = `<span class="dot"></span><span class="lab"><span class="tm">${fmt(L.dep + h)}</span><span class="km">${fmtN(km)}km</span>${town ? " · " + esc(town) + " 근처" : ""}<span class="hrs"> · 운전 ${h / 60}시간째 · 다음 지점까지 ${fmtN(rest)}km</span></span>`;
+        el.innerHTML = `<span class="dot"></span><span class="lab"><span class="tm">${fmt(L.dep + h)}</span><span class="km">${fmtN(km)}km</span>${town ? " · " + esc(town) + " 근처" : ""}<span class="hrs"> · 운전 ${h / 60}시간째<span class="kmx"> · 다음 지점까지 ${fmtN(rest)}km</span></span></span>`;
         el.addEventListener("click", ev => { ev.stopPropagation(); lastMarkerClick = Date.now(); if (IW) IW.close(); if (onPick) flashLegRow("p" + j); });
         el.addEventListener("contextmenu", ev => { ev.preventDefault(); ev.stopPropagation(); if (onPick) onPick(L, ll, ev, fmt(L.dep + h)); else openCtx(evPt(ev), [rnd5(ll[0]), rnd5(ll[1])], { title: `${fmt(L.dep + h)} 지나는 곳`, nodeOpts: x => ({ ll: x }) }); });
         const sp = it ? laneSpot(it, h / L.min, z) : { ll, side: "r" }; setSide(el, sp.side);

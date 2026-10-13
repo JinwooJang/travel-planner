@@ -8,6 +8,22 @@ const pins = () => p.evaluate(() => window.__ames.filter(m => m.map && m.content
 const EDIT = "[data-del],[data-up],[data-ins],[data-mode],[data-fly],[data-legpad],[data-pre],[data-undo],[data-clear],[data-saveas],[data-rename],[data-delplan],[data-loadc],[data-pick]";
 check(await vis("[data-del]") > 0 && (await pins()).every(d => d), "edit mode: edit buttons shown, plan pins draggable");
 
+// hourly marks on the route: time and km each on/off, both off hides the marks
+const marks = async () => ({ ticks: await vis("#map .gm.tick"), tm: await vis("#map .gm.tick .tm"), km: await vis("#map .gm.tick .km") });
+let mk = await marks();
+check(mk.ticks > 0 && mk.tm === mk.ticks && mk.km === mk.ticks, "hourly marks show time and km by default");
+await p.click("#tickTm");
+mk = await marks();
+check(mk.ticks > 0 && mk.tm === 0 && mk.km === mk.ticks && await p.$eval("#tickTm", e => e.getAttribute("aria-pressed")) === "false", "time switch off: only km left");
+await p.click("#tickKm");
+check((await marks()).ticks === 0, "both off: no marks at all");
+await p.reload(); await p.waitForTimeout(1200);
+check((await marks()).ticks === 0 && await p.$eval("#tickKm", e => e.getAttribute("aria-pressed")) === "false", "mark switches are remembered after reload");
+await p.click("#tickTm");
+mk = await marks();
+check(mk.ticks > 0 && mk.tm === mk.ticks && mk.km === 0 && await p.$$eval("#map .gm.tick .kmx", e => e.length && e.every(x => getComputedStyle(x).display === "none")), "time only: km hidden, also in the hover detail");
+await p.click("#tickKm");
+
 // view mode
 await p.click("#viewBtn"); await p.waitForTimeout(200);
 check(await p.$eval("#viewBtn", e => e.getAttribute("aria-pressed")) === "true" && await p.evaluate(() => document.body.classList.contains("viewonly")), "view button turns view mode on");
