@@ -153,6 +153,10 @@ body.resizing #map { pointer-events: none; }
 .dtog { border: 1px solid var(--rule); background: var(--panel); color: var(--ink); border-radius: 999px; padding: 4px 11px; font: 600 12.5px var(--f-body); cursor: pointer; }
 .dtog[aria-pressed="true"] { background: #0f766e; border-color: #0f766e; color: #fff; }
 .disp-pop hr { border: 0; border-top: 1px solid var(--rule); margin: 0; }
+.zoomctl { margin: 10px; display: grid; background: #fff; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,.3); overflow: hidden; }
+.zoomctl button { width: 40px; height: 40px; border: 0; background: #fff; color: #333; font: 500 24px/1 var(--f-body); cursor: pointer; padding: 0; }
+.zoomctl button + button { border-top: 1px solid #e6e6e6; }
+.zoomctl button:hover { background: #f1f1f1; color: #000; }
 .disp-pop .row2 { display: flex; flex-wrap: wrap; gap: 6px; }
 .locctl { position: relative; }
 .loc-btns { display: flex; }
@@ -442,6 +446,7 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
       <button type="button" class="vis-btn" id="visBtn" aria-expanded="false" aria-controls="visPop" title="지도에 보일 글자와 투명도를 골라요"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M2 4h12M2 8h12M2 12h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="5" cy="4" r="2" fill="currentColor"/><circle cx="11" cy="8" r="2" fill="currentColor"/><circle cx="7" cy="12" r="2" fill="currentColor"/></svg>표시</button>
       <div class="vis-pop disp-pop" id="visPop" hidden>
         <div class="dsecs" id="dispTogs"></div>
+        <div class="dsec"><b>확대·축소 간격 (+/− 버튼, 마우스 휠)</b><div class="dtogs" id="zSteps"><button type="button" class="dtog" data-zstep="1">1단계</button><button type="button" class="dtog" data-zstep="0.5">½단계</button><button type="button" class="dtog" data-zstep="0.25">¼단계</button></div></div>
         <hr>
         <label>글자 배경 투명도 <output id="labTo"></output><input type="range" id="labT" min="0" max="100" step="5" aria-label="글자 배경 투명도"></label>
         <label>경로 선 투명도 <output id="lineTo"></output><input type="range" id="lineT" min="0" max="80" step="5" aria-label="경로 선 투명도"></label>
@@ -975,7 +980,7 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
   $("visBtn").addEventListener("click", () => { const open = $("visPop").hidden; $("visPop").hidden = !open; $("visBtn").setAttribute("aria-expanded", String(open)); });
   ["labT", "lineT", "poiT"].forEach(k => $(k).addEventListener("input", e => { saved.ui[k] = +e.target.value; applyVis(k === "lineT"); }));
   ["labT", "lineT", "poiT"].forEach(k => $(k).addEventListener("change", () => save()));
-  $("visReset").addEventListener("click", () => { delete saved.ui.labT; delete saved.ui.lineT; delete saved.ui.poiT; delete saved.ui.hide; save(); applyVis(true); applyDisp(); });
+  $("visReset").addEventListener("click", () => { delete saved.ui.labT; delete saved.ui.lineT; delete saved.ui.poiT; delete saved.ui.hide; delete saved.ui.zstep; save(); applyVis(true); applyDisp(); paintZSteps(); });
   // ---------- which map text shows (saved in this browser as ui.hide): .mapbox gets no-<key> for each hidden kind ----------
   const DISP = [
     { g: "지점 글자", items: [["lnm", "이름"], ["ltm", "시각"], ["ldt", "날짜"]] },
@@ -1002,6 +1007,42 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
   }));
   $("dispNone").addEventListener("click", () => { saved.ui.hide = [...DISP_KEYS]; save(); applyDisp(); });
   applyDisp();
+  // ---------- finer zoom (ui.zstep): our own +/- buttons and mouse wheel step by it, anchored at the pointer;
+  // pinch and trackpad gestures keep any in-between zoom (isFractionalZoomEnabled) ----------
+  const ZSTEPS = [1, 0.5, 0.25], ZMIN = 3, ZMAX = 21;
+  const zStep = () => ZSTEPS.includes(+saved.ui.zstep) ? +saved.ui.zstep : 0.5;
+  function paintZSteps() { $("zSteps").querySelectorAll("[data-zstep]").forEach(b => b.setAttribute("aria-pressed", String(+b.dataset.zstep === zStep()))); }
+  $("zSteps").querySelectorAll("[data-zstep]").forEach(b => b.addEventListener("click", () => { saved.ui.zstep = +b.dataset.zstep; save(); paintZSteps(); }));
+  paintZSteps();
+  function zoomTo(z, pt) {     // pt: page pixel that stays put (the mouse); null = keep the center
+    const z0 = map.getZoom(), z1 = Math.max(ZMIN, Math.min(ZMAX, Math.round(z * 1000) / 1000));
+    if (z1 === z0) return;
+    const proj = pt && map.getProjection ? map.getProjection() : null, c = proj && map.getCenter();
+    if (!proj || !c || !map.moveCamera) { map.setZoom(z1); return; }
+    const r = $("map").getBoundingClientRect(), dx = pt.x - r.left - r.width / 2, dy = pt.y - r.top - r.height / 2;
+    const w = proj.fromLatLngToPoint(c), s0 = 2 ** z0, s1 = 2 ** z1;     // world pixels at zoom 0 → screen pixels at zoom z: × 2^z
+    const ax = w.x + dx / s0, ay = w.y + dy / s0;
+    map.moveCamera({ center: proj.fromPointToLatLng(new google.maps.Point(ax - dx / s1, ay - dy / s1)), zoom: z1 });
+  }
+  function stepZoom(dir, pt) {     // to the next multiple of the step, so levels stay on a grid after a pinch
+    const st = zStep(), k = map.getZoom() / st;
+    zoomTo((dir > 0 ? Math.floor(k + 1e-6) + 1 : Math.ceil(k - 1e-6) - 1) * st, pt);
+  }
+  function addZoomControl(CtlPos) {
+    const el = document.createElement("div"); el.className = "zoomctl";
+    el.innerHTML = `<button type="button" data-z="1" aria-label="확대" title="확대">+</button><button type="button" data-z="-1" aria-label="축소" title="축소">−</button>`;
+    el.querySelectorAll("[data-z]").forEach(b => b.addEventListener("click", () => stepZoom(+b.dataset.z, null)));
+    map.controls[CtlPos.RIGHT_BOTTOM].push(el);
+  }
+  // the wheel never reaches Google: a notch steps by ui.zstep; small deltas (trackpad, pinch with ctrl) zoom smoothly
+  $("map").addEventListener("wheel", ev => {
+    if (!map || (ev.target.closest && ev.target.closest(".gm-style-iw-c"))) return;      // let an info card scroll
+    ev.preventDefault(); ev.stopImmediatePropagation();     // registered before the map exists, so it runs ahead of Google's own
+    const px = ev.deltaMode === 1 ? ev.deltaY * 16 : ev.deltaMode === 2 ? ev.deltaY * 400 : ev.deltaY, pt = { x: ev.clientX, y: ev.clientY };
+    if (!px) return;
+    if (ev.ctrlKey || Math.abs(px) < 40) zoomTo(map.getZoom() - px / 100, pt);
+    else stepZoom(px < 0 ? 1 : -1, pt);
+  }, { capture: true, passive: false });
   // ---------- view / edit switch (saved in this browser): view hides .eo controls, locks pins and time pickers ----------
   function paintViewBtns() {
     const v = viewOnly();
@@ -2100,7 +2141,8 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
   async function initMap() {
     const maps = await google.maps.importLibrary("maps");
     const marker = await google.maps.importLibrary("marker");
-    try { const core = await google.maps.importLibrary("core"); SymPath = (core && core.SymbolPath) || (google.maps.SymbolPath) || null; } catch (e) { SymPath = google.maps.SymbolPath || null; }
+    let CtlPos = google.maps.ControlPosition || null;
+    try { const core = await google.maps.importLibrary("core"); SymPath = (core && core.SymbolPath) || (google.maps.SymbolPath) || null; CtlPos = (core && core.ControlPosition) || CtlPos; } catch (e) { SymPath = google.maps.SymbolPath || null; }
     AME = marker.AdvancedMarkerElement;
     try { RouteCls = (await google.maps.importLibrary("routes")).Route || null; } catch (e) { RouteCls = null; routeError = "routes 라이브러리를 불러오지 못했어요"; }
     legState.clear();   // estimates made before Google loaded should now be re-asked
@@ -2109,7 +2151,9 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
       center: { lat: 21.6, lng: 56.6 }, zoom: 6, mapId: "DEMO_MAP_ID", mapTypeId: "hybrid",
       mapTypeControl: true, mapTypeControlOptions: { mapTypeIds: ["hybrid", "satellite", "roadmap", "terrain"] },
       streetViewControl: false, fullscreenControl: true, clickableIcons: true, gestureHandling: "greedy",
+      isFractionalZoomEnabled: true, zoomControl: !CtlPos, scrollwheel: false,     // our own +/- and wheel (finer steps) replace Google's
     });
+    if (CtlPos) addZoomControl(CtlPos);
     IW = new google.maps.InfoWindow();
     map.addListener("click", onMapClick);
     map.addListener("contextmenu", onMapCtx);

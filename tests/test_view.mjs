@@ -54,6 +54,37 @@ await p.reload(); await p.waitForTimeout(1200);
 check(await vis("#map .gm.tick") === 0 && await p.evaluate(() => { const u = JSON.parse(localStorage.getItem("omanGmaps.v1")).ui; return !("noTm" in u) && ["ttm", "tkm", "ttn"].every(k => u.hide.includes(k)); }), "old time/km switches (both off) become 'no hourly marks'");
 await p.click("#visBtn"); await p.click("#visReset"); await p.click("#visBtn");
 
+// finer zoom: own +/- buttons and the wheel step by ui.zstep (½ by default); fractional zoom on
+const Z = () => p.evaluate(() => window.__mockMap.z);
+const setZ = z => p.evaluate(z => { window.__mockMap.z = z; }, z);
+const wheel = (deltaY, ctrlKey = false) => p.evaluate(([d, c]) => document.querySelector("#map").dispatchEvent(new WheelEvent("wheel", { deltaY: d, ctrlKey: c, clientX: 300, clientY: 300, bubbles: true, cancelable: true })), [deltaY, ctrlKey]);
+check(await p.evaluate(() => window.__mockMap.opts.isFractionalZoomEnabled === true && window.__mockMap.opts.zoomControl === false) && await vis("#map .zoomctl button") === 2, "fractional zoom on, own +/- buttons instead of Google's");
+await setZ(8); await p.click('.zoomctl [data-z="1"]');
+check(await Z() === 8.5, "+ zooms in by ½ by default");
+await p.click('.zoomctl [data-z="-1"]'); await p.click('.zoomctl [data-z="-1"]');
+check(await Z() === 7.5, "− zooms out by ½");
+await setZ(7.37); await p.click('.zoomctl [data-z="1"]');
+check(await Z() === 7.5, "after a pinch, + goes to the next ½ level");
+await p.click("#visBtn"); await p.click('[data-zstep="0.25"]'); await p.click("#visBtn");
+await p.click('.zoomctl [data-z="1"]');
+check(await Z() === 7.75, "¼ step chosen in the 표시 panel");
+const passed = await wheel(100);
+check(await Z() === 7.5 && passed === false, "a wheel notch zooms out by the step, and Google never gets it");
+await wheel(-100);
+check(await Z() === 7.75, "wheel up zooms in by the step");
+// the place under the mouse stays under the mouse
+const under = () => p.evaluate(() => { const m = window.__mockMap, pr = m.getProjection(), r = m.el.getBoundingClientRect(), w = pr.fromLatLngToPoint(m.getCenter()), s = 2 ** m.z;
+  const ll = pr.fromPointToLatLng({ x: w.x + (300 - r.left - r.width / 2) / s, y: w.y + (300 - r.top - r.height / 2) / s }); return [ll.lat(), ll.lng()]; });
+const u0 = await under(); await wheel(-100); await wheel(-100); const u1 = await under();
+check(Math.abs(u0[0] - u1[0]) < 1e-9 && Math.abs(u0[1] - u1[1]) < 1e-9 && await Z() === 8.25, "wheel zoom keeps the spot under the mouse in place");
+await setZ(7.75);
+await wheel(10, true);
+check(Math.abs(await Z() - 7.65) < 1e-9, "trackpad pinch zooms smoothly");
+await p.reload(); await p.waitForTimeout(1200);
+check(await p.$eval('[data-zstep="0.25"]', e => e.getAttribute("aria-pressed")) === "true", "zoom step is remembered");
+await p.click("#visBtn"); await p.click("#visReset"); await p.click("#visBtn");
+check(await p.$eval('[data-zstep="0.5"]', e => e.getAttribute("aria-pressed")) === "true", "'모두 기본값으로' brings back the ½ step");
+
 // view mode
 await p.click("#viewBtn"); await p.waitForTimeout(200);
 check(await p.$eval("#viewBtn", e => e.getAttribute("aria-pressed")) === "true" && await p.evaluate(() => document.body.classList.contains("viewonly")), "view button turns view mode on");
