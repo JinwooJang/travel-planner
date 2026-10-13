@@ -81,7 +81,7 @@ main.app { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(
 body.resizing, body.resizing * { cursor: col-resize !important; user-select: none !important; }
 body.resizing #map { pointer-events: none; }
 .mapbox { position: relative; min-height: 0; background: #20303a; }
-#map { position: absolute; inset: 0; }
+#map { position: absolute; inset: 0; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
 .sheet { min-width: 0; overflow-y: auto; background: var(--panel); padding: 18px 20px 28px; }
 
 /* markers on the satellite map (DOM content of Advanced Markers) */
@@ -553,7 +553,10 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
   let saved = {}; try { saved = JSON.parse(ls.get(STORE) || "{}") || {}; } catch (e) { saved = {}; }
   saved.dayStart = saved.dayStart || {};
   const save = () => ls.set(STORE, JSON.stringify(saved));
-  const viewOnly = () => !!(saved.ui && saved.ui.view);     // view mode: nothing on the map or in the sheet can change the plan or times
+  const viewOnly = () => !!(saved.ui && saved.ui.view);
+  const TOUCH = !!(window.matchMedia && matchMedia("(hover: none)").matches);     // phone / tablet: long press = right click
+  const W = TOUCH ? { rc: "길게 누르기", rcV: "길게 누르면", rcN: "길게 눌러서", rcDo: "길게 누르세요", lc: "짧게 누르기", lcV: "짧게 누르면", lcN: "짧게 눌러도" }
+    : { rc: "오른쪽 클릭", rcV: "오른쪽 클릭하면", rcN: "오른쪽 클릭으로", rcDo: "오른쪽 클릭하세요", lc: "왼쪽 클릭", lcV: "왼쪽 클릭하면", lcN: "왼쪽 클릭해도" };     // view mode: nothing on the map or in the sheet can change the plan or times
   $("dDate").value = saved.date || isoToday();
   let routeCache = {}; try { routeCache = JSON.parse(ls.get(ROUTE_STORE) || "{}") || {}; } catch (e) { routeCache = {}; }
   let cacheTimer = null;
@@ -1290,7 +1293,7 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
       + items.map((it, i) => `<button type="button" role="menuitem" class="cx-i${it.primary ? " primary" : ""}" data-ci="${i}">${esc(it.label)}${it.sub ? `<small>${esc(it.sub)}</small>` : ""}</button>`).join("")
       + extra.map((x, i) => `<button type="button" role="menuitem" class="cx-i${x.danger ? " danger" : ""}" data-x="${i}">${esc(x.label)}</button>`).join("")
       + `<div class="cx-sep"></div><a class="cx-i" role="menuitem" href="https://www.google.com/maps/search/?api=1&query=${ll[1]},${ll[0]}" target="_blank" rel="noopener">구글 지도에서 이 위치 보기 ↗</a>`
-      + `<button type="button" role="menuitem" class="cx-i cx-cancel" data-cancel>닫기 (Esc)</button>`;
+      + `<button type="button" role="menuitem" class="cx-i cx-cancel" data-cancel>닫기${TOUCH ? "" : " (Esc)"}</button>`;
     box.appendChild(el); ctxEl = el;
     const w = el.offsetWidth, h = el.offsetHeight;
     let x = (pt ? pt.x : r.left + r.width / 2) - r.left, y = (pt ? pt.y : r.top + r.height / 2) - r.top;
@@ -1314,6 +1317,44 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
     hintEl.style.left = ((pt ? pt.x : r.left + r.width / 2) - r.left) + "px"; hintEl.style.top = ((pt ? pt.y : r.top + r.height / 2) - r.top) + "px";
     clearTimeout(hintTimer); hintTimer = setTimeout(() => { if (hintEl) hintEl.style.opacity = "0"; }, 1600);
   }
+
+  // ---------- long press on a touch screen = right click (iPhone Safari never sends one; Android may, so its own is dropped) ----------
+  const LP_MS = 550, LP_MOVE = 10;
+  const lp = { timer: null, id: null, x: 0, y: 0, fired: false, firedAt: 0, upAt: 0 };
+  const lpCancel = () => { clearTimeout(lp.timer); lp.timer = null; };
+  function llAtPoint(pt) {     // page pixel → [lng, lat], from the map's projection (null before the map is ready)
+    const proj = map && map.getProjection ? map.getProjection() : null, c = proj && map.getCenter();
+    if (!c) return null;
+    const r = $("map").getBoundingClientRect(), s = 2 ** map.getZoom(), w = proj.fromLatLngToPoint(c);
+    const ll = proj.fromPointToLatLng(new google.maps.Point(w.x + (pt.x - r.left - r.width / 2) / s, w.y + (pt.y - r.top - r.height / 2) / s));
+    return [ll.lng(), ll.lat()];
+  }
+  function lpFire() {
+    lp.timer = null; lp.fired = true; lp.firedAt = Date.now();
+    const pt = { x: lp.x, y: lp.y }, hit = document.elementFromPoint(pt.x, pt.y);
+    // a pin with its own menu (stop, attraction, plan pin, hourly mark, my location): hand it the same event a right click gives
+    const pin = hit && hit.closest && hit.closest(".gm.pp, .gm.poi, .gm.tick, .gm.me, .gm[class*=' k-']");
+    if (pin && $("map").contains(pin)) hit.dispatchEvent(new MouseEvent("contextmenu", { bubbles: true, cancelable: true, clientX: pt.x, clientY: pt.y }));
+    else { const ll = llAtPoint(pt); if (!ll) return; onMapCtx({ latLng: { lat: () => ll[1], lng: () => ll[0] }, domEvent: { clientX: pt.x, clientY: pt.y } }); }
+    try { if (navigator.vibrate) navigator.vibrate(12); } catch (e) { /* no haptics */ }
+  }
+  $("map").addEventListener("pointerdown", ev => {
+    if (ev.pointerType !== "touch") return;
+    if (lp.id != null && lp.id !== ev.pointerId) { lpCancel(); return; }     // a second finger: pinch, not a press
+    lpCancel(); lp.id = ev.pointerId; lp.x = ev.clientX; lp.y = ev.clientY; lp.fired = false;
+    lp.timer = setTimeout(lpFire, LP_MS);
+  }, true);
+  $("map").addEventListener("pointermove", ev => { if (lp.timer && ev.pointerId === lp.id && Math.hypot(ev.clientX - lp.x, ev.clientY - lp.y) > LP_MOVE) lpCancel(); }, true);
+  const lpEnd = ev => { if (ev.pointerId !== lp.id) return; lpCancel(); lp.id = null; if (lp.fired) lp.upAt = Date.now(); };
+  $("map").addEventListener("pointerup", lpEnd, true);
+  $("map").addEventListener("pointercancel", lpEnd, true);
+  // registered before the map exists, so these run ahead of Google's and the markers' own handlers
+  $("map").addEventListener("contextmenu", ev => {
+    if (!ev.isTrusted) return;                                            // ours, from lpFire
+    if (lp.timer) { lpCancel(); lp.fired = true; lp.firedAt = Date.now(); return; }   // the browser's own long press came first: let it through
+    if (Date.now() - lp.firedAt < 1500) { ev.preventDefault(); ev.stopImmediatePropagation(); }   // already opened by ours
+  }, true);
+  $("map").addEventListener("click", ev => { if (ev.isTrusted && Date.now() - lp.upAt < 600) { ev.preventDefault(); ev.stopImmediatePropagation(); } }, true);
 
   // ---------- my location: starts only from the button, moves the map once, never stored ----------
   // on: the user turned it on · watch: the browser's watch id (paused while the page is hidden, to save battery)
@@ -1584,11 +1625,11 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
     });
     const pending = ps.legs.some(l => l.src === "pending"), pb = $("pbar");
     const np = plan.pts.length, where = insertAt == null ? "" : insertAt <= 0 ? "<b>맨 앞(출발지)</b>" : insertAt >= np ? `<b>맨 뒤(${np}번 다음)</b>` : `<b>${insertAt}번과 ${insertAt + 1}번 사이</b>`;
-    const ins = insertAt != null ? `<span class="hint">${where}에 넣을 곳을 지도에서 누르세요 (오른쪽 클릭 메뉴도 돼요)</span><button type="button" data-cancel>취소</button>` : "";
+    const ins = insertAt != null ? `<span class="hint">${where}에 넣을 곳을 지도에서 누르세요 (${W.rc} 메뉴도 돼요)</span><button type="button" data-cancel>취소</button>` : "";
     if (flashMsg) pb.innerHTML = `<span class="hint" style="color:var(--bad)">${esc(flashMsg)}</span>`;
     else if (ins) pb.innerHTML = ins;
-    else if (!plan.pts.length) pb.innerHTML = `<span class="hint eo">지도에서 <b>오른쪽 클릭</b> → "여기서 출발"을 고르세요.</span><span class="hint vo">빈 플랜이에요. 지점을 넣으려면 위쪽에서 <b>편집</b>을 누르세요.</span><button type="button" class="eo" data-pick>지도에서 고르기</button>`;
-    else if (plan.pts.length === 1) pb.innerHTML = `<span class="hint"><b>${esc(plan.pts[0].name)}</b>에서 출발<span class="eo"> · 다음 지점은 <b>오른쪽 클릭</b>으로 넣어요</span></span><button type="button" class="eo" data-undo>되돌리기</button>`;
+    else if (!plan.pts.length) pb.innerHTML = `<span class="hint eo">지도에서 <b>${W.rc}</b> → "여기서 출발"을 고르세요.</span><span class="hint vo">빈 플랜이에요. 지점을 넣으려면 위쪽에서 <b>편집</b>을 누르세요.</span><button type="button" class="eo" data-pick>지도에서 고르기</button>`;
+    else if (plan.pts.length === 1) pb.innerHTML = `<span class="hint"><b>${esc(plan.pts[0].name)}</b>에서 출발<span class="eo"> · 다음 지점은 <b>${W.rcN}</b> 넣어요</span></span><button type="button" class="eo" data-undo>되돌리기</button>`;
     else pb.innerHTML = `<span><b>${plan.pts.length}곳</b> · <b>${fmtN(Math.round(ps.km))}km</b> · 운전 <b>${dur(ps.drive)}</b> · 도착 <b>${relClock(ps.end)}</b>${pending ? " · 구글 계산 중…" : ""}</span><button type="button" class="eo" data-undo>되돌리기</button>`;
     const u = pb.querySelector("[data-undo]"); if (u) u.addEventListener("click", () => { plan.pts.pop(); afterPlanChange(); });
     const cx = pb.querySelector("[data-cancel]"); if (cx) cx.addEventListener("click", () => { insertAt = null; paint(); renderSheet(true); });
@@ -1604,7 +1645,7 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
   // left click never adds by itself: it adds only after "+ 이 사이에 넣기" / "지도에서 고르기" was pressed;
   // otherwise a Google place shows a card, and empty map shows a hint to use the right-click menu
   function onMapClick(e) {
-    if (Date.now() - loc.menuAt < 300) return;   // the same tap that just opened the my-location menu
+    if (Date.now() - loc.menuAt < 300 || Date.now() - lp.upAt < 600) return;   // the tap that just opened a menu (my-location dot, long press)
     closeCtx();
     if (IW && Date.now() - lastMarkerClick >= 300) IW.close();   // a click on the map outside the card closes it
     if (mode !== "plan") return;                 // course mode: Google shows its own card for places
@@ -1613,7 +1654,7 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
     const zoom = map.getZoom(), ll = llOf(e);
     if (insertAt != null && !viewOnly()) { addPoint({ ll, placeId: e.placeId || null, lookup: !e.placeId && zoom >= 13, zoom }); return; }
     if (e.placeId) { showPlaceCard(e.placeId, ll); return; }
-    if (!viewOnly()) mapHint("지점을 넣으려면 오른쪽 클릭하세요");
+    if (!viewOnly()) mapHint("지점을 넣으려면 " + W.rcDo);
   }
   function onMapCtx(e) {
     if (!e || !e.latLng || Date.now() - lastCtx < 250) return;
@@ -2026,9 +2067,9 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
       ${searchRes && searchRes.length ? `<ul class="presults">${searchRes.map((r, x) => `<li><button type="button" class="pr-go" data-go="${x}"><b>${esc(r.name)}</b><small>${esc(r.addr)}</small></button><button type="button" class="mini eo" data-addr="${x}">${insertAt != null ? `${insertAt}번 뒤에 넣기` : "플랜에 추가"}</button></li>`).join("")}</ul>` : ""}
       <label class="poitoggle"><input type="checkbox" data-pois${saved.showPois ? " checked" : ""}> 코스 추천 장소 핀도 지도에 보기</label>
       <div class="btnrow eo"><button class="mini" type="button" data-loadc>${esc(course.label)} 코스를 새 플랜으로 불러오기</button>${n ? `<button class="mini" type="button" data-undo>마지막 지점 지우기</button><button class="mini" type="button" data-clear>모두 지우기</button>` : ""}</div>
-      ${n ? "" : `<div class="empty vo">빈 플랜이에요. 지점을 넣으려면 위쪽에서 <b>편집</b>을 누르세요.</div><div class="empty eo"><b>지도에서 오른쪽 클릭하면 "여기서 출발 / 맨 뒤에 추가" 메뉴가 나와요.</b> 실수로 들어가지 않게 왼쪽 클릭만으로는 추가되지 않아요. 지도를 충분히 확대해서 리조트·식당 위를 오른쪽 클릭하면 구글에 등록된 이름으로 들어가요(왼쪽 클릭은 이름 카드만 보여줘요). 관광지 핀이나 위 검색창으로도 넣을 수 있어요. 그다음엔 이렇게 고쳐요.<br>· 경로 선이나 1시간 표시를 오른쪽 클릭하면 그 구간에 경유지를 넣는 메뉴가 나와요.<br>· 목록의 <b>+ 이 사이에 넣기</b>를 누른 뒤에는 지도를 왼쪽 클릭해도 그 자리에 들어가요.<br>· 번호 핀을 오른쪽 클릭하면 삭제할 수 있고, 끌어서 옮길 수도 있어요. 머무는 시간이나 출발 시각을 바꾸면 뒤쪽 시간이 모두 다시 계산돼요.</div>`}
+      ${n ? "" : `<div class="empty vo">빈 플랜이에요. 지점을 넣으려면 위쪽에서 <b>편집</b>을 누르세요.</div><div class="empty eo"><b>지도에서 ${W.rcV} "여기서 출발 / 맨 뒤에 추가" 메뉴가 나와요.</b> 실수로 들어가지 않게 ${W.lc}만으로는 추가되지 않아요. 지도를 충분히 확대해서 리조트·식당 위를 ${W.rcV} 구글에 등록된 이름으로 들어가요(${W.lcV} 이름 카드만 보여줘요). 관광지 핀이나 위 검색창으로도 넣을 수 있어요. 그다음엔 이렇게 고쳐요.<br>· 경로 선이나 1시간 표시를 ${W.rcV} 그 구간에 경유지를 넣는 메뉴가 나와요.<br>· 목록의 <b>+ 이 사이에 넣기</b>를 누른 뒤에는 지도를 ${W.lcN} 그 자리에 들어가요.<br>· 번호 핀을 ${W.rcV} 삭제할 수 있고, 끌어서 옮길 수도 있어요. 머무는 시간이나 출발 시각을 바꾸면 뒤쪽 시간이 모두 다시 계산돼요.</div>`}
       ${links.length ? `<div class="navs">${links.map((l, x) => `<a class="navbtn" href="${l.href}" target="_blank" rel="noopener"><span>${links.length > 1 ? `길찾기 ${x + 1}/${links.length}` : "구글 지도 길찾기"}<small>${esc(l.label)}</small></span>${navIcon}</a>`).join("")}</div>` : ""}
-      ${n ? `<p class="sec">시간표 · 구간마다 선 색이 달라요 · 지도의 점은 1시간마다 지나는 곳 (시각 · 그 구간 출발 후 km)<span class="eo"> · 추가는 지도에서 오른쪽 클릭</span></p><ol class="tl">${rows.join("")}</ol>` : ""}
+      ${n ? `<p class="sec">시간표 · 구간마다 선 색이 달라요 · 지도의 점은 1시간마다 지나는 곳 (시각 · 그 구간 출발 후 km)<span class="eo"> · 추가는 지도에서 ${W.rc}</span></p><ol class="tl">${rows.join("")}</ol>` : ""}
       <div class="note"><p>확대한 지도에서 누르거나 검색하면 구글 장소 정보를 한 번 받아 와요(Places API, 종류별 월 5,000회 무료). 많이 축소한 상태에서 누른 곳은 장소를 찾지 않고 가까운 지명으로 표시해요.</p><p>하루 운전이 8시간을 넘으면 노랑, 10시간을 넘으면 빨강으로 표시해요. 1시간 표시의 위치와 km는 구간 평균 속도로 나눈 대략적인 값이에요. km는 직전 지점에서 출발한 뒤 달린 거리예요.</p><p>플랜과 계산한 경로는 이 브라우저에 저장돼서, 같은 구간은 다시 계산(과금)하지 않아요.</p></div>`;
     const idx = id => plan.pts.findIndex(p => p.id === +id);
     const nodeOf = el => plan.pts[idx(el.dataset[Object.keys(el.dataset)[0]])];

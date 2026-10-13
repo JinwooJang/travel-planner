@@ -35,4 +35,38 @@ check(!(await p.evaluate(() => window.__iwOpen)), "clicking the map outside clos
 await p.click("#visBtn");
 await p.$eval("#poiT", e => { e.value = 60; e.dispatchEvent(new Event("input", { bubbles: true })); });
 check((await p.evaluate(() => getComputedStyle(document.querySelector(".mapbox")).getPropertyValue("--poi-a"))).trim() === "0.40", "attraction pin transparency applies");
+// long press on a touch screen opens the same menu as a right click
+const press = (x, y, ms = 650, move = 0) => p.evaluate(async ([x, y, ms, move]) => {
+  const t = document.elementFromPoint(x, y), o = { pointerType: "touch", pointerId: 7, isPrimary: true, bubbles: true, cancelable: true, clientX: x, clientY: y };
+  t.dispatchEvent(new PointerEvent("pointerdown", o));
+  if (move) t.dispatchEvent(new PointerEvent("pointermove", { ...o, clientX: x + move }));
+  await new Promise(r => setTimeout(r, ms));
+  t.dispatchEvent(new PointerEvent("pointerup", o));
+}, [x, y, ms, move]);
+const items = () => p.$$eval(".ctxmenu .cx-i", e => e.map(x => (x.classList.contains("primary") ? "*" : "") + x.textContent.replace(/\s+/g, " ").trim()));
+const expect = await p.evaluate(() => { const m = window.__mockMap, pr = m.getProjection(), r = m.el.getBoundingClientRect(), w = pr.fromLatLngToPoint(m.getCenter()), s = 2 ** m.z;
+  const ll = pr.fromPointToLatLng({ x: w.x + (600 - r.left - r.width / 2) / s, y: w.y + (600 - r.top - r.height / 2) / s }); return `${ll.lat().toFixed(4)}, ${ll.lng().toFixed(4)}`; });
+const before = (await nodes(p)).length;
+await press(600, 600);
+menu = await items();
+check(menu.length && menu[0].startsWith("*") && (await p.textContent(".ctxmenu .cx-h small")) === expect, "long press on the map opens the add menu for the spot under the finger");
+await p.evaluate(() => window.__mockMap.ls.click({ latLng: { lat: () => 21, lng: () => 56 } }));
+check(!!(await p.$(".ctxmenu")), "lifting the finger does not close the menu again");
+await p.click(".ctxmenu .cx-i.primary"); await p.waitForTimeout(300);
+check((await nodes(p)).length === before + 1, "choosing from the long-press menu adds the point");
+await press(600, 600, 250);
+check(!(await p.$(".ctxmenu")), "a short tap opens no menu");
+await press(600, 600, 650, 30);
+check(!(await p.$(".ctxmenu")), "pressing and dragging (panning) opens no menu");
+await p.evaluate(() => { const e = document.querySelector("#map .gm.pp"); e.style.cssText += ";position:absolute;left:400px;top:300px;z-index:50"; });
+const pin = await p.$eval("#map .gm.pp .dot", e => { const r = e.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 }; });
+await press(pin.x, pin.y);
+check((await items()).some(m => m.includes("이 지점 삭제")), "long press on a numbered pin opens that pin's menu");
+await p.keyboard.press("Escape");
+await p.mouse.click(pin.x, pin.y, { button: "right" });
+check(!(await p.$(".ctxmenu")), "the browser's own right click right after a long press is dropped (no double menu)");
+await p.waitForTimeout(1600);
+await p.mouse.click(pin.x, pin.y, { button: "right" });
+check((await items()).some(m => m.includes("이 지점 삭제")), "a normal right click still works");
+await p.keyboard.press("Escape");
 await finish();
