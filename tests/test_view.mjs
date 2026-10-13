@@ -8,21 +8,51 @@ const pins = () => p.evaluate(() => window.__ames.filter(m => m.map && m.content
 const EDIT = "[data-del],[data-up],[data-ins],[data-mode],[data-fly],[data-legpad],[data-pre],[data-undo],[data-clear],[data-saveas],[data-rename],[data-delplan],[data-loadc],[data-pick]";
 check(await vis("[data-del]") > 0 && (await pins()).every(d => d), "edit mode: edit buttons shown, plan pins draggable");
 
-// hourly marks on the route: time and km each on/off, both off hides the marks
-const marks = async () => ({ ticks: await vis("#map .gm.tick"), tm: await vis("#map .gm.tick .tm"), km: await vis("#map .gm.tick .km") });
+// 표시 panel: every kind of map text on/off
+const tog = async k => { if (await p.$eval("#visPop", e => e.hidden)) await p.click("#visBtn"); await p.click(`[data-disp="${k}"]`); };
+const pressed = k => p.$eval(`[data-disp="${k}"]`, e => e.getAttribute("aria-pressed") === "true");
+const marks = async () => ({ ticks: await vis("#map .gm.tick"), tm: await vis("#map .gm.tick .tm"), km: await vis("#map .gm.tick .km"), tn: await vis("#map .gm.tick .tn") });
 let mk = await marks();
-check(mk.ticks > 0 && mk.tm === mk.ticks && mk.km === mk.ticks, "hourly marks show time and km by default");
-await p.click("#tickTm");
+check(mk.ticks > 0 && mk.tm === mk.ticks && mk.km === mk.ticks && mk.tn > 0, "hourly marks show time, km and nearby town by default");
+await tog("ttm");
 mk = await marks();
-check(mk.ticks > 0 && mk.tm === 0 && mk.km === mk.ticks && await p.$eval("#tickTm", e => e.getAttribute("aria-pressed")) === "false", "time switch off: only km left");
-await p.click("#tickKm");
-check((await marks()).ticks === 0, "both off: no marks at all");
+check(mk.ticks > 0 && mk.tm === 0 && mk.km === mk.ticks && !(await pressed("ttm")), "hourly time off: km and town left");
+await tog("tkm"); await tog("ttn");
+check((await marks()).ticks === 0, "hourly time, km and town all off: no marks at all");
+await tog("ttm");
+mk = await marks();
+check(mk.ticks > 0 && mk.km === 0 && mk.tn === 0 && await p.$$eval("#map .gm.tick .kmx", e => e.length && e.every(x => getComputedStyle(x).display === "none")), "time only: km and town hidden, km also in the hover detail");
+await tog("tkm"); await tog("ttn");
+// stop labels (plan pins): name / times / dates
+const pin = async () => ({ lab: await vis("#map .gm.pp .lab"), nm: await vis("#map .gm.pp .nm"), tf: await vis("#map .gm.pp .tf"), td: await vis("#map .gm.pp .td"), dt: await vis("#map .gm.pp .tf .dt") });
+let pl = await pin();
+check(pl.lab > 0 && pl.nm === pl.lab && pl.tf === pl.lab && pl.td === 0 && pl.dt > 0, "pin labels: name + times, date in front when the day changes");
+await tog("ldt");
+pl = await pin();
+check(pl.tf === pl.lab && pl.dt === 0, "date off: times without dates");
+await tog("ltm");
+pl = await pin();
+check(pl.nm === pl.lab && pl.tf === 0 && pl.td === 0, "time and date off: names only");
+await tog("ldt");
+pl = await pin();
+check(pl.td === pl.lab && pl.tf === 0 && /^\d+\/\d+\(.\)/.test(await p.$eval("#map .gm.pp .td", e => e.textContent)), "time off, date on: dates only");
+await tog("lnm"); await tog("ldt");
+check((await pin()).lab === 0, "name, time and date off: no pin labels");
+await tog("leg"); await tog("pnm");
+check(await vis("#map .gm.legchip") === 0, "leg number chips off");
 await p.reload(); await p.waitForTimeout(1200);
-check((await marks()).ticks === 0 && await p.$eval("#tickKm", e => e.getAttribute("aria-pressed")) === "false", "mark switches are remembered after reload");
-await p.click("#tickTm");
-mk = await marks();
-check(mk.ticks > 0 && mk.tm === mk.ticks && mk.km === 0 && await p.$$eval("#map .gm.tick .kmx", e => e.length && e.every(x => getComputedStyle(x).display === "none")), "time only: km hidden, also in the hover detail");
-await p.click("#tickKm");
+check(await vis("#map .gm.pp .lab") === 0 && await vis("#map .gm.legchip") === 0 && await vis("#map .gm.tick") > 0, "display choices are remembered after reload");
+await p.click("#visBtn"); await p.click("#dispNone");
+check(await vis("#map .gm.tick") === 0 && await vis("#map .gm.pp .lab") === 0, "'글자 모두 끄기' hides every text");
+check(await vis("#map .gm.pp .dot") > 0, "the pins themselves stay");
+await p.click("#visReset");
+check(await p.$$eval("[data-disp]", e => e.every(x => x.getAttribute("aria-pressed") === "true")) && await vis("#map .gm.pp .nm") > 0 && await vis("#map .gm.legchip") > 0, "'모두 기본값으로' turns everything back on");
+await p.click("#visBtn");
+// the earlier time / km switches carry over
+await p.evaluate(() => { const v = JSON.parse(localStorage.getItem("omanGmaps.v1")); v.ui.noTm = true; v.ui.noKm = true; delete v.ui.hide; localStorage.setItem("omanGmaps.v1", JSON.stringify(v)); });
+await p.reload(); await p.waitForTimeout(1200);
+check(await vis("#map .gm.tick") === 0 && await p.evaluate(() => { const u = JSON.parse(localStorage.getItem("omanGmaps.v1")).ui; return !("noTm" in u) && ["ttm", "tkm", "ttn"].every(k => u.hide.includes(k)); }), "old time/km switches (both off) become 'no hourly marks'");
+await p.click("#visBtn"); await p.click("#visReset"); await p.click("#visBtn");
 
 // view mode
 await p.click("#viewBtn"); await p.waitForTimeout(200);
@@ -46,6 +76,7 @@ await p.reload(); await p.waitForTimeout(1200);
 check(await p.evaluate(() => document.body.classList.contains("viewonly")) && await vis("[data-del]") === 0, "view mode is remembered after reload");
 await p.goto(new URL("../index.html", import.meta.url).href + "#c6cd1"); await p.reload(); await p.waitForTimeout(1200);
 check(await p.$$eval(".sheet [data-t24h], #coursePad", e => e.length && e.every(x => x.disabled)) && await vis("[data-load]") === 0, "view mode: built-in course times locked, 'load as plan' hidden");
+check(await vis("#map .gm.named .lab .nm") > 0 && await vis("#map .gm.named .lab .tf") > 0 && await vis("#map .gm.chip .lab .tf") > 0, "course day view: stop and start/end labels have name + time parts");
 
 // back to edit
 await p.click("#editBtn"); await p.waitForTimeout(200);

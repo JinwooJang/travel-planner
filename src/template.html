@@ -127,7 +127,7 @@ body.resizing #map { pointer-events: none; }
 .pl-name input { flex: 1; min-width: 0; font: inherit; font-size: 14px; padding: 6px 8px; border-radius: 8px; border: 1px solid var(--accent); background: var(--panel); color: var(--ink); }
 .mapctl { position: absolute; left: 10px; top: 60px; z-index: 3; display: flex; flex-wrap: wrap; gap: 6px; align-items: flex-start; font-size: 13px; pointer-events: none; }
 .mapctl > * { pointer-events: auto; }
-.vis, .poictl { position: relative; }
+.poictl { position: relative; }
 .poi-btns { display: flex; }
 .poi-btns .poi-on { border-radius: 8px 0 0 8px; }
 .poi-btns .poi-more { border-radius: 0 8px 8px 0; border-left: 0; padding: 6px 8px; }
@@ -135,15 +135,25 @@ body.resizing #map { pointer-events: none; }
 #poiCount { font: 600 11px var(--f-mono); opacity: .8; margin-left: 2px; }
 .mapctl .vis-pop { position: absolute; left: 0; top: 100%; }
 #visBtn svg { vertical-align: -2px; margin-right: 5px; }
-/* hourly marks on the route: time and km each on/off; both off hides the marks */
-.tickbtns { display: flex; }
-.tickbtns .vis-btn { padding: 6px 9px; }
-#tickTm { border-radius: 8px 0 0 8px; }
-#tickKm { border-radius: 0 8px 8px 0; border-left: 0; }
-.tickbtns .vis-btn[aria-pressed="true"] { background: #0f766e; color: #fff; border-color: #0f766e; }
-.mapbox.no-tm .gm.tick .tm, .mapbox.no-km .gm.tick .km, .mapbox.no-km .gm.tick .kmx { display: none; }
-.mapbox.no-tm.no-km .gm.tick { display: none; }
-.mapbox.no-km .gm.tick .lab .tm { margin-right: 0; }
+/* map text the 표시 panel turns on and off: .mapbox gets a no-<key> class for each hidden kind (DISP) */
+.lab.sl .td { display: none; }
+.mapbox.no-ltm .lab.sl .tf, .mapbox.no-ldt .lab.sl .dt, .mapbox.no-lnm .lab.sl .nm { display: none; }
+.mapbox.no-ltm:not(.no-ldt) .lab.sl .td { display: inline; }
+.mapbox.no-lnm .lab.sl .tm { margin-left: 0; }
+.mapbox.no-lnm .lab.sl.nt, .mapbox.no-lnm.no-ltm.no-ldt .lab.sl { display: none !important; }
+.mapbox.no-ttm .gm.tick .tm, .mapbox.no-tkm .gm.tick .km, .mapbox.no-tkm .gm.tick .kmx, .mapbox.no-ttn .gm.tick .tn { display: none; }
+.mapbox.no-ttm.no-tkm.no-ttn .gm.tick, .mapbox.no-ttm.no-tkm .gm.tick .lab.nt { display: none; }
+.mapbox.no-leg .gm.legchip { display: none; }
+.mapbox.no-pnm .gm.poi:not(:hover) .lab { display: none !important; }
+.vis-pop.disp-pop { width: min(290px, calc(100vw - 40px)); }
+.disp-pop .dsecs, .disp-pop .dsec { display: grid; gap: 6px; }
+.disp-pop .dsecs { gap: 10px; }
+.disp-pop .dsec > b { font-size: 12px; color: var(--muted); }
+.disp-pop .dtogs { display: flex; flex-wrap: wrap; gap: 6px; }
+.dtog { border: 1px solid var(--rule); background: var(--panel); color: var(--ink); border-radius: 999px; padding: 4px 11px; font: 600 12.5px var(--f-body); cursor: pointer; }
+.dtog[aria-pressed="true"] { background: #0f766e; border-color: #0f766e; color: #fff; }
+.disp-pop hr { border: 0; border-top: 1px solid var(--rule); margin: 0; }
+.disp-pop .row2 { display: flex; flex-wrap: wrap; gap: 6px; }
 .locctl { position: relative; }
 .loc-btns { display: flex; }
 .loc-btns.on #locBtn { border-radius: 8px 0 0 8px; }
@@ -350,8 +360,8 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
 .nightrow .body { background: var(--hover); border-radius: 8px; color: var(--ink); font-weight: 600; font-size: 12.5px; }
 [hidden] { display: none !important; }
 .gm.tick .dot { left: -6px; top: -6px; width: 12px; height: 12px; background: #fff; border: 3px solid var(--lc, #10181d); box-shadow: 0 0 0 1px #10181d; }
-.gm.tick .lab { display: block; left: 10px; top: -11px; font-size: 12.5px; padding: 1px 7px 2px 6px; border-left: 3px solid var(--lc, #fff); color: #d5dde2; }
-.gm.tick .lab .tm { margin-left: 0; margin-right: 6px; }
+.gm.tick .lab { display: flex; gap: 6px; align-items: baseline; left: 10px; top: -11px; font-size: 12.5px; padding: 1px 7px 2px 6px; border-left: 3px solid var(--lc, #fff); color: #d5dde2; }
+.gm.tick .lab .tm { margin: 0; }
 .gm.tick .lab .km { font-family: var(--f-mono); color: #fff; }
 .gm.tick.s-l .lab { left: auto; right: 10px; border-left: 0; border-right: 3px solid var(--lc, #fff); padding: 1px 6px 2px 7px; }
 .gm.tick.s-up .lab { left: 0; top: -31px; transform: translateX(-50%); }
@@ -399,8 +409,8 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
   .top h1 { font-size: 21px; }
 }
 @media (max-width: 480px) {
-  #locBtn .lt, #visBtn .vt { display: none; }
-  #locBtn svg, #visBtn svg { margin-right: 0; }
+  #locBtn .lt { display: none; }
+  #locBtn svg { margin-right: 0; }
 }
 </style>
 </head>
@@ -429,15 +439,16 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
       <div class="vis-pop poi-pop" id="poiPop" hidden></div>
     </div>
     <div class="vis" id="vis">
-      <button type="button" class="vis-btn" id="visBtn" aria-expanded="false" aria-controls="visPop" aria-label="투명도"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><circle cx="8" cy="8" r="6.3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 1.7a6.3 6.3 0 0 1 0 12.6z" fill="currentColor"/></svg><span class="vt">투명도</span></button>
-      <div class="vis-pop" id="visPop" hidden>
+      <button type="button" class="vis-btn" id="visBtn" aria-expanded="false" aria-controls="visPop" title="지도에 보일 글자와 투명도를 골라요"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M2 4h12M2 8h12M2 12h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="5" cy="4" r="2" fill="currentColor"/><circle cx="11" cy="8" r="2" fill="currentColor"/><circle cx="7" cy="12" r="2" fill="currentColor"/></svg>표시</button>
+      <div class="vis-pop disp-pop" id="visPop" hidden>
+        <div class="dsecs" id="dispTogs"></div>
+        <hr>
         <label>글자 배경 투명도 <output id="labTo"></output><input type="range" id="labT" min="0" max="100" step="5" aria-label="글자 배경 투명도"></label>
         <label>경로 선 투명도 <output id="lineTo"></output><input type="range" id="lineT" min="0" max="80" step="5" aria-label="경로 선 투명도"></label>
         <label>관광지 핀 투명도 <output id="poiTo"></output><input type="range" id="poiT" min="0" max="85" step="5" aria-label="관광지 핀 투명도"></label>
-        <button type="button" class="mini" id="visReset">기본값으로</button>
+        <div class="row2"><button type="button" class="mini" id="dispNone">글자 모두 끄기</button><button type="button" class="mini" id="visReset">모두 기본값으로</button></div>
       </div>
     </div>
-    <span class="tickbtns" role="group" aria-label="경로 위 1시간 표시"><button type="button" class="vis-btn" id="tickTm" aria-pressed="true" title="경로 위 1시간마다 지나는 곳의 예상 시각을 켜고 꺼요">시각</button><button type="button" class="vis-btn" id="tickKm" aria-pressed="true" title="경로 위 1시간마다 지나는 곳의 km(그 구간 출발 후)를 켜고 꺼요">km</button></span>
     <div class="locctl">
       <div class="loc-btns" id="locBtns"><button type="button" class="vis-btn" id="locBtn" aria-pressed="false" aria-label="내 위치" title="이 기기의 현재 위치를 지도에 보여요. 켜져 있을 때 누르면 내 위치로 옮겨요"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="4.6" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="8" cy="8" r="2" fill="currentColor"/><path d="M8 .8v2.4M8 12.8v2.4M.8 8h2.4M12.8 8h2.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span class="lt">내 위치</span></button><button type="button" class="vis-btn" id="locOff" aria-label="내 위치 끄기" title="내 위치 끄기" hidden>✕</button></div>
       <div class="vis-pop locmsg" id="locMsg" role="status" hidden></div>
@@ -761,7 +772,15 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
     const m = new AME({ map, position: LL(ll), content: el, title: title || "", zIndex: z || 1, gmpClickable: true });
     return m;
   }
-  function setLab(lab, name, time, lvl) { lab.innerHTML = esc(name) + (time ? `<span class="tm${lvl ? " " + lvl : ""}">${esc(time)}</span>` : ""); }
+  // stop label: name + times (tf, the date in front when the day changes) or the dates alone (td, when times are hidden)
+  function setLab(lab, name, full, dates, lvl) {
+    const c = "tm" + (lvl ? " " + lvl : "");
+    lab.className = "lab sl" + (full ? "" : " nt");
+    lab.innerHTML = `<span class="nm">${esc(name)}</span>` + (full ? `<span class="${c} tf">${full}</span><span class="${c} td">${dates}</span>` : "");
+  }
+  const dtH = m => (Math.floor(m / 1440) > 0 ? `<span class="dt">${md(dayDate(Math.floor(m / 1440)))} </span>` : "") + clock(m);   // HTML twin of dtMap
+  const cdtH = (i, m) => (m >= 1440 ? `<span class="dt">${md(dayDate(i + Math.floor(m / 1440)))} </span>` : "") + clock(m);   // HTML twin of cclock
+  const mdAt = (i, m) => md(dayDate(i + Math.floor(m / 1440)));
   function buildStopMarkers() {
     const keys = [...new Set(DAYS.flatMap(d => d.stops))].filter(k => S[k].kind !== "city");
     keys.forEach(k => {
@@ -956,16 +975,33 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
   $("visBtn").addEventListener("click", () => { const open = $("visPop").hidden; $("visPop").hidden = !open; $("visBtn").setAttribute("aria-expanded", String(open)); });
   ["labT", "lineT", "poiT"].forEach(k => $(k).addEventListener("input", e => { saved.ui[k] = +e.target.value; applyVis(k === "lineT"); }));
   ["labT", "lineT", "poiT"].forEach(k => $(k).addEventListener("change", () => save()));
-  $("visReset").addEventListener("click", () => { delete saved.ui.labT; delete saved.ui.lineT; delete saved.ui.poiT; save(); applyVis(true); });
-  // ---------- hourly marks on the route (saved in this browser): time and km each on/off, both off = no marks ----------
-  function applyTicks() {
-    const tm = !saved.ui.noTm, km = !saved.ui.noKm, box = document.querySelector(".mapbox");
-    box.classList.toggle("no-tm", !tm); box.classList.toggle("no-km", !km);
-    $("tickTm").setAttribute("aria-pressed", String(tm)); $("tickKm").setAttribute("aria-pressed", String(km));
+  $("visReset").addEventListener("click", () => { delete saved.ui.labT; delete saved.ui.lineT; delete saved.ui.poiT; delete saved.ui.hide; save(); applyVis(true); applyDisp(); });
+  // ---------- which map text shows (saved in this browser as ui.hide): .mapbox gets no-<key> for each hidden kind ----------
+  const DISP = [
+    { g: "지점 글자", items: [["lnm", "이름"], ["ltm", "시각"], ["ldt", "날짜"]] },
+    { g: "1시간마다 지나는 곳", items: [["ttm", "시각"], ["tkm", "km"], ["ttn", "근처 지명"]] },
+    { g: "그 밖", items: [["leg", "구간 번호"], ["pnm", "관광지 이름"]] },
+  ];
+  const DISP_KEYS = DISP.flatMap(x => x.items.map(it => it[0]));
+  if (saved.ui.noTm || saved.ui.noKm) {   // earlier time / km switches for the hourly marks; both off meant no marks at all
+    const h = new Set(Array.isArray(saved.ui.hide) ? saved.ui.hide : []);
+    if (saved.ui.noTm) h.add("ttm"); if (saved.ui.noKm) h.add("tkm"); if (saved.ui.noTm && saved.ui.noKm) h.add("ttn");
+    saved.ui.hide = [...h]; delete saved.ui.noTm; delete saved.ui.noKm; save();
   }
-  $("tickTm").addEventListener("click", () => { saved.ui.noTm = !saved.ui.noTm; save(); applyTicks(); });
-  $("tickKm").addEventListener("click", () => { saved.ui.noKm = !saved.ui.noKm; save(); applyTicks(); });
-  applyTicks();
+  const dispOn = k => !(Array.isArray(saved.ui.hide) && saved.ui.hide.includes(k));
+  function applyDisp() {
+    const box = document.querySelector(".mapbox");
+    DISP_KEYS.forEach(k => box.classList.toggle("no-" + k, !dispOn(k)));
+    $("dispTogs").querySelectorAll("[data-disp]").forEach(b => b.setAttribute("aria-pressed", String(dispOn(b.dataset.disp))));
+  }
+  $("dispTogs").innerHTML = DISP.map(x => `<div class="dsec"><b>${x.g}</b><div class="dtogs">${x.items.map(([k, t]) => `<button type="button" class="dtog" data-disp="${k}" aria-pressed="true" aria-label="${x.g} · ${t}">${t}</button>`).join("")}</div></div>`).join("");
+  $("dispTogs").querySelectorAll("[data-disp]").forEach(b => b.addEventListener("click", () => {
+    const h = new Set(Array.isArray(saved.ui.hide) ? saved.ui.hide : []), k = b.dataset.disp;
+    if (h.has(k)) h.delete(k); else h.add(k);
+    saved.ui.hide = [...h]; save(); applyDisp();
+  }));
+  $("dispNone").addEventListener("click", () => { saved.ui.hide = [...DISP_KEYS]; save(); applyDisp(); });
+  applyDisp();
   // ---------- view / edit switch (saved in this browser): view hides .eo controls, locks pins and time pickers ----------
   function paintViewBtns() {
     const v = viewOnly();
@@ -1031,17 +1067,17 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
       if (plan_ || !ds) { setLab(o.lab, s.ko); return; }
       const i = dayIdx != null ? dayIdx : ds[0];
       const r = sch[i] && sch[i].rows.find(x => x.type === "stop" && x.k === k);
-      setLab(o.lab, s.ko, r ? (dayIdx != null ? cclock(i, r.arr) : `${i + 1}일 ${clock(r.arr)}`) : null, r && r.warn ? r.warn.lvl : null);
+      setLab(o.lab, s.ko, !r ? null : dayIdx != null ? cdtH(i, r.arr) : `<span class="dt">${i + 1}일 </span>${clock(r.arr)}`, r ? mdAt(i, r.arr) : "", r && r.warn ? r.warn.lvl : null);
     });
     chipMarkers.forEach(m => { m.map = null; }); chipMarkers = [];
     clearTicks();
     if (!plan_ && dayIdx != null) addTicks(sch[dayIdx].legs, null, m => cclock(dayIdx, m), legSets.course);
     if (!plan_ && dayIdx != null) {
       const d = byId[course.days[dayIdx]], s = sch[dayIdx];
-      const add = (k, text, time) => { const el = document.createElement("div"); el.className = "gm chip"; el.innerHTML = `<span class="dot"></span><span class="lab"></span>`; setLab(el.querySelector(".lab"), text, time); chipMarkers.push(makeMarker(S[k].ll, el, text, 4)); };
-      if (s.rows[0].type === "start" || S[d.startKey].kind === "city") add(d.startKey, `${S[d.startKey].ko} 출발`, cclock(dayIdx, s.start));
+      const add = (k, text, m) => { const el = document.createElement("div"); el.className = "gm chip"; el.innerHTML = `<span class="dot"></span><span class="lab"></span>`; setLab(el.querySelector(".lab"), text, cdtH(dayIdx, m), mdAt(dayIdx, m)); chipMarkers.push(makeMarker(S[k].ll, el, text, 4)); };
+      if (s.rows[0].type === "start" || S[d.startKey].kind === "city") add(d.startKey, `${S[d.startKey].ko} 출발`, s.start);
       const last = s.rows[s.rows.length - 1];
-      if (last.type === "end" || S[d.endKey].kind === "city") add(d.endKey, `${S[d.endKey].ko} 도착`, cclock(dayIdx, s.end));
+      if (last.type === "end" || S[d.endKey].kind === "city") add(d.endKey, `${S[d.endKey].ko} 도착`, s.end);
     }
   }
 
@@ -1449,7 +1485,7 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
         const ll = pointAlong(L.path, h / L.min), town = nearTown(ll);
         const km = Math.round(L.km * h / L.min), rest = Math.max(0, Math.round(L.km) - km);   // same average-speed split as the dot's position
         const el = document.createElement("div"); el.className = "gm tick"; el.style.setProperty("--lc", legColor(j));
-        el.innerHTML = `<span class="dot"></span><span class="lab"><span class="tm">${fmt(L.dep + h)}</span><span class="km">${fmtN(km)}km</span>${town ? " · " + esc(town) + " 근처" : ""}<span class="hrs"> · 운전 ${h / 60}시간째<span class="kmx"> · 다음 지점까지 ${fmtN(rest)}km</span></span></span>`;
+        el.innerHTML = `<span class="dot"></span><span class="lab${town ? "" : " nt"}"><span class="tm">${fmt(L.dep + h)}</span><span class="km">${fmtN(km)}km</span>${town ? `<span class="tn">${esc(town)} 근처</span>` : ""}<span class="hrs">운전 ${h / 60}시간째<span class="kmx"> · 다음 지점까지 ${fmtN(rest)}km</span></span></span>`;
         el.addEventListener("click", ev => { ev.stopPropagation(); lastMarkerClick = Date.now(); if (IW) IW.close(); if (onPick) flashLegRow("p" + j); });
         el.addEventListener("contextmenu", ev => { ev.preventDefault(); ev.stopPropagation(); if (onPick) onPick(L, ll, ev, fmt(L.dep + h)); else openCtx(evPt(ev), [rnd5(ll[0]), rnd5(ll[1])], { title: `${fmt(L.dep + h)} 지나는 곳`, nodeOpts: x => ({ ll: x }) }); });
         const sp = it ? laneSpot(it, h / L.min, z) : { ll, side: "r" }; setSide(el, sp.side);
@@ -1479,11 +1515,13 @@ body.dropping::after { content: "플랜 파일(.json)을 놓으면 불러와요"
       const el = document.createElement("div"); el.className = "gm pp g-plan" + (n.i === 0 ? " first" : "");
       el.innerHTML = `<span class="dot">${n.i + 1}</span><span class="lab"></span>`;
       const isLast = n.i === ps.nodes.length - 1;
-      const tail = n.i === 0 ? `${dtMap(n.dep)} 출발`
-        : isLast || n.dep === n.arr ? `${dtMap(n.arr)} 도착`
-        : n.overnight ? `${dtMap(n.arr)} 도착 · ${Math.floor(n.dep / 1440) - Math.floor(n.arr / 1440)}박 · ${dtMap(n.dep)} 출발`
-        : `${dtMap(n.arr)} 도착 · ${clock(n.dep)} 출발`;
-      setLab(el.querySelector(".lab"), n.p.name, tail, n.warn ? n.warn.lvl : n.conflict ? "bad" : null);
+      const stayOver = !isLast && n.i > 0 && n.dep !== n.arr && n.overnight;
+      const tail = n.i === 0 ? `${dtH(n.dep)} 출발`
+        : isLast || n.dep === n.arr ? `${dtH(n.arr)} 도착`
+        : stayOver ? `${dtH(n.arr)} 도착 · ${Math.floor(n.dep / 1440) - Math.floor(n.arr / 1440)}박 · ${dtH(n.dep)} 출발`
+        : `${dtH(n.arr)} 도착 · ${clock(n.dep)} 출발`;
+      const dates = n.i === 0 ? mdAt(0, n.dep) : stayOver ? `${mdAt(0, n.arr)}~${mdAt(0, n.dep)}` : mdAt(0, n.arr);
+      setLab(el.querySelector(".lab"), n.p.name, tail, dates, n.warn ? n.warn.lvl : n.conflict ? "bad" : null);
       const lock = viewOnly();
       const mk = new AME({ map, position: LL(n.p.ll), content: el, title: `${n.i + 1}. ${n.p.name}${lock ? "" : " · 끌어서 옮길 수 있어요"}`, zIndex: 10, gmpClickable: true, gmpDraggable: !lock });
       el.addEventListener("click", ev => { ev.stopPropagation(); lastMarkerClick = Date.now(); if (IW) IW.close(); focusRow(n.p.id); });
